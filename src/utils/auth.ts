@@ -2,7 +2,7 @@ import { sign, verify } from "jsonwebtoken";
 
 export function generateAccessToken(payload: { phone: string }) {
   return sign(payload, process.env.ACCESS_SECRET_KEY as string, {
-    expiresIn: 3600,
+    expiresIn: "1h",
   });
 }
 

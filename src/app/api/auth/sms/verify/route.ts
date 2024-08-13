@@ -42,20 +42,45 @@ export async function POST(req: Request) {
       );
     }
 
-    const accessToken = generateAccessToken({ phone: validationResult.phone });
-
     await otpModel.findByIdAndUpdate(otpRecord._id, {
       isExpired: true,
     });
 
-    return Response.json(
-      { message: "Phone Number Verified" },
-      {
-        headers: {
-          "Set-Cookie": `token=${accessToken};path=/;httpOnly=true;max-age=3600`,
-        },
-      }
-    );
+    const token = generateAccessToken({ phone: validationResult.phone });
+    const refreshToken = generateRefreshToken({
+      phone: validationResult.phone,
+    });
+
+    const cookiesStore = cookies();
+    cookiesStore.set("token", token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 3600,
+    });
+    cookiesStore.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 3600 * 24,
+    });
+
+    const user = await UserModel.exists({ phone: validationResult.phone });
+    console.log(user);
+
+    if (user) {
+      return Response.json(
+        { message: "Welcome Back" },
+        {
+          status: 200,
+        }
+      );
+    } else {
+      return Response.json(
+        { message: "Please Complete Your Profile" },
+        {
+          status: 202,
+        }
+      );
+    }
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },

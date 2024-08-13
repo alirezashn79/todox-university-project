@@ -1,16 +1,14 @@
 import TodoModel from "@/models/Todo";
 import { zTodoSchemaServer } from "@/schemas/schema";
 import DbConnect from "@/utils/dbConnection";
+import { isAuth } from "@/utils/serverHelpers";
 
 export async function POST(req: Request) {
   try {
-    const user = {
-      _id: "odjfffff",
-      phone: "09399963288",
-    };
+    const user = await isAuth();
 
     if (!user) {
-      return Response.json({ message: "login first" }, { status: 401 });
+      return Response.json({ message: "please login" }, { status: 401 });
     }
 
     const reqBody = await req.json();
@@ -21,7 +19,7 @@ export async function POST(req: Request) {
 
     const data = await TodoModel.create({
       ...validationResult,
-      user: user._id,
+      user,
     });
 
     return Response.json(
@@ -33,6 +31,32 @@ export async function POST(req: Request) {
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    const user = await isAuth();
+
+    if (!user) {
+      return Response.json(
+        { message: "you are not login" },
+        {
+          status: 401,
+        }
+      );
+    }
+    await DbConnect();
+    const todos = await TodoModel.find({ user });
+
+    return Response.json(todos);
+  } catch (error) {
+    return Response.json(
+      { message: "Server Error" },
       {
         status: 500,
       }

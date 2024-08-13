@@ -1,22 +1,12 @@
 import { model, models, Schema } from "mongoose";
 
 interface IUserModel {
-  fName: string;
-  lName: string;
-  username: string;
+  fullName: string;
   phone: string;
   avatar?: string;
 }
 const schema = new Schema<IUserModel>({
-  fName: {
-    type: String,
-    required: true,
-  },
-  lName: {
-    type: String,
-    required: true,
-  },
-  username: {
+  fullName: {
     type: String,
     required: true,
   },
