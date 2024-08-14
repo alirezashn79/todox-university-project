@@ -32,8 +32,6 @@ export default function LoginForm() {
     resolver: zodResolver(zPhoneSchema),
   });
 
-  console.log(getValues("phone"));
-
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
     const loading = toast.loading("wating...");
     try {
@@ -41,9 +39,13 @@ export default function LoginForm() {
       const res = await client.post("/api/auth/sms/send", values);
       toast.success(res.data.message);
       setIsSentCode(true);
+      sessionStorage.setItem("phone", values.phone);
     } catch (error: any) {
       console.log(error);
       if (error.response) {
+        if (error.response.status === 451) {
+          setIsSentCode(true);
+        }
         toast.error(error.response.data.message);
       }
     } finally {
@@ -57,11 +59,13 @@ export default function LoginForm() {
 
     try {
       setIsLoading(true);
+      const phone = sessionStorage.getItem("phone");
       const res = await client.post("/api/auth/sms/verify", {
-        phone: watch("phone"),
+        phone,
         code: otp,
       });
       toast.success(res.data.message);
+      sessionStorage.removeItem("phone");
       if (res.status === 200) {
         replace("/");
       } else if (res.status === 202) {

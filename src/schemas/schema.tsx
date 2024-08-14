@@ -15,7 +15,9 @@ export const zTodoSchemaServer = object({
   title: string().trim().min(4),
   body: string().trim().min(6),
   priority: enum_(["1", "2", "3"]).default("1"),
-  time: coerce.date(),
+  // time: coerce.date(),
+  time: string().trim().min(4),
+  date: string().trim().min(4),
 });
 export const zDate = object({
   time: date(),

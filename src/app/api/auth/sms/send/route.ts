@@ -35,25 +35,32 @@ export async function POST(req: Request) {
 
     const code = Math.floor(Math.random() * 90000) + 10000;
 
-    try {
-      await axios.post("http://ippanel.com/api/select", {
-        op: "pattern",
-        user: process.env.WEB_SERVICE_USERNAME,
-        pass: process.env.WEB_SERVICE_PASS,
-        fromNum: "3000505",
-        toNum: validationResult.phone,
-        patternCode: process.env.PATTERN_CODE,
-        inputData: [{ "verification-code": code }],
-      });
-      const expTime = new Date().getTime() + 120_000;
-      await otpModel.create({
-        phone: validationResult.phone,
-        code,
-        expTime,
-      });
-    } catch (error) {
-      return Response.json({ message: "error to send code" }, { status: 400 });
-    }
+    // try {
+    //   await axios.post("http://ippanel.com/api/select", {
+    //     op: "pattern",
+    //     user: process.env.WEB_SERVICE_USERNAME,
+    //     pass: process.env.WEB_SERVICE_PASS,
+    //     fromNum: "3000505",
+    //     toNum: validationResult.phone,
+    //     patternCode: process.env.PATTERN_CODE,
+    //     inputData: [{ "verification-code": code }],
+    //   });
+    //   const expTime = new Date().getTime() + 120_000;
+    //   await otpModel.create({
+    //     phone: validationResult.phone,
+    //     code,
+    //     expTime,
+    //   });
+    // } catch (error) {
+    //   return Response.json({ message: "error to send code" }, { status: 400 });
+    // }
+
+    const expTime = new Date().getTime() + 120_000;
+    await otpModel.create({
+      phone: validationResult.phone,
+      code,
+      expTime,
+    });
 
     return Response.json(
       { message: "code sent successfully :))" },

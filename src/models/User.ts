@@ -4,6 +4,7 @@ interface IUserModel {
   fullName: string;
   phone: string;
   avatar?: string;
+  refreshToken?: string;
 }
 const schema = new Schema<IUserModel>({
   fullName: {
@@ -15,6 +16,7 @@ const schema = new Schema<IUserModel>({
     required: true,
   },
   avatar: String,
+  refreshToken: String,
 });
 
 const UserModel = models.User || model<IUserModel>("User", schema);

@@ -1,6 +1,6 @@
 import UserModel from "@/models/User";
 import { zUserCreationServerSchema } from "@/schemas/schema";
-import { verifyAccessToken } from "@/utils/auth";
+import { generateRefreshToken, verifyAccessToken } from "@/utils/auth";
 import baseURL from "@/utils/baseUrl";
 import { writeFile } from "fs/promises";
 import { cookies } from "next/headers";
@@ -57,10 +57,22 @@ export async function POST(req: Request) {
       await writeFile(filePath, buffer);
     }
 
+    const refreshToken = generateRefreshToken({
+      phone: payload.phone,
+    });
+    cookieStore.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600 * 24,
+      sameSite: "strict",
+    });
+
     const data = await UserModel.create({
       ...validationResult,
       phone: payload.phone,
       avatar: fileUrl,
+      refreshToken,
     });
 
     return Response.json(

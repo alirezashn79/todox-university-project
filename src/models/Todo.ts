@@ -6,7 +6,8 @@ interface ITodoModel {
   priority: "1" | "2" | "3";
   isDone: boolean;
   user: Types.ObjectId;
-  time: Date;
+  date: string;
+  time: string;
 }
 const schema = new Schema<ITodoModel>({
   title: {
@@ -32,7 +33,11 @@ const schema = new Schema<ITodoModel>({
     required: true,
   },
   time: {
-    type: Date,
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
     required: true,
   },
 });

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import React from "react";
 
 export default function IndexLayout({

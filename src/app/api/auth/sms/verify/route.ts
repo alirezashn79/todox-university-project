@@ -47,26 +47,34 @@ export async function POST(req: Request) {
     });
 
     const token = generateAccessToken({ phone: validationResult.phone });
-    const refreshToken = generateRefreshToken({
-      phone: validationResult.phone,
-    });
 
     const cookiesStore = cookies();
     cookiesStore.set("token", token, {
       httpOnly: true,
       path: "/",
+      secure: process.env.NODE_ENV === "production",
       maxAge: 3600,
-    });
-    cookiesStore.set("refreshToken", refreshToken, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 3600 * 24,
+      sameSite: "strict",
     });
 
     const user = await UserModel.exists({ phone: validationResult.phone });
-    console.log(user);
 
     if (user) {
+      const refreshToken = generateRefreshToken({
+        phone: validationResult.phone,
+      });
+
+      cookiesStore.set("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 3600 * 24,
+        sameSite: "strict",
+      });
+
+      await UserModel.findByIdAndUpdate(user._id, {
+        refreshToken,
+      });
       return Response.json(
         { message: "Welcome Back" },
         {

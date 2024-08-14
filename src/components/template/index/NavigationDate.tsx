@@ -4,7 +4,11 @@ import useDateStore from "@/stores/DateStore";
 export default function NavigationDate() {
   const date = useDateStore((state) => state.date);
   const changeDate = useDateStore((state) => state.changeDate);
-  console.log(date.toISOString().split("T")[0]);
+
+  // send to api 👇
+  // console.log("split t", date.toISOString().split("T")[0]);
+
+  // console.log("dateeeeeeeee", new Date(date.toISOString().split("T")[0]));
 
   // Get the dates to be displayed in the tab bar
   const getDisplayDates = (currentDate: Date) => {
@@ -50,7 +54,7 @@ export default function NavigationDate() {
             key={index}
             className={`tab transition-all lg:text-lg text-base ${
               d.toDateString() === date.toDateString()
-                ? "tab-active lg:!text-xl !text-lg scale-110 !-translate-y-1 font-semibold"
+                ? "tab-active lg:!text-xl !text-lg scale-110 !-translate-y-1 font-semibold btn-disabled"
                 : "hover:btn-link"
             }`}
             onClick={() => changeDate(d)}

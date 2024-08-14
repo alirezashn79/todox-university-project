@@ -1,4 +1,9 @@
-export default function Profile() {
+import { IUser } from "@/types";
+import LogoutBtn from "./LogoutBtn";
+interface IProfileProps {
+  user: IUser;
+}
+export default function Profile({ user }: IProfileProps) {
   return (
     <div className="dropdown dropdown-end ms-4">
       <div
@@ -7,10 +12,7 @@ export default function Profile() {
         className="btn btn-ghost btn-circle avatar"
       >
         <div className="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS Navbar component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-          />
+          <img alt="Tailwind CSS Navbar component" src={user?.avatar} />
         </div>
       </div>
       <ul
@@ -27,7 +29,7 @@ export default function Profile() {
           <a>Settings</a>
         </li>
         <li>
-          <a>Logout</a>
+          <LogoutBtn />
         </li>
       </ul>
     </div>

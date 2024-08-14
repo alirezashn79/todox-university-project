@@ -1,13 +1,11 @@
 "use client";
 
-import Profile from "@/components/modules/navbar/Profile";
-import { zDate, zTodoSchemaClient } from "@/schemas/schema";
+import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -16,17 +14,17 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/layouts/mobile.css";
 import { TypeOf } from "zod";
-
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
 export default function AddTodo() {
   const modal = useRef<any>();
   const date = useDateStore((state) => state.date);
-  const changeDate = useDateStore((state) => state.changeDate);
+  const setReload = useDateStore((state) => state.setReload);
+  const [time, setTime] = useState<any>(
+    new Date(new Date().toLocaleDateString())
+  );
 
-  const { refresh } = useRouter();
-
-  console.log("date", date.toLocaleString("fa-ir"));
+  console.log(date.toLocaleDateString());
 
   const {
     register,
@@ -36,22 +34,19 @@ export default function AddTodo() {
   } = useForm<TTodo>({
     resolver: zodResolver(zTodoSchemaClient),
   });
-
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
+    console.log(date.toISOString());
     try {
-      await zDate.parseAsync({
-        time: date,
-      });
-
       const res = await client.post("/api/todo", {
         ...values,
-        time: date,
+        date: date.toISOString().split("T")[0],
+        time: time.toDate().toISOString().split("T")[1],
       });
 
       toast.success(res.data.message);
       modal.current.close();
       reset();
-      refresh();
+      setReload();
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +77,7 @@ export default function AddTodo() {
                 />
               </div>
 
-              <div className="form-control">
+              {/* <div className="form-control">
                 <label className="input input-bordered flex items-center gap-2">
                   <DatePicker
                     className="rmdp-mobile"
@@ -106,7 +101,7 @@ export default function AddTodo() {
                     }}
                   />
                 </label>
-              </div>
+              </div> */}
 
               <div className="form-control">
                 <label className="input input-bordered flex items-center gap-2">
@@ -116,26 +111,23 @@ export default function AddTodo() {
                     calendar={persian}
                     plugins={[<TimePicker hideSeconds />]}
                     locale={persian_fa}
-                    value={date}
+                    value={time}
                     render={(_, openCalendar) => {
                       return (
                         <input
-                          defaultValue={new Date(date).toLocaleTimeString(
-                            "fa-ir",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
+                          defaultValue={new Date(
+                            time as Date
+                          ).toLocaleTimeString("fa-ir", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                           onClick={openCalendar}
                           className="grow"
                           placeholder="Date"
                         />
                       );
                     }}
-                    onChange={(e) => {
-                      changeDate(e?.toDate() as Date);
-                    }}
+                    onChange={setTime}
                   />
                 </label>
               </div>
