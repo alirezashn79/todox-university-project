@@ -31,6 +31,7 @@ export default function NavigationDate() {
       <button
         className="btn btn-sm btn-primary btn-outline mb-4 ml-auto"
         onClick={() => changeDate(new Date())}
+        disabled={date.toDateString() === new Date().toDateString()}
       >
         today
         <svg

@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.date-picker-wrapper {
-  @apply !bg-white;
+.react-time-picker__wrapper {
+  border: none !important;
+}
+.react-time-picker__clock-button {
+  display: none !important;
 }

@@ -6,25 +6,23 @@ import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
+import "react-clock/dist/Clock.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/layouts/mobile.css";
+import TimePickerReact from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
 import { TypeOf } from "zod";
+
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
 export default function AddTodo() {
   const modal = useRef<any>();
   const date = useDateStore((state) => state.date);
-  const setReload = useDateStore((state) => state.setReload);
-  const [time, setTime] = useState<any>(
-    new Date(new Date().toLocaleDateString())
-  );
 
-  console.log(date.toLocaleDateString());
+  const setReload = useDateStore((state) => state.setReload);
+
+  const [TimeValue, setTimeValue] = useState<null | string>(null);
 
   const {
     register,
@@ -40,7 +38,7 @@ export default function AddTodo() {
       const res = await client.post("/api/todo", {
         ...values,
         date: date.toISOString().split("T")[0],
-        time: time.toDate().toISOString().split("T")[1],
+        time: TimeValue,
       });
 
       toast.success(res.data.message);
@@ -51,7 +49,6 @@ export default function AddTodo() {
       console.log(error);
     }
   };
-
   return (
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">
@@ -77,61 +74,6 @@ export default function AddTodo() {
                 />
               </div>
 
-              {/* <div className="form-control">
-                <label className="input input-bordered flex items-center gap-2">
-                  <DatePicker
-                    className="rmdp-mobile"
-                    calendar={persian}
-                    locale={persian_fa}
-                    render={(_, openCalendar) => {
-                      return (
-                        <input
-                          defaultValue={new Date(date).toLocaleDateString(
-                            "fa-ir"
-                          )}
-                          onClick={openCalendar}
-                          className="grow"
-                          placeholder="Date"
-                        />
-                      );
-                    }}
-                    value={date}
-                    onChange={(e) => {
-                      changeDate(e?.toDate() as Date);
-                    }}
-                  />
-                </label>
-              </div> */}
-
-              <div className="form-control">
-                <label className="input input-bordered flex items-center gap-2">
-                  <DatePicker
-                    disableDayPicker
-                    className="rmdp-mobile"
-                    calendar={persian}
-                    plugins={[<TimePicker hideSeconds />]}
-                    locale={persian_fa}
-                    value={time}
-                    render={(_, openCalendar) => {
-                      return (
-                        <input
-                          defaultValue={new Date(
-                            time as Date
-                          ).toLocaleTimeString("fa-ir", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                          onClick={openCalendar}
-                          className="grow"
-                          placeholder="Date"
-                        />
-                      );
-                    }}
-                    onChange={setTime}
-                  />
-                </label>
-              </div>
-
               <div className="form-control">
                 <select
                   defaultValue="-1"
@@ -153,7 +95,15 @@ export default function AddTodo() {
                   )}
                 />
               </div>
-
+              <div className="form-control">
+                <TimePickerReact
+                  className="input input-bordered"
+                  onChange={(e) => setTimeValue(e as string)}
+                  format="HH:mm"
+                  value={TimeValue}
+                  clockIcon={false}
+                />
+              </div>
               <div className="form-control">
                 <textarea
                   {...register("body")}
@@ -191,10 +141,13 @@ export default function AddTodo() {
 
       <div className="flex-none gap-2">
         <button
+          disabled={
+            new Date(date.toDateString()) < new Date(new Date().toDateString())
+          }
           onClick={() => modal.current.showModal()}
           className="btn btn-primary btn-sm md:btn-md"
         >
-          Add Task
+          Add Todo
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -24,9 +24,6 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    getValues,
-    watch,
-
     formState: { errors },
   } = useForm<TPhoneSchema>({
     resolver: zodResolver(zPhoneSchema),

@@ -1,6 +1,4 @@
 "use client";
-import Alert from "@/components/modules/Alert";
-import useAlertStore from "@/stores/AlertStore";
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
 import React, { useEffect, useState } from "react";
@@ -13,20 +11,15 @@ interface ITodo {
   time: string;
   date: string;
 }
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function Table() {
   const date = useDateStore((state) => state.date);
   const reload = useDateStore((state) => state.reload);
-  const toggleAlert = useAlertStore((state) => state.toggleAlert);
-  const toggleToastOpen = useAlertStore((state) => state.toggleToastOpen);
+  const setReload = useDateStore((state) => state.setReload);
   const [todosDate, setTodosDate] = useState<null | ITodo[]>(null);
   const [loading, setLoading] = useState(true);
-
-  const handleDelete = async () => {
-    console.log("deleted");
-    toggleAlert(false);
-    toggleToastOpen();
-  };
 
   useEffect(() => {
     const getData = async () => {
@@ -45,18 +38,48 @@ export default function Table() {
     getData();
   }, [date, reload]);
 
-  const alertEl = (
-    <Alert
-      type="warning"
-      title="Are you sure you want to delete this task?"
-      handleAccept={handleDelete}
-      successText="Todo Deleted Successfully :))"
-    />
-  );
+  const handleDelete = (todoId: string) => {
+    const MySwal = withReactContent(Swal);
+
+    MySwal.fire({
+      title: "Are you sure?",
+      toast: true,
+      position: "center",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          MySwal.showLoading();
+          await client.delete(`/api/todo/${todoId}`);
+          MySwal.fire({
+            title: "Deleted!",
+            text: "Your todo has been deleted.",
+            icon: "success",
+            toast: true,
+          });
+          setReload();
+        } catch (error) {
+          MySwal.fire({
+            title: "Error!",
+            text: "Error to delete",
+            icon: "error",
+            toast: true,
+          });
+        } finally {
+          // MySwal.hideLoading();
+        }
+      }
+    });
+  };
 
   const loadingEl = (
     <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
-      <span className="loading loading-bars loading-lg"></span>
+      <span className="loading text-primary loading-bars loading-lg"></span>
     </div>
   );
 
@@ -89,8 +112,7 @@ export default function Table() {
           {todosDate
             ?.sort(
               (a, b) =>
-                (new Date(`${a.date}T${a.time}`) as any) -
-                (new Date(`${b.date}T${b.time}`) as any)
+                (a.time.split(":")[0] as any) - (b.time.split(":")[0] as any)
             )
             .map((item) => (
               <tr key={item._id.toString()}>
@@ -136,7 +158,7 @@ export default function Table() {
                       </svg>
                     </button>
                     <button
-                      onClick={() => toggleAlert(true)}
+                      onClick={() => handleDelete(item._id)}
                       className="text-error"
                     >
                       <svg
@@ -163,11 +185,5 @@ export default function Table() {
     </div>
   );
 
-  return (
-    <>
-      {alertEl}
-
-      {loading ? loadingEl : !!todosDate?.length ? todoEl : noTodoEl}
-    </>
-  );
+  return <>{loading ? loadingEl : !!todosDate?.length ? todoEl : noTodoEl}</>;
 }
