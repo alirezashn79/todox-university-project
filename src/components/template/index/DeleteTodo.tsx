@@ -30,6 +30,8 @@ export default function DeleteTodo({ id }: { id: string }) {
             text: "Your todo has been deleted.",
             icon: "success",
             toast: true,
+            showConfirmButton: false,
+            timer: 1500,
           });
           setReload();
         } catch (error) {

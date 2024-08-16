@@ -4,6 +4,9 @@ import client from "@/utils/client";
 import { useEffect, useState } from "react";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
+import ToggleDoneTodo from "./ToggleDoneTodo";
+import AllCheckTodos from "./AllCheckTodos";
+
 interface ITodo {
   _id: string;
   title: string;
@@ -19,14 +22,17 @@ export default function Table() {
   const reload = useDateStore((state) => state.reload);
   const [todosDate, setTodosDate] = useState<null | ITodo[]>(null);
   const [loading, setLoading] = useState(true);
+  const [checkAll, setcheckAll] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
       const isoDate = date.toISOString().split("T")[0];
-
       try {
         const res = await client.get(`/api/user/todos/${isoDate}`);
+        const result = res.data.every((item: any) => item.isDone);
+
+        setcheckAll(result);
         setTodosDate(res.data);
       } catch (error) {
         console.log(error);
@@ -56,9 +62,7 @@ export default function Table() {
         <thead>
           <tr>
             <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
+              <AllCheckTodos checkAll={checkAll} />
             </th>
             <th>Title</th>
             <th>Date</th>
@@ -77,13 +81,7 @@ export default function Table() {
             .map((item) => (
               <tr key={item._id.toString()}>
                 <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      className="checkbox"
-                      checked={item.isDone}
-                    />
-                  </label>
+                  <ToggleDoneTodo id={item._id} isDone={item.isDone} />
                 </th>
                 <td>{item.title}</td>
                 <td>{new Date(item.date).toLocaleDateString("fa-ir")}</td>

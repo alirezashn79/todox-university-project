@@ -63,3 +63,43 @@ export async function GET() {
     );
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const user = await isAuth();
+
+    if (!user) {
+      return Response.json(
+        { message: "Unauthorized" },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const reqBody = await request.json();
+
+    const { date, isCheck } = reqBody;
+
+    await DbConnect();
+
+    await TodoModel.updateMany(
+      {
+        date,
+        user: user._id,
+      },
+      {
+        isDone: isCheck,
+      }
+    );
+
+    return Response.json({ message: "Todos updated successfully" });
+  } catch (error) {
+    return Response.json(
+      { message: "Server Error", error: error.message },
+      {
+        status: 500,
+      }
+    );
+  }
+}

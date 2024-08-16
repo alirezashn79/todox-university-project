@@ -74,7 +74,6 @@ export default function EditTodo({
         toast: true,
         showConfirmButton: false,
         timer: 1500,
-        position: "top",
       });
     } catch (error) {
       console.log(error);
