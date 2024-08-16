@@ -16,9 +16,14 @@ export const zTodoSchemaServer = object({
   body: string().trim().min(6),
   priority: enum_(["1", "2", "3"]).default("1"),
   // time: coerce.date(),
-  time: string().trim().min(4),
+  time: string().regex(/^([01][0-9]|2[0-3]):([0-5][0-9])$/),
   date: string().trim().min(4),
 });
+
+export const zTimeSchema = object({
+  time: string().regex(/^([01][0-9]|2[0-3]):([0-5][0-9])$/),
+});
+
 export const zDate = object({
   time: date(),
 });

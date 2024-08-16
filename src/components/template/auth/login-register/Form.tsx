@@ -134,7 +134,6 @@ export default function LoginForm() {
             containerStyle={{
               display: "flex",
               justifyContent: "center",
-              color: "#ffffff",
             }}
             inputStyle={{
               height: "3rem",
@@ -146,9 +145,7 @@ export default function LoginForm() {
               borderRadius: "0.5rem",
               borderWidth: "1px",
               borderColor: "oklch(0.746477 0.0216 264.436 / 0.2)",
-              backgroundColor: "oklch(0.253267 0.015896 252.418)",
               margin: "0px 4px",
-              color: "#ffffff",
             }}
           />
           <div className="form-control mt-6">
