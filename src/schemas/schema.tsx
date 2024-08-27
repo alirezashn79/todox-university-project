@@ -1,4 +1,4 @@
-import { any, coerce, date, enum as enum_, object, string } from "zod";
+import { any, date, object, string } from "zod";
 
 export const zPhoneSchema = object({
   phone: string()
@@ -12,9 +12,9 @@ export const zCodeSchema = object({
 export const zVerifyOtpServerSchema = zPhoneSchema.and(zCodeSchema);
 
 export const zTodoSchemaServer = object({
-  title: string().trim().min(4),
-  body: string().trim().min(6),
-  priority: enum_(["1", "2", "3"]).default("1"),
+  title: string().trim().min(1),
+  // body: string().trim().min(1),
+  // priority: enum_(["1", "2", "3"]).default("1"),
   // time: coerce.date(),
   time: string().regex(/^([01][0-9]|2[0-3]):([0-5][0-9])$/),
   date: string().trim().min(4),
@@ -28,9 +28,9 @@ export const zDate = object({
   time: date(),
 });
 export const zTodoSchemaClient = object({
-  title: string().trim().min(4),
-  body: string().trim().min(6),
-  priority: enum_(["1", "2", "3"]).default("1"),
+  title: string().trim().min(1),
+  // body: string().trim().min(1),
+  // priority: enum_(["1", "2", "3"]).default("1"),
 });
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; //5MB
@@ -43,14 +43,14 @@ const ACCEPTED_IMAGE_TYPES = [
 
 export const zServerAvatarSchema = object({
   avatar: any()
-    .refine((file) => {
+    .refine((file: File) => {
       if (file) {
         return file?.size <= MAX_FILE_SIZE;
       } else {
         return true;
       }
     }, "Max image size is 2MB.")
-    .refine((file) => {
+    .refine((file: File) => {
       if (file) {
         return ACCEPTED_IMAGE_TYPES.includes(file?.type);
       } else {
@@ -61,14 +61,14 @@ export const zServerAvatarSchema = object({
 
 export const zClientImageSchema = object({
   avatar: any()
-    .refine((files) => {
+    .refine((files: File[]) => {
       if (files && files[0]) {
         return files?.[0]?.size <= MAX_FILE_SIZE;
       } else {
         return true;
       }
     }, `Max image size is 2MB.`)
-    .refine((files) => {
+    .refine((files: File[]) => {
       if (files && files[0]) {
         return ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type);
       } else {
@@ -78,9 +78,9 @@ export const zClientImageSchema = object({
 });
 
 export const zUserCreationServerSchema = object({
-  fullName: string().trim().min(4),
+  fullName: string().trim().min(1),
 }).and(zServerAvatarSchema);
 
 export const zUserCreationClientSchema = object({
-  fullName: string().trim().min(4),
+  fullName: string().trim().min(1),
 }).and(zClientImageSchema);

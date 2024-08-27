@@ -74,7 +74,7 @@ export default function AddTodo() {
                 />
               </div>
 
-              <div className="form-control">
+              {/* <div className="form-control">
                 <select
                   defaultValue="-1"
                   className="select select-bordered w-full"
@@ -94,7 +94,7 @@ export default function AddTodo() {
                     <span className="text-error mt-1">{message}</span>
                   )}
                 />
-              </div>
+              </div> */}
               <div className="form-control">
                 <TimePickerReact
                   className="input input-bordered"
@@ -104,7 +104,7 @@ export default function AddTodo() {
                   clockIcon={false}
                 />
               </div>
-              <div className="form-control">
+              {/* <div className="form-control">
                 <textarea
                   {...register("body")}
                   className="textarea textarea-bordered w-full"
@@ -117,7 +117,7 @@ export default function AddTodo() {
                     <span className="text-error mt-1">{message}</span>
                   )}
                 />
-              </div>
+              </div> */}
 
               <div className="form-control">
                 <button

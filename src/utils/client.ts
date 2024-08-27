@@ -11,7 +11,10 @@ client.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (!originalRequest.url.includes("sms")) {
+    if (
+      !originalRequest.url.includes("sms") &&
+      originalRequest.url !== "api/user"
+    ) {
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
         try {

@@ -1,7 +1,11 @@
 import otpModel from "@/models/Otp";
 import UserModel from "@/models/User";
 import { zVerifyOtpServerSchema } from "@/schemas/schema";
-import { generateAccessToken, generateRefreshToken } from "@/utils/auth";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  generateTempraryToken,
+} from "@/utils/auth";
 import DbConnect from "@/utils/dbConnection";
 import { cookies } from "next/headers";
 
@@ -46,24 +50,23 @@ export async function POST(req: Request) {
       isExpired: true,
     });
 
-    const token = generateAccessToken({ phone: validationResult.phone });
-
     const cookiesStore = cookies();
-    cookiesStore.set("token", token, {
-      httpOnly: true,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 3600,
-      sameSite: "strict",
-    });
 
     const user = await UserModel.exists({ phone: validationResult.phone });
 
     if (user) {
+      const token = generateAccessToken({ phone: validationResult.phone });
+      cookiesStore.set("token", token, {
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24,
+        sameSite: "strict",
+      });
+
       const refreshToken = generateRefreshToken({
         phone: validationResult.phone,
       });
-
       cookiesStore.set("refreshToken", refreshToken, {
         httpOnly: true,
         path: "/",
@@ -82,6 +85,15 @@ export async function POST(req: Request) {
         }
       );
     } else {
+      const temporaryToken = generateTempraryToken({
+        phone: validationResult.phone,
+      });
+      cookiesStore.set("temporaryToken", temporaryToken, {
+        httpOnly: true,
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
       return Response.json(
         { message: "Please Complete Your Profile" },
         {

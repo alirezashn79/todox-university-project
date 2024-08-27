@@ -51,7 +51,8 @@ export default function LoginForm() {
     }
   };
 
-  const verifyCodeHandler = async () => {
+  const verifyCodeHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const loading = toast.loading("wating...");
 
     try {
@@ -119,45 +120,47 @@ export default function LoginForm() {
       </form>
 
       {isSentCode && (
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Code</span>
-          </label>
+        <form onSubmit={verifyCodeHandler}>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Code</span>
+            </label>
 
-          <OTPInput
-            shouldAutoFocus={true}
-            skipDefaultStyles
-            value={otp}
-            onChange={setOtp}
-            numInputs={5}
-            renderInput={(props) => <input {...props} />}
-            containerStyle={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-            inputStyle={{
-              height: "3rem",
-              // padding: "0px 1.3rem",
-              width: "3rem",
-              textAlign: "center",
-              fontSize: "1rem",
-              lineHeight: "2",
-              borderRadius: "0.5rem",
-              borderWidth: "1px",
-              borderColor: "oklch(0.746477 0.0216 264.436 / 0.2)",
-              margin: "0px 4px",
-            }}
-          />
-          <div className="form-control mt-6">
-            <button
-              onClick={verifyCodeHandler}
-              className="btn btn-primary"
-              disabled={isLoading}
-            >
-              verify Code
-            </button>
+            <OTPInput
+              shouldAutoFocus={true}
+              skipDefaultStyles
+              value={otp}
+              onChange={setOtp}
+              numInputs={5}
+              renderInput={(props) => <input {...props} />}
+              containerStyle={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+              inputStyle={{
+                height: "3rem",
+                // padding: "0px 1.3rem",
+                width: "3rem",
+                textAlign: "center",
+                fontSize: "1rem",
+                lineHeight: "2",
+                borderRadius: "0.5rem",
+                borderWidth: "1px",
+                borderColor: "oklch(0.746477 0.0216 264.436 / 0.2)",
+                margin: "0px 4px",
+              }}
+            />
+            <div className="form-control mt-6">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isLoading}
+              >
+                verify Code
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
       )}
     </div>
   );
