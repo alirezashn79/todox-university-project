@@ -1,5 +1,6 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -12,6 +13,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
   const date = useDateStore((state) => state.date);
   const setReload = useDateStore((state) => state.setReload);
   const [loading, setLoading] = useState(false);
+  const theme = useTheme((state) => state.theme);
 
   const handleAllCheck = async () => {
     try {
@@ -27,6 +29,8 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
         toast: true,
         showConfirmButton: false,
         timer: 1500,
+        background: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
       });
       setReload();
     } catch (error) {

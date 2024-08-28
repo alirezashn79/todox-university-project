@@ -1,15 +1,15 @@
 "use client";
 
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { useRouter } from "next/navigation";
-import React from "react";
-import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 export default function LogoutBtn() {
   const { replace } = useRouter();
+  const theme = useTheme((state) => state.theme);
 
   const handleLogout = async () => {
     MySwal.fire({
@@ -21,6 +21,8 @@ export default function LogoutBtn() {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Logout",
+      background: theme === "dark" ? "#1d232a" : undefined,
+      color: theme === "dark" ? "#a6adbb" : undefined,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -33,6 +35,8 @@ export default function LogoutBtn() {
             showConfirmButton: false,
             position: "top",
             timer: 1500,
+            background: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
           });
           replace("/auth/login-register");
         } catch (error) {
@@ -40,6 +44,8 @@ export default function LogoutBtn() {
             title: "Error!",
             icon: "error",
             toast: true,
+            background: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
           });
         }
       }

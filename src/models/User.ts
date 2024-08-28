@@ -3,6 +3,8 @@ import { model, models, Schema } from "mongoose";
 interface IUserModel {
   fullName: string;
   phone: string;
+  password: string;
+  email: string;
   avatar?: string;
   refreshToken?: string;
 }
@@ -12,6 +14,14 @@ const schema = new Schema<IUserModel>({
     required: true,
   },
   phone: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  email: {
     type: String,
     required: true,
   },

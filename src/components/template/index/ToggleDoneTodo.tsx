@@ -1,5 +1,6 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -13,6 +14,7 @@ export default function ToggleDoneTodo({
   id: string;
   isDone: boolean;
 }) {
+  const theme = useTheme((state) => state.theme);
   const [loading, setLoading] = useState(false);
   const setReload = useDateStore((state) => state.setReload);
 
@@ -28,6 +30,8 @@ export default function ToggleDoneTodo({
         toast: true,
         showConfirmButton: false,
         timer: 1500,
+        background: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
       });
     } catch (error) {
       console.log(error);

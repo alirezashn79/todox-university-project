@@ -1,6 +1,9 @@
 import axios from "axios";
 import baseURL from "./baseUrl";
 import toast from "react-hot-toast";
+import useTheme from "@/stores/ThemeStore";
+
+const theme = useTheme.getState().theme;
 
 const client = axios.create({
   baseURL,
@@ -19,18 +22,37 @@ client.interceptors.response.use(
         originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
         try {
           const res = await axios.get("/api/auth/refresh-server");
-          toast.success(res.data.message);
+          toast.success(res.data.message, {
+            style: {
+              backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+              color: theme === "dark" ? "#a6adbb" : undefined,
+              border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+            },
+          });
           return client(originalRequest);
         } catch (refreshError) {
           console.error("Token refresh failed:", refreshError);
-          toast.error("لاگین نیستید");
+          toast.error("لاگین نیستید", {
+            style: {
+              backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+              color: theme === "dark" ? "#a6adbb" : undefined,
+              border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+            },
+          });
           return Promise.reject(refreshError);
         }
       }
     }
 
     toast.error(
-      `${error.response.data.message} - code:${error.response.status}`
+      `${error.response.data.message} - code:${error.response.status}`,
+      {
+        style: {
+          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+          color: theme === "dark" ? "#a6adbb" : undefined,
+          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+        },
+      }
     );
     return Promise.reject(error);
   }

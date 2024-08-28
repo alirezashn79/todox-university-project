@@ -1,10 +1,11 @@
 "use client";
 import { zTimeSchema, zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import TimePicker from "react-time-picker";
 import Swal from "sweetalert2";
@@ -17,19 +18,12 @@ type TTodo = TypeOf<typeof zTodoSchemaClient>;
 interface IEditTodoProps {
   _id: string;
   title: string;
-  body: string;
-  priority: "1" | "2" | "3";
   time: string;
 }
 
-export default function EditTodo({
-  _id,
-  body,
-  priority,
-  time,
-  title,
-}: IEditTodoProps) {
+export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
+  const theme = useTheme((state) => state.theme);
   const setReload = useDateStore((state) => state.setReload);
   const [TimeValue, setTimeValue] = useState<null | string>(time);
   const [timeError, setTimeError] = useState<null | string>(null);
@@ -40,8 +34,6 @@ export default function EditTodo({
     formState: { errors, isSubmitting },
   } = useForm<TTodo>({
     defaultValues: {
-      body,
-      priority,
       title,
     },
     resolver: zodResolver(zTodoSchemaClient),
@@ -74,6 +66,8 @@ export default function EditTodo({
         toast: true,
         showConfirmButton: false,
         timer: 1500,
+        background: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
       });
     } catch (error) {
       console.log(error);
@@ -127,7 +121,7 @@ export default function EditTodo({
                 />
               </div>
 
-              <div className="form-control">
+              {/* <div className="form-control">
                 <select
                   defaultValue="-1"
                   className="select select-bordered w-full"
@@ -147,7 +141,7 @@ export default function EditTodo({
                     <span className="text-error mt-1">{message}</span>
                   )}
                 />
-              </div>
+              </div> */}
               <div className="form-control">
                 <TimePicker
                   className="input input-bordered"
@@ -161,7 +155,7 @@ export default function EditTodo({
                   <span className="text-error mt-1">{timeError}</span>
                 )}
               </div>
-              <div className="form-control">
+              {/* <div className="form-control">
                 <textarea
                   {...register("body")}
                   className="textarea textarea-bordered w-full"
@@ -174,7 +168,7 @@ export default function EditTodo({
                     <span className="text-error mt-1">{message}</span>
                   )}
                 />
-              </div>
+              </div> */}
 
               <div className="form-control">
                 <button

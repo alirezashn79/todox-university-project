@@ -1,6 +1,7 @@
 "use client";
 
 import { zUserCreationClientSchema } from "@/schemas/schema";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +16,7 @@ type TUserProfile = TypeOf<typeof zUserCreationClientSchema>;
 export default function Form() {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const theme = useTheme((state) => state.theme);
 
   const {
     register,
@@ -38,22 +40,42 @@ export default function Form() {
   const completeProfileHandler: SubmitHandler<TUserProfile> = async (
     values
   ) => {
-    const loading = toast.loading("wating...");
+    const loading = toast.loading("wating...", {
+      style: {
+        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
+        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+      },
+    });
     try {
       const formData = new FormData();
       formData.append("fullName", values.fullName);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
       formData.append("avatar", values.avatar[0]);
       const res = await client.post("api/user", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success(res.data.message);
+      toast.success(res.data.message, {
+        style: {
+          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+          color: theme === "dark" ? "#a6adbb" : undefined,
+          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+        },
+      });
       location.replace("/");
     } catch (error: any) {
       console.log(error);
       if (error.response) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message, {
+          style: {
+            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
+            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+          },
+        });
       }
     } finally {
       toast.dismiss(loading);
@@ -127,6 +149,52 @@ export default function Form() {
         <ErrorMessage
           errors={errors}
           name="fullName"
+          render={({ message }) => (
+            <span className="mt-2 text-error">{message}</span>
+          )}
+        />
+      </div>
+
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">
+            Email
+            <span className="inline-block mx-1 text-error">*</span>
+          </span>
+        </label>
+
+        <input
+          {...register("email")}
+          type="email"
+          placeholder="Alireza"
+          className={cn("input input-bordered")}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="email"
+          render={({ message }) => (
+            <span className="mt-2 text-error">{message}</span>
+          )}
+        />
+      </div>
+
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">
+            Password
+            <span className="inline-block mx-1 text-error">*</span>
+          </span>
+        </label>
+
+        <input
+          {...register("password")}
+          type="password"
+          placeholder="Alireza"
+          className={cn("input input-bordered")}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="password"
           render={({ message }) => (
             <span className="mt-2 text-error">{message}</span>
           )}

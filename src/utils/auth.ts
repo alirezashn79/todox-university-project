@@ -1,3 +1,4 @@
+import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 
 export function generateTempraryToken(payload: { phone: string }) {
@@ -50,5 +51,15 @@ export function verifyRefreshToken(token: string) {
     console.log(error);
   }
 
+  return result;
+}
+
+export async function hashPass(password: string) {
+  const hashedPass = await hash(password, 10);
+  return hashedPass;
+}
+
+export async function comparePass(pass: string, hashed: string) {
+  const result = await compare(pass, hashed);
   return result;
 }

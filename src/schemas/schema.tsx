@@ -79,8 +79,12 @@ export const zClientImageSchema = object({
 
 export const zUserCreationServerSchema = object({
   fullName: string().trim().min(1),
+  email: string().email(),
+  password: string().min(4),
 }).and(zServerAvatarSchema);
 
 export const zUserCreationClientSchema = object({
   fullName: string().trim().min(1),
+  email: string().email(),
+  password: string().min(4),
 }).and(zClientImageSchema);

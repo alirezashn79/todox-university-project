@@ -11,9 +11,12 @@
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.9.0",
+    "@sweetalert2/theme-dark": "^5.0.18",
+    "@types/bcryptjs": "^2.4.6",
     "@types/request": "^2.48.12",
     "aws-sdk": "^2.1682.0",
     "axios": "^1.7.3",
+    "bcryptjs": "^2.4.3",
     "cn-func": "^1.0.1",
     "framer-motion": "^11.3.30",
     "jsonwebtoken": "^9.0.2",
@@ -31,6 +34,7 @@
     "request": "^2.88.2",
     "sweetalert2": "^11.12.4",
     "sweetalert2-react-content": "^5.0.7",
+    "theme-change": "^2.5.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"
   },

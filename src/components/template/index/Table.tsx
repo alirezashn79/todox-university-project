@@ -10,8 +10,7 @@ import AllCheckTodos from "./AllCheckTodos";
 interface ITodo {
   _id: string;
   title: string;
-  body: string;
-  priority: "1" | "2" | "3";
+
   isDone: boolean;
   time: string;
   date: string;
@@ -52,7 +51,7 @@ export default function Table() {
   const noTodoEl = (
     <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
       <h1 className="text-center text-4xl font-bold text-primary">
-        There is not todo
+        داده ای یافت نشد
       </h1>
     </div>
   );
@@ -67,10 +66,8 @@ export default function Table() {
               <AllCheckTodos checkAll={checkAll} />
             </th>
             <th>Title</th>
-            <th>Body</th>
-            <th>Date</th>
+
             <th>Time</th>
-            <th>Priority</th>
             <th>actions</th>
           </tr>
         </thead>
@@ -87,18 +84,13 @@ export default function Table() {
                   <ToggleDoneTodo id={item._id} isDone={item.isDone} />
                 </th>
                 <td>{item.title}</td>
-                <td>{item.body}</td>
-                <td>{new Date(item.date).toLocaleDateString("fa-ir")}</td>
+
                 <td>{item.time}</td>
-                <td>
-                  <span className="text-error">{item.priority}</span>
-                </td>
+
                 <th>
                   <div className="flex items-center gap-4">
                     <EditTodo
                       _id={item._id}
-                      body={item.body}
-                      priority={item.priority}
                       time={item.time}
                       title={item.title}
                     />

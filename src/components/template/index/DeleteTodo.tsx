@@ -1,5 +1,6 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import React from "react";
 import Swal from "sweetalert2";
@@ -7,6 +8,7 @@ import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
 
 export default function DeleteTodo({ id }: { id: string }) {
+  const theme = useTheme((state) => state.theme);
   const setReload = useDateStore((state) => state.setReload);
 
   const handleDelete = (todoId: string) => {
@@ -20,6 +22,8 @@ export default function DeleteTodo({ id }: { id: string }) {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
+      background: theme === "dark" ? "#1d232a" : undefined,
+      color: theme === "dark" ? "#a6adbb" : undefined,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -31,6 +35,8 @@ export default function DeleteTodo({ id }: { id: string }) {
             icon: "success",
             toast: true,
             showConfirmButton: false,
+            background: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
             timer: 1500,
           });
           setReload();
@@ -40,6 +46,8 @@ export default function DeleteTodo({ id }: { id: string }) {
             text: "Error to delete",
             icon: "error",
             toast: true,
+            background: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
           });
         } finally {
           // MySwal.hideLoading();

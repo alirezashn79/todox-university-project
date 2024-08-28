@@ -2,6 +2,7 @@
 
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +19,7 @@ type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
 export default function AddTodo() {
   const modal = useRef<any>();
+  const theme = useTheme((state) => state.theme);
   const date = useDateStore((state) => state.date);
 
   const setReload = useDateStore((state) => state.setReload);
@@ -41,7 +43,13 @@ export default function AddTodo() {
         time: TimeValue,
       });
 
-      toast.success(res.data.message);
+      toast.success(res.data.message, {
+        style: {
+          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+          color: theme === "dark" ? "#a6adbb" : undefined,
+          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+        },
+      });
       modal.current.close();
       reset();
       setReload();
@@ -125,7 +133,7 @@ export default function AddTodo() {
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  add todo
+                  اضافه کردن
                 </button>
               </div>
             </div>
@@ -147,7 +155,7 @@ export default function AddTodo() {
           onClick={() => modal.current.showModal()}
           className="btn btn-primary btn-sm md:btn-md"
         >
-          Add Todo
+          اضافه کردن
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

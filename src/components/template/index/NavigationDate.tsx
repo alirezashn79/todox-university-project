@@ -3,10 +3,13 @@ import useDateStore from "@/stores/DateStore";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
+import useTheme from "@/stores/ThemeStore";
 
 export default function NavigationDate() {
   const date = useDateStore((state) => state.date);
   const changeDate = useDateStore((state) => state.changeDate);
+  const theme = useTheme((state) => state.theme);
 
   // send to api 👇
   // console.log("split t", date.toISOString().split("T")[0]);
@@ -36,7 +39,7 @@ export default function NavigationDate() {
         onClick={() => changeDate(new Date())}
         disabled={date.toDateString() === new Date().toDateString()}
       >
-        Today
+        امروز
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -57,10 +60,11 @@ export default function NavigationDate() {
         value={date}
         calendar={persian}
         locale={persian_fa}
+        className={theme === "dark" ? "bg-dark" : ""}
         onChange={(e) => changeDate(e?.toDate() as Date)}
         render={
           <button className=" btn btn-sm btn-primary btn-outline mb-4 ml-4">
-            Go To
+            برو به تاریخ
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,13 +88,15 @@ export default function NavigationDate() {
         {displayDates.map((d, index) => (
           <div
             key={index}
-            className={`tab transition-all lg:text-lg text-base ${
+            className={`tab transition-all lg:text-sm text-xs ${
               d.toDateString() === date.toDateString()
-                ? "tab-active lg:!text-xl !text-lg scale-110 !-translate-y-1 font-semibold btn-disabled"
+                ? "tab-active  scale-110 !-translate-y-1 font-bold btn-disabled"
                 : "hover:btn-link"
             }`}
             onClick={() => changeDate(d)}
           >
+            {d.toLocaleDateString("fa-ir", { weekday: "long" })}
+            <br />
             {d.toLocaleDateString("fa-ir")}
           </div>
         ))}

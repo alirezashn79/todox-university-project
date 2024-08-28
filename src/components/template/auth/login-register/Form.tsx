@@ -1,6 +1,7 @@
 "use client";
 
 import { zPhoneSchema } from "@/schemas/schema";
+import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +19,7 @@ export default function LoginForm() {
   const [otp, setOtp] = useState("");
   const [isSentCode, setIsSentCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const theme = useTheme((state) => state.theme);
 
   const { replace } = useRouter();
 
@@ -30,11 +32,23 @@ export default function LoginForm() {
   });
 
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
-    const loading = toast.loading("wating...");
+    const loading = toast.loading("wating...", {
+      style: {
+        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
+        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+      },
+    });
     try {
       setIsLoading(true);
       const res = await client.post("/api/auth/sms/send", values);
-      toast.success(res.data.message);
+      toast.success(res.data.message, {
+        style: {
+          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+          color: theme === "dark" ? "#a6adbb" : undefined,
+          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+        },
+      });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
     } catch (error: any) {
@@ -43,7 +57,13 @@ export default function LoginForm() {
         if (error.response.status === 451) {
           setIsSentCode(true);
         }
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message, {
+          style: {
+            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
+            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+          },
+        });
       }
     } finally {
       toast.dismiss(loading);
@@ -53,7 +73,13 @@ export default function LoginForm() {
 
   const verifyCodeHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const loading = toast.loading("wating...");
+    const loading = toast.loading("wating...", {
+      style: {
+        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+        color: theme === "dark" ? "#a6adbb" : undefined,
+        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+      },
+    });
 
     try {
       setIsLoading(true);
@@ -62,7 +88,13 @@ export default function LoginForm() {
         phone,
         code: otp,
       });
-      toast.success(res.data.message);
+      toast.success(res.data.message, {
+        style: {
+          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+          color: theme === "dark" ? "#a6adbb" : undefined,
+          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+        },
+      });
       sessionStorage.removeItem("phone");
       if (res.status === 200) {
         replace("/");
@@ -71,7 +103,13 @@ export default function LoginForm() {
       }
     } catch (error: any) {
       if (error.response) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message, {
+          style: {
+            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
+            color: theme === "dark" ? "#a6adbb" : undefined,
+            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
+          },
+        });
       }
       console.log(error);
     } finally {

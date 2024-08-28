@@ -3,6 +3,7 @@ import { zUserCreationServerSchema } from "@/schemas/schema";
 import {
   generateAccessToken,
   generateRefreshToken,
+  hashPass,
   verifyAccessToken,
   verifyTemporaryToken,
 } from "@/utils/auth";
@@ -40,11 +41,15 @@ export async function POST(req: Request) {
 
     const formData = await req.formData();
     const fullName = formData.get("fullName");
+    const email = formData.get("email");
+    const password = formData.get("password");
     const avatar = formData.get("avatar") as File;
 
-    const body = { fullName, avatar };
+    const body = { fullName, email, password, avatar };
 
     const validationResult = await zUserCreationServerSchema.parseAsync(body);
+
+    const hashedPass = await hashPass(validationResult.password);
 
     let fileUrl;
     if (avatar) {
@@ -105,6 +110,7 @@ export async function POST(req: Request) {
 
     const data = await UserModel.create({
       ...validationResult,
+      password: hashedPass,
       phone: payload.phone,
       avatar: fileUrl,
       refreshToken,
