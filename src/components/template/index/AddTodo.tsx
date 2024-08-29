@@ -6,14 +6,16 @@ import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "cn-func";
 import { useRef, useState } from "react";
-import "react-clock/dist/Clock.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import "react-multi-date-picker/styles/layouts/mobile.css";
-import TimePickerReact from "react-time-picker";
-import "react-time-picker/dist/TimePicker.css";
 import { TypeOf } from "zod";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import DatePicker from "react-multi-date-picker";
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
+import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
@@ -24,7 +26,7 @@ export default function AddTodo() {
 
   const setReload = useDateStore((state) => state.setReload);
 
-  const [TimeValue, setTimeValue] = useState<null | string>(null);
+  const [TimeValue, setTimeValue] = useState<Date | null>(null);
 
   const {
     register,
@@ -40,7 +42,7 @@ export default function AddTodo() {
       const res = await client.post("/api/todo", {
         ...values,
         date: date.toISOString().split("T")[0],
-        time: TimeValue,
+        time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
       toast.success(res.data.message, {
@@ -65,11 +67,14 @@ export default function AddTodo() {
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
               <div className="form-control">
-                <label className="input input-bordered flex items-center gap-2">
+                <label className="label">
                   <input
                     {...register("title")}
                     type="text"
-                    className="grow"
+                    className={cn(
+                      "input input-bordered w-full",
+                      errors.title?.message ? "input-error" : "input"
+                    )}
                     placeholder="Title"
                   />
                 </label>
@@ -103,7 +108,30 @@ export default function AddTodo() {
                   )}
                 />
               </div> */}
+
               <div className="form-control">
+                <DatePicker
+                  value={TimeValue}
+                  onChange={(e) => setTimeValue(e?.toDate() as any)}
+                  disableDayPicker
+                  format="HH:mm"
+                  className={theme === "dark" ? "bg-dark" : ""}
+                  plugins={[<TimePicker hideSeconds />]}
+                  render={(_, openCalendar) => (
+                    <input
+                      value={TimeValue?.toLocaleTimeString("fa-ir", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                      onClick={openCalendar}
+                      type="text"
+                      className={cn("input input-bordered w-full")}
+                      placeholder="Time"
+                    />
+                  )}
+                />
+              </div>
+              {/* <div className="form-control">
                 <TimePickerReact
                   className="input input-bordered"
                   onChange={(e) => setTimeValue(e as string)}
@@ -111,7 +139,7 @@ export default function AddTodo() {
                   value={TimeValue}
                   clockIcon={false}
                 />
-              </div>
+              </div> */}
               {/* <div className="form-control">
                 <textarea
                   {...register("body")}

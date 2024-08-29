@@ -167,6 +167,8 @@ export default function LoginForm() {
             <OTPInput
               shouldAutoFocus={true}
               skipDefaultStyles
+              inputType="number"
+              renderSeparator="-"
               value={otp}
               onChange={setOtp}
               numInputs={5}

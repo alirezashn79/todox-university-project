@@ -1,9 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.react-time-picker__wrapper {
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
+}
+/* .react-time-picker__wrapper {
   border: none !important;
 }
 .react-time-picker__clock-button {
   display: none !important;
-}
+} */

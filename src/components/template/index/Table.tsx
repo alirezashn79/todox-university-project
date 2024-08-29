@@ -44,7 +44,7 @@ export default function Table() {
 
   const loadingEl = (
     <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
-      <span className="loading text-primary loading-bars loading-lg"></span>
+      <span className="loading text-primary loading-dots loading-lg"></span>
     </div>
   );
 

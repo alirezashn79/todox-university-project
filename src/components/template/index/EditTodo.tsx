@@ -3,11 +3,17 @@ import { zTimeSchema, zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
+import {
+  convertToPersianTimeWithEnglishNumbers,
+  timeStringToDate,
+} from "@/utils/clientHelpers";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "cn-func";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import TimePicker from "react-time-picker";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { TypeOf } from "zod";
@@ -25,7 +31,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
   const setReload = useDateStore((state) => state.setReload);
-  const [TimeValue, setTimeValue] = useState<null | string>(time);
+  const [TimeValue, setTimeValue] = useState<Date>(timeStringToDate(time));
   const [timeError, setTimeError] = useState<null | string>(null);
 
   const {
@@ -41,7 +47,9 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
-      const timeValidation = zTimeSchema.safeParse({ time: TimeValue });
+      const timeValidation = zTimeSchema.safeParse({
+        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
+      });
 
       if (!timeValidation.success) {
         setTimeError(
@@ -52,7 +60,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
       const res = await client.put(`/api/todo/${_id}`, {
         ...values,
-        time: timeValidation.data.time,
+        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
       });
 
       if (res.status === 200) {
@@ -104,11 +112,14 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
               <div className="form-control">
-                <label className="input input-bordered flex items-center gap-2">
+                <label className="label">
                   <input
                     {...register("title")}
                     type="text"
-                    className="grow"
+                    className={cn(
+                      "input input-bordered w-full",
+                      errors.title?.message ? "input-error" : "input"
+                    )}
                     placeholder="Title"
                   />
                 </label>
@@ -117,6 +128,29 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                   name="title"
                   render={({ message }) => (
                     <span className="text-error mt-1">{message}</span>
+                  )}
+                />
+              </div>
+
+              <div className="form-control">
+                <DatePicker
+                  value={TimeValue}
+                  onChange={(e) => setTimeValue(e?.toDate() as any)}
+                  disableDayPicker
+                  format="HH:mm"
+                  className={theme === "dark" ? "bg-dark" : ""}
+                  plugins={[<TimePicker hideSeconds />]}
+                  render={(_, openCalendar) => (
+                    <input
+                      value={TimeValue?.toLocaleTimeString("fa-ir", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                      onClick={openCalendar}
+                      type="text"
+                      className={cn("input input-bordered w-full")}
+                      placeholder="Time"
+                    />
                   )}
                 />
               </div>
@@ -142,7 +176,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                   )}
                 />
               </div> */}
-              <div className="form-control">
+              {/* <div className="form-control">
                 <TimePicker
                   className="input input-bordered"
                   onChange={(e) => setTimeValue(e)}
@@ -154,7 +188,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                 {!TimeValue && timeError && (
                   <span className="text-error mt-1">{timeError}</span>
                 )}
-              </div>
+              </div> */}
               {/* <div className="form-control">
                 <textarea
                   {...register("body")}

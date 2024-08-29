@@ -144,7 +144,10 @@ export default function Form() {
           {...register("fullName")}
           type="text"
           placeholder="Alireza"
-          className={cn("input input-bordered")}
+          className={cn(
+            "input input-bordered w-full",
+            errors.fullName?.message ? "input-error" : "input"
+          )}
         />
         <ErrorMessage
           errors={errors}
@@ -166,8 +169,11 @@ export default function Form() {
         <input
           {...register("email")}
           type="email"
-          placeholder="Alireza"
-          className={cn("input input-bordered")}
+          placeholder="alireza@gmail.com"
+          className={cn(
+            "input input-bordered w-full",
+            errors.email?.message ? "input-error" : "input"
+          )}
         />
         <ErrorMessage
           errors={errors}
@@ -189,8 +195,11 @@ export default function Form() {
         <input
           {...register("password")}
           type="password"
-          placeholder="Alireza"
-          className={cn("input input-bordered")}
+          placeholder="at least 4 charactors"
+          className={cn(
+            "input input-bordered w-full",
+            errors.password?.message ? "input-error" : "input"
+          )}
         />
         <ErrorMessage
           errors={errors}
