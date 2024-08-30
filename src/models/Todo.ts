@@ -2,8 +2,6 @@ import { model, models, Schema, Types } from "mongoose";
 
 interface ITodoModel {
   title: string;
-  body: string;
-  priority: "1" | "2" | "3";
   isDone: boolean;
   user: Types.ObjectId;
   date: string;

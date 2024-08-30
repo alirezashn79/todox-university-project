@@ -1,12 +1,9 @@
-import { IUser } from "@/types";
+import Theme from "@/components/modules/Theme";
 import Link from "next/link";
-import AddTodo from "../template/index/AddTodo";
-import Profile from "./navbar/Profile";
-import Theme from "./Theme";
-interface INavbarProps {
-  user: IUser;
-}
-export default async function Navbar({ user }: INavbarProps) {
+import AddTodo from "./AddTodo";
+import Profile from "./Profile";
+
+export default function Navbar() {
   return (
     <div className="navbar bg-base-100 mb-8 border-b">
       <div className="flex-1">
@@ -16,7 +13,7 @@ export default async function Navbar({ user }: INavbarProps) {
       </div>
       <Theme />
       <AddTodo />
-      <Profile user={user} />
+      <Profile />
     </div>
   );
 }
