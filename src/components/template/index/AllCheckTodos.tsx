@@ -3,6 +3,7 @@ import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { useState } from "react";
+import { GridLoader, HashLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const MySwal = withReactContent(Swal);
@@ -42,14 +43,15 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
   return (
     <>
       {loading ? (
-        <span className="loading loading-spinner text-primary loading-md"></span>
+        // <span className="loading loading-spinner text-primary loading-md"></span>
+        <HashLoader size={24} color="#7480ff" />
       ) : (
         <label>
           <input
             checked={checkAll}
             onChange={handleAllCheck}
             type="checkbox"
-            className="checkbox"
+            className="checkbox checkbox-primary"
           />
         </label>
       )}

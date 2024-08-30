@@ -26,6 +26,7 @@
     "react-jwt": "^1.2.2",
     "react-multi-date-picker": "^4.5.2",
     "react-otp-input": "^3.1.1",
+    "react-spinners": "^0.14.1",
     "sweetalert2": "^11.12.4",
     "sweetalert2-react-content": "^5.0.7",
     "zod": "^3.23.8",

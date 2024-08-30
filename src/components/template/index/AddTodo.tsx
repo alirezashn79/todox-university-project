@@ -62,7 +62,7 @@ export default function AddTodo() {
   return (
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box !h-auto">
+        <div className="modal-box !h-auto relative">
           <h3 className="font-bold text-lg">Add Todo</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
@@ -87,30 +87,9 @@ export default function AddTodo() {
                 />
               </div>
 
-              {/* <div className="form-control">
-                <select
-                  defaultValue="-1"
-                  className="select select-bordered w-full"
-                  {...register("priority")}
-                >
-                  <option value="-1" disabled>
-                    Priority
-                  </option>
-                  <option value="1">low</option>
-                  <option value="2">middle</option>
-                  <option value="3">high</option>
-                </select>
-                <ErrorMessage
-                  errors={errors}
-                  name="priority"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div> */}
-
               <div className="form-control">
                 <DatePicker
+                  calendarPosition="top-center"
                   value={TimeValue}
                   onChange={(e) => setTimeValue(e?.toDate() as any)}
                   disableDayPicker
@@ -123,6 +102,7 @@ export default function AddTodo() {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
+                      readOnly
                       onClick={openCalendar}
                       type="text"
                       className={cn("input input-bordered w-full")}
@@ -131,45 +111,20 @@ export default function AddTodo() {
                   )}
                 />
               </div>
-              {/* <div className="form-control">
-                <TimePickerReact
-                  className="input input-bordered"
-                  onChange={(e) => setTimeValue(e as string)}
-                  format="HH:mm"
-                  value={TimeValue}
-                  clockIcon={false}
-                />
-              </div> */}
-              {/* <div className="form-control">
-                <textarea
-                  {...register("body")}
-                  className="textarea textarea-bordered w-full"
-                  placeholder="Body"
-                ></textarea>
-                <ErrorMessage
-                  errors={errors}
-                  name="body"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div> */}
 
-              <div className="form-control">
-                <button
-                  className="btn btn-primary mx-2"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  اضافه کردن
-                </button>
-              </div>
+              <button
+                className="absolute bottom-6 right-28 btn btn-primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                اضافه کردن
+              </button>
             </div>
           </form>
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
+              <button className="btn">بستن</button>
             </form>
           </div>
         </div>

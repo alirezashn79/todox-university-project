@@ -135,6 +135,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               <div className="form-control">
                 <DatePicker
                   value={TimeValue}
+                  calendarPosition="top-center"
                   onChange={(e) => setTimeValue(e?.toDate() as any)}
                   disableDayPicker
                   format="HH:mm"
@@ -146,6 +147,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
+                      readOnly
                       onClick={openCalendar}
                       type="text"
                       className={cn("input input-bordered w-full")}
@@ -155,64 +157,13 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                 />
               </div>
 
-              {/* <div className="form-control">
-                <select
-                  defaultValue="-1"
-                  className="select select-bordered w-full"
-                  {...register("priority")}
-                >
-                  <option value="-1" disabled>
-                    Priority
-                  </option>
-                  <option value="1">low</option>
-                  <option value="2">middle</option>
-                  <option value="3">high</option>
-                </select>
-                <ErrorMessage
-                  errors={errors}
-                  name="priority"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div> */}
-              {/* <div className="form-control">
-                <TimePicker
-                  className="input input-bordered"
-                  onChange={(e) => setTimeValue(e)}
-                  format="HH:mm"
-                  value={TimeValue}
-                  clockIcon={false}
-                />
-
-                {!TimeValue && timeError && (
-                  <span className="text-error mt-1">{timeError}</span>
-                )}
-              </div> */}
-              {/* <div className="form-control">
-                <textarea
-                  {...register("body")}
-                  className="textarea textarea-bordered w-full"
-                  placeholder="Body"
-                ></textarea>
-                <ErrorMessage
-                  errors={errors}
-                  name="body"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div> */}
-
-              <div className="form-control">
-                <button
-                  className="btn btn-primary mx-2"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Update
-                </button>
-              </div>
+              <button
+                className="absolute bottom-6 right-28 btn btn-primary"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                ویرایش
+              </button>
             </div>
           </form>
           <div className="modal-action">

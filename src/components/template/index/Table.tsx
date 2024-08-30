@@ -6,6 +6,8 @@ import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
 import AllCheckTodos from "./AllCheckTodos";
+import { ClockLoader } from "react-spinners";
+import Image from "next/image";
 
 interface ITodo {
   _id: string;
@@ -43,16 +45,14 @@ export default function Table() {
   }, [date, reload]);
 
   const loadingEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
-      <span className="loading text-primary loading-dots loading-lg"></span>
+    <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center text-primary">
+      <ClockLoader color="#7480ff" />
     </div>
   );
 
   const noTodoEl = (
     <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
-      <h1 className="text-center text-4xl font-bold text-primary">
-        داده ای یافت نشد
-      </h1>
+      <Image height={200} width={200} src="/img/empty.png" alt="empty" />
     </div>
   );
 
