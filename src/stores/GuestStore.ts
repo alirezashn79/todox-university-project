@@ -33,7 +33,6 @@ const useGuest = create<IGuest>()(
           todos: [...state.todos, newTodo],
         }));
       },
-
       editTodo: (todo) => {
         const AllTodos = get().todos.slice();
         const index = AllTodos.findIndex((item) => item.id === todo.id);
