@@ -1,5 +1,9 @@
 import { any, date, object, string } from "zod";
 
+export const zEmailSchema = object({
+  email: string().trim().email(),
+});
+
 export const zPhoneSchema = object({
   phone: string()
     .min(11)
@@ -85,6 +89,19 @@ export const zUserCreationServerSchema = object({
 
 export const zUserCreationClientSchema = object({
   fullName: string().trim().min(1),
-  email: string().email(),
-  password: string().min(4),
+  email: string().trim().email(),
+  password: string().trim().min(4),
 }).and(zClientImageSchema);
+
+export const zSignInForm = object({
+  identifier: string().refine((value) => {
+    const validateEmail = zEmailSchema.safeParse({ email: value });
+    const validatePhone = zPhoneSchema.safeParse({ phone: value });
+    if (validateEmail.success || validatePhone.success) {
+      return true;
+    } else {
+      return false;
+    }
+  }, "ایمیل یا شماره صحیح نیست"),
+  password: string().trim().min(4),
+});

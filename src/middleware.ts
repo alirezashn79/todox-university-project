@@ -4,39 +4,42 @@ import client from "./utils/client";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
-
-  if (!token || isExpired(token.value)) {
-    console.log("-----------------token expired-------------------");
-    const refreshToken = request.cookies.get("refreshToken");
-    if (refreshToken) {
-      try {
-        const res = await client.post(
-          "/api/auth/refresh",
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken.value}`,
-            },
-          }
-        );
-        const responseWithCookies = NextResponse.next();
-        responseWithCookies.cookies.set("token", res.data, {
-          httpOnly: true,
-          path: "/",
-          sameSite: "strict",
-          maxAge: 3600,
-          secure: process.env.NODE_ENV === "production",
-        });
-        return responseWithCookies;
-      } catch (error) {
+  if (request.nextUrl.pathname === "/") {
+    if (!token || isExpired(token.value)) {
+      console.log("-----------------token expired-------------------");
+      const refreshToken = request.cookies.get("refreshToken");
+      if (refreshToken) {
+        try {
+          const res = await client.post(
+            "/api/auth/refresh",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${refreshToken.value}`,
+              },
+            }
+          );
+          const responseWithCookies = NextResponse.next();
+          responseWithCookies.cookies.set("token", res.data, {
+            httpOnly: true,
+            path: "/",
+            sameSite: "strict",
+            maxAge: 3600,
+            secure: process.env.NODE_ENV === "production",
+          });
+          return responseWithCookies;
+        } catch (error) {
+          console.log("redirect 1");
+          return NextResponse.redirect(
+            new URL("/auth/login-register", request.url)
+          );
+        }
+      } else {
+        console.log("redirect 2");
         return NextResponse.redirect(
           new URL("/auth/login-register", request.url)
         );
       }
-    } else {
-      return NextResponse.redirect(
-        new URL("/auth/login-register", request.url)
-      );
     }
   }
 }

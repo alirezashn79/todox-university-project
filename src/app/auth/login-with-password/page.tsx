@@ -1,6 +1,7 @@
-import Sms from "@/components/template/auth/login-register/Form";
+import Form from "@/components/template/auth/login-with-password/Form";
+import React from "react";
 
-export default function LoginRegisterPage() {
+export default function LoginWithPassword() {
   return (
     <div className="hero  min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -18,7 +19,7 @@ export default function LoginRegisterPage() {
           </p>
         </div>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl border">
-          <Sms />
+          <Form />
         </div>
       </div>
     </div>

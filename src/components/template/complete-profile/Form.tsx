@@ -1,11 +1,13 @@
 "use client";
 
 import { zUserCreationClientSchema } from "@/schemas/schema";
+import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -17,6 +19,8 @@ export default function Form() {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const theme = useTheme((state) => state.theme);
+  const todos = useGuest((state) => state.todos);
+  const { replace } = useRouter();
 
   const {
     register,
@@ -65,7 +69,11 @@ export default function Form() {
           border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
         },
       });
-      location.replace("/");
+      if (!!todos && todos.length > 0) {
+        replace("/guest/transfer-data");
+      } else {
+        replace("/");
+      }
     } catch (error: any) {
       console.log(error);
       if (error.response) {
