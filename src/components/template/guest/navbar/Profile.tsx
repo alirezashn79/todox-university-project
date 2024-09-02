@@ -2,10 +2,7 @@ import Link from "next/link";
 
 export default function Profile() {
   return (
-    <div className="ms-4">
-      <Link href="/auth/login-register" className="btn btn-accent">
-        ثبت نام
-      </Link>
+    <>
       <div className="dropdown dropdown-end ms-4">
         <div
           tabIndex={0}
@@ -38,6 +35,6 @@ export default function Profile() {
           </li>
         </ul>
       </div>
-    </div>
+    </>
   );
 }
