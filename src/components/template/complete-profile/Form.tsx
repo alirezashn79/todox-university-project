@@ -1,8 +1,8 @@
 "use client";
 
+import Input from "@/components/modules/input";
 import { zUserCreationClientSchema } from "@/schemas/schema";
 import useGuest from "@/stores/GuestStore";
-import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
@@ -19,7 +19,7 @@ type TUserProfile = TypeOf<typeof zUserCreationClientSchema>;
 export default function Form() {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const theme = useTheme((state) => state.theme);
+
   const todos = useGuest((state) => state.todos);
   const { replace } = useRouter();
 
@@ -52,7 +52,7 @@ export default function Form() {
       formData.append("email", values.email);
       formData.append("password", values.password);
       formData.append("avatar", values.avatar[0]);
-      const res = await client.post("api/user", formData, {
+      await client.post("api/user", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -83,13 +83,23 @@ export default function Form() {
         />
         {avatar ? (
           <div className="avatar">
-            <div className="w-24 rounded-full">
+            <div
+              className={cn(
+                "w-24 rounded-full",
+                errors.avatar?.message ? "border-4 border-error" : ""
+              )}
+            >
               <img src={imagePreview as string} />
             </div>
           </div>
         ) : (
           <div className="avatar placeholder">
-            <div className="bg-neutral text-neutral-content w-24 rounded-full">
+            <div
+              className={cn(
+                "bg-neutral text-neutral-content w-24 rounded-full",
+                errors.avatar?.message ? "border-4 border-error" : ""
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -120,87 +130,36 @@ export default function Form() {
           <span className="mt-2 text-error">{message}</span>
         )}
       />
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">
-            Name
-            <span className="inline-block mx-1 text-error">*</span>
-          </span>
-        </label>
 
-        <input
-          {...register("fullName")}
-          type="text"
-          placeholder="Alireza"
-          className={cn(
-            "input input-bordered w-full",
-            errors.fullName?.message ? "input-error" : "input"
-          )}
-        />
-        <ErrorMessage
-          errors={errors}
-          name="fullName"
-          render={({ message }) => (
-            <span className="mt-2 text-error">{message}</span>
-          )}
-        />
-      </div>
+      <Input
+        name="fullName"
+        register={register("fullName")}
+        label="نام"
+        errors={errors}
+        placeholder="اسمتو تایپ کن"
+      />
 
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">
-            Email
-            <span className="inline-block mx-1 text-error">*</span>
-          </span>
-        </label>
+      <Input
+        name="email"
+        register={register("email")}
+        type="email"
+        label="ایمیل"
+        errors={errors}
+        placeholder="ایمیلت رو تایپ کن"
+      />
 
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="alireza@gmail.com"
-          className={cn(
-            "input input-bordered w-full",
-            errors.email?.message ? "input-error" : "input"
-          )}
-        />
-        <ErrorMessage
-          errors={errors}
-          name="email"
-          render={({ message }) => (
-            <span className="mt-2 text-error">{message}</span>
-          )}
-        />
-      </div>
-
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">
-            Password
-            <span className="inline-block mx-1 text-error">*</span>
-          </span>
-        </label>
-
-        <input
-          {...register("password")}
-          type="password"
-          placeholder="at least 4 charactors"
-          className={cn(
-            "input input-bordered w-full",
-            errors.password?.message ? "input-error" : "input"
-          )}
-        />
-        <ErrorMessage
-          errors={errors}
-          name="password"
-          render={({ message }) => (
-            <span className="mt-2 text-error">{message}</span>
-          )}
-        />
-      </div>
+      <Input
+        name="password"
+        register={register("password")}
+        type="password"
+        label="رمز عبور"
+        errors={errors}
+        placeholder="یه رمز عبور برا خودت تایپ کن"
+      />
 
       <div className="form-control mt-6">
         <button disabled={isSubmitting} className="btn btn-primary">
-          Send
+          ثبت
         </button>
       </div>
     </form>

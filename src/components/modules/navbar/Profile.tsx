@@ -1,7 +1,5 @@
 import { IUser } from "@/types";
 import LogoutBtn from "./LogoutBtn";
-import Image from "next/image";
-import { ClipLoader } from "react-spinners";
 interface IProfileProps {
   user: IUser;
 }

@@ -1,22 +1,21 @@
 "use client";
 
+import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
-import { ErrorMessage } from "@hookform/error-message";
+import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
+import { FireToast } from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import "react-multi-date-picker/styles/layouts/mobile.css";
 import { TypeOf } from "zod";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import DatePicker from "react-multi-date-picker";
-import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
-import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
-import { FireToast } from "@/utils/toast";
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
@@ -40,17 +39,17 @@ export default function AddTodo() {
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     if (!TimeValue) {
-      setTimeError("زمان فیلدی الزامی است");
+      setTimeError("زمان الزامی است");
       return;
     }
     try {
-      const res = await client.post("/api/todo", {
+      await client.post("/api/todo", {
         ...values,
         date: date.toISOString().split("T")[0],
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
-      FireToast({ type: "success", message: res.data.message });
+      FireToast({ type: "success", message: "اضافه شد." });
       modal.current.close();
       reset();
       setReload();
@@ -65,28 +64,22 @@ export default function AddTodo() {
           <h3 className="font-bold text-lg">اضافه کردن کار</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
-              <div className="form-control">
-                <label className="label">
-                  <input
-                    {...register("title")}
-                    type="text"
-                    className={cn(
-                      "input input-bordered w-full",
-                      errors.title?.message ? "input-error" : "input"
-                    )}
-                    placeholder="عنوان"
-                  />
-                </label>
-                <ErrorMessage
-                  errors={errors}
-                  name="title"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div>
+              <Input
+                name="title"
+                register={register("title")}
+                label="عنوان"
+                errors={errors}
+                placeholder="یک عنوان برای کارت تعریف کن"
+              />
 
               <div className="form-control">
+                <label className="label">
+                  <span
+                    className={cn("label-text", timeError ? "text-error" : "")}
+                  >
+                    زمان
+                  </span>
+                </label>
                 <DatePicker
                   calendarPosition="top-center"
                   value={TimeValue}
@@ -111,7 +104,7 @@ export default function AddTodo() {
                         "input input-bordered w-full",
                         timeError ? "input-error" : "input"
                       )}
-                      placeholder="ساعت"
+                      placeholder="ساعت؟"
                     />
                   )}
                 />

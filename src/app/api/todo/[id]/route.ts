@@ -1,5 +1,5 @@
 import TodoModel from "@/models/Todo";
-import { zTodoSchemaServer } from "@/schemas/schema";
+import { zTodoEditServer } from "@/schemas/schema";
 import DbConnect from "@/utils/dbConnection";
 import { isAuth } from "@/utils/serverHelpers";
 
@@ -89,9 +89,7 @@ export async function PUT(
 
     const reqBody = await request.json();
 
-    const validationResult = await zTodoSchemaServer
-      .omit({ date: true })
-      .parseAsync(reqBody);
+    const validationResult = await zTodoEditServer.parseAsync(reqBody);
 
     const isChange = await TodoModel.findOne({
       ...validationResult,

@@ -1,4 +1,5 @@
 "use client";
+import Input from "@/components/modules/input";
 import { zTimeSchema, zTodoSchemaClient } from "@/schemas/schema";
 import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
@@ -94,31 +95,21 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
         className="modal modal-bottom sm:modal-middle font-normal"
       >
         <div className="modal-box !h-auto">
-          <h3 className="font-bold text-lg">Edit Todo</h3>
+          <h3 className="font-bold text-lg">ویرایش</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
-              <div className="form-control">
-                <label className="label">
-                  <input
-                    {...register("title")}
-                    type="text"
-                    className={cn(
-                      "input input-bordered w-full",
-                      errors.title?.message ? "input-error" : "input"
-                    )}
-                    placeholder="Title"
-                  />
-                </label>
-                <ErrorMessage
-                  errors={errors}
-                  name="title"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div>
+              <Input
+                name="title"
+                register={register("title")}
+                label="عنوان"
+                errors={errors}
+                placeholder="یک عنوان برای کارت تعریف کن"
+              />
 
               <div className="form-control">
+                <label className="label">
+                  <span className="label-text">زمان</span>
+                </label>
                 <DatePicker
                   value={TimeValue}
                   calendarPosition="top-center"

@@ -1,5 +1,6 @@
 "use client";
 
+import Input from "@/components/modules/input";
 import { zPhoneSchema } from "@/schemas/schema";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
@@ -82,34 +83,15 @@ export default function Sms() {
   return (
     <div className="card-body">
       <form onSubmit={handleSubmit(sendCodeHandler)}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">شماره موبایل</span>
-          </label>
-          <div className="relative w-full">
-            <input
-              dir="ltr"
-              disabled={isSentCode}
-              {...register("phone")}
-              type="text"
-              placeholder="09123456789"
-              className={cn(
-                "input input-bordered w-full ps-10",
-                errors.phone?.message ? "input-error" : "input"
-              )}
-            />
-            <div className="absolute left-4 top-0 bottom-0 flex items-center">
-              <span className="translate-y-px">🇮🇷</span>
-            </div>
-          </div>
-          <ErrorMessage
-            errors={errors}
-            name="phone"
-            render={({ message }) => (
-              <span className="text-error mt-2">{message}</span>
-            )}
-          />
-        </div>
+        <Input
+          name="phone"
+          register={register("phone")}
+          label="شماره موبایل"
+          errors={errors}
+          placeholder="09123456789"
+          dir="ltr"
+        />
+
         {!isSentCode && (
           <div className="form-control mt-6">
             <button className="btn btn-primary" disabled={isLoading}>

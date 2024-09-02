@@ -8,11 +8,16 @@ export default function page() {
   if (!temporaryToken) {
     return redirect("/auth/login-register");
   }
+  const token = cookieStore.get("token");
+
+  if (!!token) {
+    return redirect("/");
+  }
 
   return (
     <div className="h-screen w-full overflow-auto flex items-center justify-center flex-col">
-      <h1 className="text-4xl mb-4 font-bold">Complete Your Profile</h1>
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl border">
+        <h1 className="card-title text-center mt-8 block">تکمیل پروفایل</h1>
         <Form />
       </div>
     </div>

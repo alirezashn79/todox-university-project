@@ -1,17 +1,16 @@
 "use client";
 
+import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
 import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
-import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
@@ -25,6 +24,7 @@ export default function AddTodo() {
   const theme = useTheme((state) => state.theme);
   const date = useDateStore((state) => state.date);
   const [TimeValue, setTimeValue] = useState<Date | null>(null);
+  const [timeError, setTimeError] = useState<string | null>(null);
   const addTodo = useGuest((state) => state.addTodo);
 
   const {
@@ -36,7 +36,10 @@ export default function AddTodo() {
     resolver: zodResolver(zTodoSchemaClient),
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
-    console.log(date.toISOString());
+    if (!TimeValue) {
+      setTimeError("زمان الزامی است");
+      return;
+    }
 
     addTodo({
       title: values.title,
@@ -52,31 +55,25 @@ export default function AddTodo() {
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box !h-auto relative">
-          <h3 className="font-bold text-lg">Add Todo</h3>
+          <h3 className="font-bold text-lg">اضافه کردن کار</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
-              <div className="form-control">
-                <label className="label">
-                  <input
-                    {...register("title")}
-                    type="text"
-                    className={cn(
-                      "input input-bordered w-full",
-                      errors.title?.message ? "input-error" : "input"
-                    )}
-                    placeholder="Title"
-                  />
-                </label>
-                <ErrorMessage
-                  errors={errors}
-                  name="title"
-                  render={({ message }) => (
-                    <span className="text-error mt-1">{message}</span>
-                  )}
-                />
-              </div>
+              <Input
+                name="title"
+                register={register("title")}
+                label="عنوان"
+                errors={errors}
+                placeholder="یک عنوان برای کارت تعریف کن"
+              />
 
               <div className="form-control">
+                <label className="label">
+                  <span
+                    className={cn("label-text", timeError ? "text-error" : "")}
+                  >
+                    زمان
+                  </span>
+                </label>
                 <DatePicker
                   calendarPosition="top-center"
                   value={TimeValue}
@@ -92,13 +89,22 @@ export default function AddTodo() {
                         minute: "2-digit",
                       })}
                       readOnly
-                      onClick={openCalendar}
+                      onClick={() => {
+                        openCalendar();
+                        setTimeError(null);
+                      }}
                       type="text"
-                      className={cn("input input-bordered w-full")}
-                      placeholder="Time"
+                      className={cn(
+                        "input input-bordered w-full",
+                        timeError ? "input-error" : "input"
+                      )}
+                      placeholder="ساعت؟"
                     />
                   )}
                 />
+                {timeError && (
+                  <span className="text-error mt-1">{timeError}</span>
+                )}
               </div>
 
               <button

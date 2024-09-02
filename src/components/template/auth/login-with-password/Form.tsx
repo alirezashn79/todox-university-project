@@ -1,4 +1,5 @@
 "use client";
+import Input from "@/components/modules/input";
 import { zSignInForm } from "@/schemas/schema";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
@@ -40,55 +41,24 @@ export default function Form() {
   return (
     <div className="card-body">
       <form onSubmit={handleSubmit(handleLogin)}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">ایمیل یا شماره موبایل</span>
-          </label>
+        <Input
+          name="identifier"
+          register={register("identifier")}
+          label="ایمیل یا شماره موبایل"
+          errors={errors}
+          placeholder="ایمیل یا شمارتو وارد کن"
+          dir="ltr"
+        />
 
-          <input
-            dir="ltr"
-            {...register("identifier")}
-            type="text"
-            placeholder="ایمیل یا شمارتو وارد کن"
-            className={cn(
-              "input input-bordered w-full",
-              errors.identifier?.message ? "input-error" : "input"
-            )}
-          />
-
-          <ErrorMessage
-            errors={errors}
-            name="identifier"
-            render={({ message }) => (
-              <span className="text-error mt-2">{message}</span>
-            )}
-          />
-        </div>
-
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">رمزعبور</span>
-          </label>
-
-          <input
-            dir="ltr"
-            {...register("password")}
-            type="password"
-            placeholder="رمزتو وارد کن"
-            className={cn(
-              "input input-bordered w-full",
-              errors.password?.message ? "input-error" : "input"
-            )}
-          />
-
-          <ErrorMessage
-            errors={errors}
-            name="password"
-            render={({ message }) => (
-              <span className="text-error mt-2">{message}</span>
-            )}
-          />
-        </div>
+        <Input
+          name="password"
+          register={register("password")}
+          label="رمز عبور"
+          errors={errors}
+          placeholder="رمزتو وارد کن"
+          dir="ltr"
+          type="password"
+        />
 
         <div className="form-control mt-6">
           <button disabled={isSubmitting} className="btn btn-primary">
