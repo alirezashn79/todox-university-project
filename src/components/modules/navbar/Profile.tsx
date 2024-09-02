@@ -1,6 +1,7 @@
 import { IUser } from "@/types";
 import LogoutBtn from "./LogoutBtn";
 import Image from "next/image";
+import { ClipLoader } from "react-spinners";
 interface IProfileProps {
   user: IUser;
 }
@@ -13,12 +14,7 @@ export default function Profile({ user }: IProfileProps) {
         className="btn btn-ghost btn-circle avatar"
       >
         <div className="w-10 rounded-full">
-          <Image
-            width={40}
-            height={40}
-            alt="Tailwind CSS Navbar component"
-            src={user?.avatar}
-          />
+          <img width={40} height={40} alt="avatar" src={user?.avatar} />
         </div>
       </div>
       <ul

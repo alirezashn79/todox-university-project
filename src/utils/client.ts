@@ -1,12 +1,11 @@
 import axios from "axios";
-import baseURL from "./baseUrl";
 import toast from "react-hot-toast";
 import useTheme from "@/stores/ThemeStore";
 
 const theme = useTheme.getState().theme;
 
 const client = axios.create({
-  baseURL,
+  baseURL: "/",
 });
 
 client.interceptors.response.use(

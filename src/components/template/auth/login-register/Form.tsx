@@ -6,6 +6,7 @@ import client from "@/utils/client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,7 +16,7 @@ import { TypeOf } from "zod";
 
 type TPhoneSchema = TypeOf<typeof zPhoneSchema>;
 
-export default function LoginForm() {
+export default function Sms() {
   const [otp, setOtp] = useState("");
   const [isSentCode, setIsSentCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,8 +72,8 @@ export default function LoginForm() {
     }
   };
 
-  const verifyCodeHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const verifyCodeHandler = async (e?: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     const loading = toast.loading("wating...", {
       style: {
         backgroundColor: theme === "dark" ? "#1d232a" : undefined,
@@ -99,7 +100,7 @@ export default function LoginForm() {
       if (res.status === 200) {
         replace("/");
       } else if (res.status === 202) {
-        replace("/auth/complete-profile");
+        replace("/complete-profile");
       }
     } catch (error: any) {
       if (error.response) {
@@ -156,9 +157,8 @@ export default function LoginForm() {
           </div>
         )}
       </form>
-
       {isSentCode && (
-        <form onSubmit={verifyCodeHandler}>
+        <form name="verifyForm" onSubmit={verifyCodeHandler}>
           <div className="form-control">
             <label className="label">
               <span className="label-text">Code</span>
@@ -188,6 +188,7 @@ export default function LoginForm() {
                 borderWidth: "1px",
                 borderColor: "oklch(0.746477 0.0216 264.436 / 0.2)",
                 margin: "0px 4px",
+                backgroundColor: "transparent",
               }}
             />
             <div className="form-control mt-6">
@@ -202,6 +203,14 @@ export default function LoginForm() {
           </div>
         </form>
       )}
+      <div className="flex justify-around gap-1 text-right mt-4">
+        <Link className="btn w-fit" href="/guest">
+          ورود به عنوان مهمان
+        </Link>
+        <Link className="btn w-fit" href="/auth/login-with-password">
+          ورود با رمزعبور
+        </Link>
+      </div>
     </div>
   );
 }

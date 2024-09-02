@@ -1,10 +1,9 @@
 "use server";
-import { cookies } from "next/headers";
-import { verifyAccessToken } from "./auth";
 import UserModel from "@/models/User";
+import { IUser } from "@/types";
+import { cookies } from "next/headers";
 import { decodeToken, isExpired } from "react-jwt";
 import DbConnect from "./dbConnection";
-import { IUser } from "@/types";
 
 export async function isAuth() {
   let user = null;

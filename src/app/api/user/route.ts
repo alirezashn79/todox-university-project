@@ -4,14 +4,10 @@ import {
   generateAccessToken,
   generateRefreshToken,
   hashPass,
-  verifyAccessToken,
   verifyTemporaryToken,
 } from "@/utils/auth";
-import baseURL from "@/utils/baseUrl";
-import { writeFile } from "fs/promises";
-import { cookies } from "next/headers";
-import path from "path";
 import { S3 } from "aws-sdk";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   try {
@@ -54,17 +50,7 @@ export async function POST(req: Request) {
     let fileUrl;
     if (avatar) {
       // const fileName = `${Date.now()}-${avatar.name}`;
-      const fileName = `${Date.now()}-${validationResult.fullName}-${
-        payload.phone
-      }`;
-      // const filePath = path.join(
-      //   process.cwd(),
-      //   "public",
-      //   "uploads",
-      //   "avatars",
-      //   fileName
-      // );
-      // fileUrl = `${baseURL}/uploads/avatars/${fileName}`;
+      const fileName = `avatar-${payload.phone}-${avatar.name}`;
 
       const arrayBuffer = await avatar.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
