@@ -6,6 +6,7 @@ import {
   hashPass,
   verifyTemporaryToken,
 } from "@/utils/auth";
+import DbConnect from "@/utils/dbConnection";
 import { S3 } from "aws-sdk";
 import { cookies } from "next/headers";
 
@@ -43,9 +44,36 @@ export async function POST(req: Request) {
 
     const body = { fullName, email, password, avatar };
 
-    const validationResult = await zUserCreationServerSchema.parseAsync(body);
+    const validationResult = zUserCreationServerSchema.safeParse(body);
 
-    const hashedPass = await hashPass(validationResult.password);
+    if (!validationResult.success) {
+      return Response.json(
+        {
+          message: "Invalid Date",
+          error: validationResult.error.formErrors.fieldErrors,
+        },
+        {
+          status: 422,
+        }
+      );
+    }
+
+    await DbConnect();
+
+    const isUser = await UserModel.exists({
+      email: validationResult.data.email,
+    });
+
+    if (!!isUser) {
+      return Response.json(
+        { message: "Email already exist" },
+        {
+          status: 422,
+        }
+      );
+    }
+
+    const hashedPass = await hashPass(validationResult.data.password);
 
     let fileUrl;
     if (avatar) {
@@ -68,8 +96,6 @@ export async function POST(req: Request) {
         Body: buffer,
       };
       const response = await s3.upload(params as any).promise();
-
-      console.log("response-------", response);
       fileUrl = response.Location;
     }
 
@@ -95,7 +121,7 @@ export async function POST(req: Request) {
     });
 
     const data = await UserModel.create({
-      ...validationResult,
+      ...validationResult.data,
       password: hashedPass,
       phone: payload.phone,
       avatar: fileUrl,

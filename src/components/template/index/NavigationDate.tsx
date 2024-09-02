@@ -35,11 +35,11 @@ export default function NavigationDate() {
   return (
     <>
       <button
-        className="btn btn-sm btn-primary btn-outline mb-4 ml-auto"
+        className="btn btn-sm btn-primary btn-outline mb-4 ms-auto"
         onClick={() => changeDate(new Date())}
         disabled={date.toDateString() === new Date().toDateString()}
       >
-        امروز
+        برگرد به امروز
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -63,7 +63,7 @@ export default function NavigationDate() {
         className={theme === "dark" ? "bg-dark" : ""}
         onChange={(e) => changeDate(e?.toDate() as Date)}
         render={
-          <button className=" btn btn-sm btn-primary btn-outline mb-4 ml-4">
+          <button className=" btn btn-sm btn-primary btn-outline mb-4 ms-4">
             برو به تاریخ
             <div>
               <svg

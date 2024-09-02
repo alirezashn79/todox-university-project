@@ -2,6 +2,7 @@
 import { zSignInForm } from "@/schemas/schema";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
+import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -25,33 +26,13 @@ export default function Form() {
   const { replace } = useRouter();
 
   const handleLogin: SubmitHandler<TLoginWithPassForm> = async (values) => {
-    const loading = toast.loading("wating...", {
-      style: {
-        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-      },
-    });
+    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
-      const res = await client.post("/api/auth/login", values);
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-          color: theme === "dark" ? "#a6adbb" : undefined,
-          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-        },
-      });
+      await client.post("/api/auth/login", values);
+      FireToast({ type: "success", message: "تایید شد." });
       replace("/");
     } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-          },
-        });
-      }
+      console.log(error);
     } finally {
       toast.dismiss(loading);
     }
@@ -61,13 +42,14 @@ export default function Form() {
       <form onSubmit={handleSubmit(handleLogin)}>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Email or Phone</span>
+            <span className="label-text">ایمیل یا شماره موبایل</span>
           </label>
 
           <input
+            dir="ltr"
             {...register("identifier")}
             type="text"
-            placeholder="your email or phone..."
+            placeholder="ایمیل یا شمارتو وارد کن"
             className={cn(
               "input input-bordered w-full",
               errors.identifier?.message ? "input-error" : "input"
@@ -85,13 +67,14 @@ export default function Form() {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">password</span>
+            <span className="label-text">رمزعبور</span>
           </label>
 
           <input
+            dir="ltr"
             {...register("password")}
             type="password"
-            placeholder="your password..."
+            placeholder="رمزتو وارد کن"
             className={cn(
               "input input-bordered w-full",
               errors.password?.message ? "input-error" : "input"
@@ -109,17 +92,17 @@ export default function Form() {
 
         <div className="form-control mt-6">
           <button disabled={isSubmitting} className="btn btn-primary">
-            Login
+            ورود
           </button>
         </div>
       </form>
 
       <div className="flex justify-around gap-1 text-right mt-4">
-        <Link className="btn w-fit" href="/guest">
-          ورود به عنوان مهمان
-        </Link>
         <Link className="btn w-fit" href="/auth/login-register">
           ورود یا ثبت نام با شماره
+        </Link>
+        <Link className="btn w-fit" href="/guest">
+          ورود به عنوان مهمان
         </Link>
       </div>
     </div>

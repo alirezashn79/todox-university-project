@@ -16,6 +16,7 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
+import { FireToast } from "@/utils/toast";
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
@@ -27,6 +28,7 @@ export default function AddTodo() {
   const setReload = useDateStore((state) => state.setReload);
 
   const [TimeValue, setTimeValue] = useState<Date | null>(null);
+  const [timeError, setTimeError] = useState<string | null>(null);
 
   const {
     register,
@@ -37,7 +39,10 @@ export default function AddTodo() {
     resolver: zodResolver(zTodoSchemaClient),
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
-    console.log(date.toISOString());
+    if (!TimeValue) {
+      setTimeError("زمان فیلدی الزامی است");
+      return;
+    }
     try {
       const res = await client.post("/api/todo", {
         ...values,
@@ -45,13 +50,7 @@ export default function AddTodo() {
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-          color: theme === "dark" ? "#a6adbb" : undefined,
-          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-        },
-      });
+      FireToast({ type: "success", message: res.data.message });
       modal.current.close();
       reset();
       setReload();
@@ -63,7 +62,7 @@ export default function AddTodo() {
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box !h-auto relative">
-          <h3 className="font-bold text-lg">Add Todo</h3>
+          <h3 className="font-bold text-lg">اضافه کردن کار</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
             <div className="modal-middle space-y-4 mt-8">
               <div className="form-control">
@@ -75,7 +74,7 @@ export default function AddTodo() {
                       "input input-bordered w-full",
                       errors.title?.message ? "input-error" : "input"
                     )}
-                    placeholder="Title"
+                    placeholder="عنوان"
                   />
                 </label>
                 <ErrorMessage
@@ -103,17 +102,26 @@ export default function AddTodo() {
                         minute: "2-digit",
                       })}
                       readOnly
-                      onClick={openCalendar}
+                      onClick={() => {
+                        openCalendar();
+                        setTimeError(null);
+                      }}
                       type="text"
-                      className={cn("input input-bordered w-full")}
-                      placeholder="Time"
+                      className={cn(
+                        "input input-bordered w-full",
+                        timeError ? "input-error" : "input"
+                      )}
+                      placeholder="ساعت"
                     />
                   )}
                 />
+                {timeError && (
+                  <span className="text-error mt-1">{timeError}</span>
+                )}
               </div>
 
               <button
-                className="absolute bottom-6 right-28 btn btn-primary"
+                className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={isSubmitting}
               >

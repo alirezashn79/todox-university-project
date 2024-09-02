@@ -1,56 +1,16 @@
 "use client";
-import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
-import useTheme from "@/stores/ThemeStore";
-import client from "@/utils/client";
-import React from "react";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-const MySwal = withReactContent(Swal);
+import { fireConfrimSwal } from "@/utils/swal";
 
 export default function DeleteTodo({ id }: { id: string }) {
-  const theme = useTheme((state) => state.theme);
   const deleteTodo = useGuest((state) => state.deleteTodo);
 
   const handleDelete = (todoId: string) => {
-    MySwal.fire({
-      title: "Are you sure?",
-      toast: true,
-      position: "center",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-      background: theme === "dark" ? "#1d232a" : undefined,
-      color: theme === "dark" ? "#a6adbb" : undefined,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          MySwal.showLoading();
-          deleteTodo(todoId);
-          MySwal.fire({
-            title: "Deleted!",
-            text: "Your todo has been deleted.",
-            icon: "success",
-            toast: true,
-            showConfirmButton: false,
-            background: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-            timer: 1500,
-          });
-        } catch (error) {
-          MySwal.fire({
-            title: "Error!",
-            text: "Error to delete",
-            icon: "error",
-            toast: true,
-            background: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-          });
-        }
-      }
+    fireConfrimSwal({
+      confirmText: "آیا حذف شود؟",
+      subText: "این عمل برگشت پذیر نیست!",
+      successFunctionVoid: () => deleteTodo(todoId),
+      successText: "حذف شد",
     });
   };
 

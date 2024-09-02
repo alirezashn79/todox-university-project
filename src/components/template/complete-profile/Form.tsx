@@ -4,6 +4,7 @@ import { zUserCreationClientSchema } from "@/schemas/schema";
 import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
+import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -44,13 +45,7 @@ export default function Form() {
   const completeProfileHandler: SubmitHandler<TUserProfile> = async (
     values
   ) => {
-    const loading = toast.loading("wating...", {
-      style: {
-        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-      },
-    });
+    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
       const formData = new FormData();
       formData.append("fullName", values.fullName);
@@ -62,13 +57,7 @@ export default function Form() {
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-          color: theme === "dark" ? "#a6adbb" : undefined,
-          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-        },
-      });
+      FireToast({ type: "success", message: "اطلاعات با موفقیت ثبت شد." });
       if (!!todos && todos.length > 0) {
         replace("/guest/transfer-data");
       } else {
@@ -76,15 +65,6 @@ export default function Form() {
       }
     } catch (error: any) {
       console.log(error);
-      if (error.response) {
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-          },
-        });
-      }
     } finally {
       toast.dismiss(loading);
     }

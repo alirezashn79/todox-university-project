@@ -1,8 +1,8 @@
 "use client";
 
 import { zPhoneSchema } from "@/schemas/schema";
-import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
+import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -20,7 +20,6 @@ export default function Sms() {
   const [otp, setOtp] = useState("");
   const [isSentCode, setIsSentCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const theme = useTheme((state) => state.theme);
 
   const { replace } = useRouter();
 
@@ -33,23 +32,11 @@ export default function Sms() {
   });
 
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
-    const loading = toast.loading("wating...", {
-      style: {
-        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-      },
-    });
+    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
       setIsLoading(true);
-      const res = await client.post("/api/auth/sms/send", values);
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-          color: theme === "dark" ? "#a6adbb" : undefined,
-          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-        },
-      });
+      await client.post("/api/auth/sms/send", values);
+      FireToast({ type: "success", message: "کد ارسال شد." });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
     } catch (error: any) {
@@ -58,13 +45,7 @@ export default function Sms() {
         if (error.response.status === 451) {
           setIsSentCode(true);
         }
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-          },
-        });
+        console.log(error);
       }
     } finally {
       toast.dismiss(loading);
@@ -74,13 +55,7 @@ export default function Sms() {
 
   const verifyCodeHandler = async (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    const loading = toast.loading("wating...", {
-      style: {
-        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-      },
-    });
+    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
 
     try {
       setIsLoading(true);
@@ -89,29 +64,14 @@ export default function Sms() {
         phone,
         code: otp,
       });
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-          color: theme === "dark" ? "#a6adbb" : undefined,
-          border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-        },
-      });
+      FireToast({ type: "success", message: "تایید شد." });
       sessionStorage.removeItem("phone");
       if (res.status === 200) {
         replace("/");
       } else if (res.status === 202) {
         replace("/complete-profile");
       }
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message, {
-          style: {
-            backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-            color: theme === "dark" ? "#a6adbb" : undefined,
-            border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-          },
-        });
-      }
+    } catch (error) {
       console.log(error);
     } finally {
       toast.dismiss(loading);
@@ -124,16 +84,17 @@ export default function Sms() {
       <form onSubmit={handleSubmit(sendCodeHandler)}>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Phone Number</span>
+            <span className="label-text">شماره موبایل</span>
           </label>
           <div className="relative w-full">
             <input
+              dir="ltr"
               disabled={isSentCode}
               {...register("phone")}
               type="text"
               placeholder="09123456789"
               className={cn(
-                "input input-bordered w-full pl-10",
+                "input input-bordered w-full ps-10",
                 errors.phone?.message ? "input-error" : "input"
               )}
             />
@@ -152,7 +113,7 @@ export default function Sms() {
         {!isSentCode && (
           <div className="form-control mt-6">
             <button className="btn btn-primary" disabled={isLoading}>
-              Send Code
+              ارسال کد
             </button>
           </div>
         )}
@@ -161,7 +122,7 @@ export default function Sms() {
         <form name="verifyForm" onSubmit={verifyCodeHandler}>
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Code</span>
+              <span className="label-text">کد تایید</span>
             </label>
 
             <OTPInput
@@ -176,10 +137,10 @@ export default function Sms() {
               containerStyle={{
                 display: "flex",
                 justifyContent: "center",
+                direction: "ltr",
               }}
               inputStyle={{
                 height: "3rem",
-                // padding: "0px 1.3rem",
                 width: "3rem",
                 textAlign: "center",
                 fontSize: "1rem",
@@ -197,18 +158,18 @@ export default function Sms() {
                 className="btn btn-primary"
                 disabled={isLoading}
               >
-                verify Code
+                تایید کد
               </button>
             </div>
           </div>
         </form>
       )}
       <div className="flex justify-around gap-1 text-right mt-4">
-        <Link className="btn w-fit" href="/guest">
-          ورود به عنوان مهمان
-        </Link>
         <Link className="btn w-fit" href="/auth/login-with-password">
           ورود با رمزعبور
+        </Link>
+        <Link className="btn w-fit" href="/guest">
+          ورود به عنوان مهمان
         </Link>
       </div>
     </div>

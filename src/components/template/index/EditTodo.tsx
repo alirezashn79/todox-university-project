@@ -7,6 +7,7 @@ import {
   convertToPersianTimeWithEnglishNumbers,
   timeStringToDate,
 } from "@/utils/clientHelpers";
+import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -14,10 +15,7 @@ import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import { TypeOf } from "zod";
-const MySwal = withReactContent(Swal);
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
@@ -67,16 +65,8 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
         setReload();
       }
       modalEdit.current.close();
-      MySwal.fire({
-        title: "Updated!",
-        text: res.data.message,
-        icon: "success",
-        toast: true,
-        showConfirmButton: false,
-        timer: 1500,
-        background: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-      });
+
+      FireToast({ type: "success", message: "اعمال شد." });
     } catch (error) {
       console.log(error);
     }
@@ -158,7 +148,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               </div>
 
               <button
-                className="absolute bottom-6 right-28 btn btn-primary"
+                className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={isSubmitting}
               >

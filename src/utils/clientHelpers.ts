@@ -16,16 +16,13 @@ export function convertToPersianTimeWithEnglishNumbers(date: Date) {
 }
 
 export function timeStringToDate(timeString: string) {
-  // ابتدا تاریخ امروز را دریافت می‌کنیم
   const today = new Date();
 
-  // سپس ساعت و دقیقه را از رشته زمانی جدا می‌کنیم
   const [hours, minutes] = timeString.split(":").map(Number);
 
-  // ساعت و دقیقه را برای شیء Date تنظیم می‌کنیم
   today.setHours(hours);
   today.setMinutes(minutes);
-  today.setSeconds(0); // اگر ثانیه را صفر کنیم
+  today.setSeconds(0);
 
   return today;
 }

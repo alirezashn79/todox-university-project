@@ -5,6 +5,7 @@ import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
 import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
+import { FireToast } from "@/utils/toast";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -43,13 +44,7 @@ export default function AddTodo() {
       time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
     });
 
-    toast.success("ثبت شد", {
-      style: {
-        backgroundColor: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-        border: theme === "dark" ? "1px solid  #a6adbb" : undefined,
-      },
-    });
+    FireToast({ type: "success", message: "ثبت شد." });
     modal.current.close();
     reset();
   };
@@ -107,7 +102,7 @@ export default function AddTodo() {
               </div>
 
               <button
-                className="absolute bottom-6 right-28 btn btn-primary"
+                className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={isSubmitting}
               >

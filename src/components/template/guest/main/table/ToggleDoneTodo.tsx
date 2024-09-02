@@ -1,11 +1,8 @@
 "use client";
 import useGuest from "@/stores/GuestStore";
-import useTheme from "@/stores/ThemeStore";
+import { FireToast } from "@/utils/toast";
 import { useState } from "react";
 import { HashLoader } from "react-spinners";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-const MySwal = withReactContent(Swal);
 
 export default function ToggleDoneTodo({
   id,
@@ -14,7 +11,6 @@ export default function ToggleDoneTodo({
   id: string;
   isDone: boolean;
 }) {
-  const theme = useTheme((state) => state.theme);
   const [loading, setLoading] = useState(false);
   const toggleDoneTodo = useGuest((state) => state.toggleDoneTodo);
 
@@ -22,16 +18,7 @@ export default function ToggleDoneTodo({
     try {
       setLoading(true);
       toggleDoneTodo(id);
-      MySwal.fire({
-        title: "Updated!",
-        text: "اعمال شد",
-        icon: "success",
-        toast: true,
-        showConfirmButton: false,
-        timer: 1500,
-        background: theme === "dark" ? "#1d232a" : undefined,
-        color: theme === "dark" ? "#a6adbb" : undefined,
-      });
+      FireToast({ type: "success", message: "اعمال شد" });
     } catch (error) {
       console.log(error);
     } finally {
