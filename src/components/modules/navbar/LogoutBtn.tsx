@@ -19,7 +19,7 @@ export default function LogoutBtn() {
     });
   };
   return (
-    <button onClick={handleLogout} className="text-error p-2">
+    <button onClick={handleLogout} className="text-error px-2 py-3">
       خارج شدن
     </button>
   );

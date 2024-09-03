@@ -29,13 +29,11 @@ export async function middleware(request: NextRequest) {
           });
           return responseWithCookies;
         } catch (error) {
-          console.log("redirect 1");
           return NextResponse.redirect(
             new URL("/auth/login-register", request.url)
           );
         }
       } else {
-        console.log("redirect 2");
         return NextResponse.redirect(
           new URL("/auth/login-register", request.url)
         );

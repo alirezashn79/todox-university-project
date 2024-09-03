@@ -1,7 +1,7 @@
-import axios from "axios";
 import otpModel from "@/models/Otp";
 import { zPhoneSchema } from "@/schemas/schema";
 import DbConnect from "@/utils/dbConnection";
+import axios from "axios";
 
 export async function POST(req: Request) {
   try {

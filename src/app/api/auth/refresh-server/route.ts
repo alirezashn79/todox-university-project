@@ -1,8 +1,8 @@
-import DbConnect from "@/utils/dbConnection";
 import UserModel from "@/models/User";
+import { generateAccessToken } from "@/utils/auth";
+import DbConnect from "@/utils/dbConnection";
 import { cookies } from "next/headers";
 import { isExpired } from "react-jwt";
-import { generateAccessToken } from "@/utils/auth";
 
 export async function GET() {
   try {

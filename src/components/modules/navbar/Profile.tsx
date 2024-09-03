@@ -19,9 +19,11 @@ export default function Profile({ user }: IProfileProps) {
         tabIndex={0}
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
-        {/* <li>
-          <a className="justify-between">Profile</a>
-        </li> */}
+        <li className="font-semibold">
+          <p className="px-2 py-3">
+            خوش اومدی <span className="text-primary">{user.fullName}</span>
+          </p>
+        </li>
         <li>
           <LogoutBtn />
         </li>

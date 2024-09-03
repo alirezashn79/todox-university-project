@@ -15,7 +15,6 @@ export async function POST(req: Request) {
     const cookieStore = cookies();
     const temporaryToken = cookieStore.get("temporaryToken");
 
-    console.log(temporaryToken);
     if (!temporaryToken) {
       return Response.json(
         { message: "Unauthorized token" },

@@ -1,22 +1,16 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
-import DatePicker from "react-multi-date-picker";
+import useTheme from "@/stores/ThemeStore";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
-import useTheme from "@/stores/ThemeStore";
 
 export default function NavigationDate() {
   const date = useDateStore((state) => state.date);
   const changeDate = useDateStore((state) => state.changeDate);
   const theme = useTheme((state) => state.theme);
 
-  // send to api 👇
-  // console.log("split t", date.toISOString().split("T")[0]);
-
-  // console.log("dateeeeeeeee", new Date(date.toISOString().split("T")[0]));
-
-  // Get the dates to be displayed in the tab bar
   const getDisplayDates = (currentDate: Date) => {
     const dates = [];
     let count = 1;

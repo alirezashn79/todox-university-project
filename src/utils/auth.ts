@@ -24,7 +24,7 @@ export function verifyTemporaryToken(token: string) {
       phone: string;
     };
   } catch (error: any) {
-    console.error(error.message);
+    console.log(error.message);
   }
 
   return result;
@@ -37,7 +37,7 @@ export function verifyAccessToken(token: string) {
       phone: string;
     };
   } catch (error: any) {
-    console.error(error.message);
+    console.log(error.message);
   }
 
   return result;

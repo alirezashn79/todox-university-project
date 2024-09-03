@@ -1,8 +1,8 @@
+import InitialTheme from "@/components/modules/InitialTheme";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import InitialTheme from "@/components/modules/InitialTheme";
 
 const Vazir = localFont({
   src: [

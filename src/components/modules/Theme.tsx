@@ -9,7 +9,6 @@ export default function Theme() {
   return (
     <div className="mx-4">
       <label className="swap swap-rotate text-2xl">
-        {/* this hidden checkbox controls the state */}
         <input
           type="checkbox"
           checked={theme === "dark"}

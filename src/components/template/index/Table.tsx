@@ -1,13 +1,13 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { ClockLoader } from "react-spinners";
+import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
-import AllCheckTodos from "./AllCheckTodos";
-import { ClockLoader } from "react-spinners";
-import Image from "next/image";
 
 interface ITodo {
   _id: string;
