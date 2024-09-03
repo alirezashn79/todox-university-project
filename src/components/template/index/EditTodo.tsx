@@ -9,7 +9,6 @@ import {
   timeStringToDate,
 } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
-import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
 import { useRef, useState } from "react";
@@ -31,11 +30,11 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const theme = useTheme((state) => state.theme);
   const setReload = useDateStore((state) => state.setReload);
   const [TimeValue, setTimeValue] = useState<Date>(timeStringToDate(time));
-  const [timeError, setTimeError] = useState<null | string>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<TTodo>({
     defaultValues: {
@@ -49,13 +48,6 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
       const timeValidation = zTimeSchema.safeParse({
         time: convertToPersianTimeWithEnglishNumbers(TimeValue),
       });
-
-      if (!timeValidation.success) {
-        setTimeError(
-          timeValidation.error.formErrors.fieldErrors.time?.[0] as string
-        );
-        return;
-      }
 
       const res = await client.put(`/api/todo/${_id}`, {
         ...values,
@@ -141,7 +133,11 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               <button
                 className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={
+                  isSubmitting ||
+                  (watch("title") === title &&
+                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
+                }
               >
                 ویرایش
               </button>

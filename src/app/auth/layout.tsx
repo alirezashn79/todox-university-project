@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/template/auth/themeToggle";
 import { isAuth } from "@/utils/serverHelpers";
 import { redirect } from "next/navigation";
 
@@ -28,6 +29,7 @@ export default async function AuthLayout({
           {children}
         </div>
       </div>
+      <ThemeToggle />
     </div>
   );
 }

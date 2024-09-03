@@ -2,14 +2,12 @@
 
 import useTheme from "@/stores/ThemeStore";
 
-export default function Theme() {
+export default function ThemeToggle() {
   const theme = useTheme((state) => state.theme);
   const toggleTheme = useTheme((state) => state.toggleTheme);
-
   return (
-    <div className="mx-4">
-      <label className="swap swap-rotate text-2xl">
-        {/* this hidden checkbox controls the state */}
+    <div className="absolute end-8 bottom-8">
+      <label className="swap swap-rotate btn btn-circle btn-active">
         <input
           type="checkbox"
           checked={theme === "dark"}

@@ -40,7 +40,7 @@ export default async function page() {
             >
               ثبت نام
             </Link>
-            کنید
+            کنید. داده های موقت شما به حسابتان منتقل خواهد شد.
           </p>
         </div>
         <section className="mt-8">

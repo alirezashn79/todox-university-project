@@ -8,7 +8,8 @@ export default function Navbar() {
     <div className="navbar bg-base-100 border-b">
       <div className="flex-1">
         <Link href="/guest" className="btn btn-ghost text-xl">
-          تودوکس
+          <span className="text-primary">X</span>
+          Todo
         </Link>
       </div>
       <Theme />

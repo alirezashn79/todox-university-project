@@ -1,6 +1,6 @@
 "use client";
 import Input from "@/components/modules/input";
-import { zTimeSchema, zTodoSchemaClient } from "@/schemas/schema";
+import { zTodoSchemaClient } from "@/schemas/schema";
 import useGuest from "@/stores/GuestStore";
 import useTheme from "@/stores/ThemeStore";
 import {
@@ -8,7 +8,6 @@ import {
   timeStringToDate,
 } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
-import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
 import { useRef, useState } from "react";
@@ -29,12 +28,13 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
   const [TimeValue, setTimeValue] = useState<Date>(timeStringToDate(time));
-  const [timeError, setTimeError] = useState<null | string>(null);
+  // const [timeError, setTimeError] = useState<null | string>(null);
   const setEditTodo = useGuest((state) => state.editTodo);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<TTodo>({
     defaultValues: {
@@ -45,16 +45,16 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
-      const timeValidation = zTimeSchema.safeParse({
-        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
-      });
+      // const timeValidation = zTimeSchema.safeParse({
+      //   time: convertToPersianTimeWithEnglishNumbers(TimeValue),
+      // });
 
-      if (!timeValidation.success) {
-        setTimeError(
-          timeValidation.error.formErrors.fieldErrors.time?.[0] as string
-        );
-        return;
-      }
+      // if (!timeValidation.success) {
+      //   setTimeError(
+      //     timeValidation.error.formErrors.fieldErrors.time?.[0] as string
+      //   );
+      //   return;
+      // }
 
       setEditTodo({
         id: _id,
@@ -137,7 +137,11 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               <button
                 className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={
+                  isSubmitting ||
+                  (watch("title") === title &&
+                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
+                }
               >
                 ویرایش
               </button>

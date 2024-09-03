@@ -35,7 +35,7 @@ export default function NavigationDate() {
   return (
     <>
       <button
-        className="btn btn-sm btn-primary btn-outline mb-4 ms-auto"
+        className="btn btn-sm btn-primary btn-outline mb-6 ms-auto"
         onClick={() => changeDate(new Date())}
         disabled={date.toDateString() === new Date().toDateString()}
       >
@@ -90,7 +90,7 @@ export default function NavigationDate() {
             key={index}
             className={`tab transition-all lg:text-sm text-xs ${
               d.toDateString() === date.toDateString()
-                ? "tab-active  scale-110 !-translate-y-1 font-bold btn-disabled"
+                ? "tab-active  scale-x-105 scale-y-110 !-translate-y-1 font-bold btn-disabled"
                 : "hover:btn-link"
             }`}
             onClick={() => changeDate(d)}

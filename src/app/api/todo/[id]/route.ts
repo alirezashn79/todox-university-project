@@ -91,18 +91,6 @@ export async function PUT(
 
     const validationResult = await zTodoEditServer.parseAsync(reqBody);
 
-    const isChange = await TodoModel.findOne({
-      ...validationResult,
-      _id: params.id,
-    });
-
-    if (isChange) {
-      return Response.json(
-        { message: "No changes were made" },
-        { status: 202 }
-      );
-    }
-
     const data = await TodoModel.findByIdAndUpdate(params.id, validationResult);
 
     return Response.json({ message: "Todo has been updated", data });

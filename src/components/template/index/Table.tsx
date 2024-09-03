@@ -51,8 +51,11 @@ export default function Table() {
   );
 
   const noTodoEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center">
+    <div className=" max-w-lg mx-auto py-10 mt-32 lg:mt-24 flex flex-col items-center justify-center">
       <Image height={200} width={200} src="/img/empty.png" alt="empty" />
+      <p className="text-gray-500 text-xl text-center font-semibold mt-2">
+        هنوز هیچ کاری اضافه نکردی!
+      </p>
     </div>
   );
 
@@ -65,10 +68,10 @@ export default function Table() {
             <th>
               <AllCheckTodos checkAll={checkAll} />
             </th>
-            <th>Title</th>
+            <th>عنوان</th>
 
-            <th>Time</th>
-            <th>actions</th>
+            <th className="text-center">زمان</th>
+            <th className="text-center">عملکرد ها</th>
           </tr>
         </thead>
         <tbody>
@@ -83,12 +86,12 @@ export default function Table() {
                 <th>
                   <ToggleDoneTodo id={item._id} isDone={item.isDone} />
                 </th>
-                <td>{item.title}</td>
+                <td className="lg:min-w-64">{item.title}</td>
 
-                <td>{item.time}</td>
+                <td className="text-center">{item.time}</td>
 
                 <th>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center gap-4">
                     <EditTodo
                       _id={item._id}
                       time={item.time}

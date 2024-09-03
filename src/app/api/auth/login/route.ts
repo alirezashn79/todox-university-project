@@ -92,6 +92,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         message: "Server Error!",
+        error: error.message,
       },
       {
         status: 500,
