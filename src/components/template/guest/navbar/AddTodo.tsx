@@ -47,7 +47,7 @@ export default function AddTodo() {
       time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
     });
 
-    FireToast({ type: "success", message: "ثبت شد." });
+    FireToast({ type: "success", message: "ثبت شد" });
     modal.current.close();
     reset();
   };

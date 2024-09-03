@@ -59,7 +59,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
       }
       modalEdit.current.close();
 
-      FireToast({ type: "success", message: "اعمال شد." });
+      FireToast({ type: "success", message: "اعمال شد" });
     } catch (error) {
       console.log(error);
     }

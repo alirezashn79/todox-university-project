@@ -3,7 +3,7 @@ import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ClockLoader } from "react-spinners";
+import { ClockLoader, PulseLoader } from "react-spinners";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
@@ -45,8 +45,8 @@ export default function Table() {
   }, [date, reload]);
 
   const loadingEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center text-primary">
-      <ClockLoader color="#7480ff" />
+    <div className=" max-w-lg mx-auto py-10 mt-52 lg:mt-36 flex items-center justify-center text-primary">
+      <PulseLoader color="#7480ff" size={18} margin={8} />
     </div>
   );
 
@@ -63,7 +63,7 @@ export default function Table() {
     <div className="overflow-x-auto">
       <table className="table table-zebra">
         {/* head */}
-        <thead>
+        <thead className="text-xs lg:text-sm">
           <tr>
             <th>
               <AllCheckTodos checkAll={checkAll} />
@@ -71,10 +71,10 @@ export default function Table() {
             <th>عنوان</th>
 
             <th className="text-center">زمان</th>
-            <th className="text-center">عملکرد ها</th>
+            <th className="text-center">عملیات</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-base lg:text-lg">
           {/* row 1 */}
           {todosDate
             ?.sort(

@@ -49,7 +49,7 @@ export default function AddTodo() {
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
-      FireToast({ type: "success", message: "اضافه شد." });
+      FireToast({ type: "success", message: "اضافه شد" });
       modal.current.close();
       reset();
       setReload();
@@ -57,6 +57,8 @@ export default function AddTodo() {
       console.log(error);
     }
   };
+
+  console.log(TimeValue);
   return (
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">
@@ -81,12 +83,12 @@ export default function AddTodo() {
                   </span>
                 </label>
                 <DatePicker
-                  calendarPosition="top-center"
+                  calendarPosition="top-left"
                   value={TimeValue}
                   onChange={(e) => setTimeValue(e?.toDate() as any)}
                   disableDayPicker
                   format="HH:mm"
-                  className={theme === "dark" ? "bg-dark" : ""}
+                  className={cn(theme === "dark" ? "bg-dark" : "")}
                   plugins={[<TimePicker hideSeconds />]}
                   render={(_, openCalendar) => (
                     <input

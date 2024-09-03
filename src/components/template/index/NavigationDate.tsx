@@ -29,7 +29,7 @@ export default function NavigationDate() {
   return (
     <>
       <button
-        className="btn btn-sm btn-primary btn-outline mb-6 ms-auto"
+        className="btn btn-primary btn-outline mb-6 ms-auto"
         onClick={() => changeDate(new Date())}
         disabled={date.toDateString() === new Date().toDateString()}
       >
@@ -57,7 +57,7 @@ export default function NavigationDate() {
         className={theme === "dark" ? "bg-dark" : ""}
         onChange={(e) => changeDate(e?.toDate() as Date)}
         render={
-          <button className=" btn btn-sm btn-primary btn-outline mb-4 ms-4">
+          <button className=" btn btn-primary btn-outline mb-4 ms-4">
             برو به تاریخ
             <div>
               <svg
@@ -77,12 +77,23 @@ export default function NavigationDate() {
             </div>
           </button>
         }
-      />
-      <div role="tablist" className="tabs tabs-boxed lg:tabs-lg transition-all">
+      >
+        <button
+          className="btn btn-primary btn-sm mb-4 text-xs"
+          onClick={() => changeDate(new Date())}
+          disabled={date.toDateString() === new Date().toDateString()}
+        >
+          امروز
+        </button>
+      </DatePicker>
+      <div
+        role="tablist"
+        className="tabs  tabs-boxed tabs-lg h-14 lg:h-16 transition-all"
+      >
         {displayDates.map((d, index) => (
           <div
             key={index}
-            className={`tab transition-all lg:text-sm text-xs ${
+            className={`tab transition-all h-full text-base lg:text-lg ${
               d.toDateString() === date.toDateString()
                 ? "tab-active  scale-x-105 scale-y-110 !-translate-y-1 font-bold btn-disabled"
                 : "hover:btn-link"

@@ -26,7 +26,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
         type: "success",
         message: `همه کارها در حالت  ${
           !checkAll ? "انجام شده" : "انجام نشده"
-        } قرار گرفتند.`,
+        } قرار گرفتند`,
       });
     } catch (error) {
       console.log(error);

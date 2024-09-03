@@ -70,7 +70,7 @@ export default function Table() {
             <th>عنوان</th>
 
             <th className="text-center">زمان</th>
-            <th className="text-center">عملکرد ها</th>
+            <th className="text-center">عملیات</th>
           </tr>
         </thead>
         <tbody>

@@ -28,7 +28,7 @@ export default function Form() {
     const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
       await client.post("/api/auth/login", values);
-      FireToast({ type: "success", message: "تایید شد." });
+      FireToast({ type: "success", message: "تایید شد" });
       replace("/");
     } catch (error) {
       console.log(error);

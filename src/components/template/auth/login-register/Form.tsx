@@ -35,7 +35,7 @@ export default function Sms() {
     try {
       setIsLoading(true);
       await client.post("/api/auth/sms/send", values);
-      FireToast({ type: "success", message: "کد ارسال شد." });
+      FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
     } catch (error: any) {
@@ -63,7 +63,7 @@ export default function Sms() {
         phone,
         code: otp,
       });
-      FireToast({ type: "success", message: "تایید شد." });
+      FireToast({ type: "success", message: "تایید شد" });
       sessionStorage.removeItem("phone");
       if (res.status === 200) {
         replace("/");

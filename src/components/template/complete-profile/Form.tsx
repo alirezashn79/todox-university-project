@@ -57,7 +57,7 @@ export default function Form() {
           "Content-Type": "multipart/form-data",
         },
       });
-      FireToast({ type: "success", message: "اطلاعات با موفقیت ثبت شد." });
+      FireToast({ type: "success", message: "اطلاعات با موفقیت ثبت شد" });
       if (!!todos && todos.length > 0) {
         replace("/guest/transfer-data");
       } else {
