@@ -42,9 +42,9 @@ export default function Form() {
         <Input
           name="identifier"
           register={register("identifier")}
-          label="ایمیل یا شماره موبایل"
+          label="شماره موبایل یا ایمیل"
           errors={errors}
-          placeholder="ایمیل یا شمارتو وارد کن"
+          placeholder="شماره یا ایمیل تو وارد کن"
           dir="ltr"
         />
 
@@ -67,7 +67,7 @@ export default function Form() {
 
       <div className="flex justify-around gap-1 text-right mt-4">
         <Link className="btn w-fit" href="/auth/login-register">
-          ورود یا ثبت نام با شماره
+          ثبت نام | ورود
         </Link>
         <Link className="btn w-fit" href="/guest">
           ورود به عنوان مهمان

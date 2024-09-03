@@ -10,7 +10,7 @@ interface ITheme {
 const useTheme = create<ITheme>()(
   persist(
     (set, get) => ({
-      theme: "light",
+      theme: "dark",
       initialTheme: () => {
         document.documentElement.setAttribute("data-theme", get().theme);
       },

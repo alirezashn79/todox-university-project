@@ -3,7 +3,7 @@ import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ClockLoader, PulseLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";

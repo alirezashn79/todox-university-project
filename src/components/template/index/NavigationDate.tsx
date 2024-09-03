@@ -79,7 +79,7 @@ export default function NavigationDate() {
         }
       >
         <button
-          className="btn btn-primary btn-sm mb-4 text-xs"
+          className="btn btn-primary btn-sm btn-outline mb-4 text-xs"
           onClick={() => changeDate(new Date())}
           disabled={date.toDateString() === new Date().toDateString()}
         >

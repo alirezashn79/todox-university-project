@@ -3,7 +3,7 @@ import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ClockLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
@@ -30,22 +30,24 @@ export default function Table() {
       const isoDate = date.toISOString().split("T")[0];
       try {
         const filteredTodos = allTodos.filter((item) => item.date === isoDate);
-        const result = filteredTodos.every((item: any) => item.isDone);
-
-        setcheckAll(result);
         setTodosDate(filteredTodos);
+
+        const result = filteredTodos.every((item: any) => item.isDone);
+        setcheckAll(result);
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       }
     };
     getData();
   }, [date, allTodos]);
 
   const loadingEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 flex items-center justify-center text-primary">
-      <ClockLoader color="#7480ff" />
+    <div className=" max-w-lg mx-auto py-10 mt-52 lg:mt-36 flex items-center justify-center text-primary">
+      <PulseLoader color="#7480ff" size={18} margin={8} />
     </div>
   );
 
@@ -62,7 +64,7 @@ export default function Table() {
     <div className="overflow-x-auto">
       <table className="table table-zebra">
         {/* head */}
-        <thead>
+        <thead className="text-xs lg:text-sm">
           <tr>
             <th>
               <AllCheckTodos checkAll={checkAll} />
@@ -73,7 +75,7 @@ export default function Table() {
             <th className="text-center">عملیات</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-base lg:text-lg">
           {/* row 1 */}
           {todosDate
             ?.sort(

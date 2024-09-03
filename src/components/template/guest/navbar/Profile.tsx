@@ -30,8 +30,15 @@ export default function Profile() {
           tabIndex={0}
           className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
         >
+          <li className="font-semibold">
+            <p className="px-2 py-3">
+              خوش اومدی <span className="text-primary">کاربر مهمان</span>
+            </p>
+          </li>
           <li>
-            <Link href="/auth/login-register">ثبت نام</Link>
+            <Link className="px-2 py-3" href="/auth/login-register">
+              ثبت نام
+            </Link>
           </li>
         </ul>
       </div>

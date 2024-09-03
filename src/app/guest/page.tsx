@@ -15,7 +15,7 @@ export default async function page() {
     <div className="container">
       <main>
         <Navbar />
-        <div className="text-warning pt-2 leading-3 text-xs md:text-sm flex items-center gap-2">
+        <div className="text-warning  leading-3 text-xs md:text-sm flex items-start gap-2 mt-2 sm:items-center">
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -33,14 +33,15 @@ export default async function page() {
             </svg>
           </div>
           <p>
-            داده های شما محافظت نشده اند، برای حفظ داده ها به صورت دائمی
+            اینجا یک محیط همیشگی نیست و به منظور تست و آشنایی است! برای حفظ داده
+            های خود
             <Link
               href="/auth/login-register"
               className=" btn px-1 text-warning btn-link"
             >
               ثبت نام
             </Link>
-            کنید. داده های موقت شما به حسابتان منتقل خواهد شد
+            کنید.
           </p>
         </div>
         <section className="mt-8">
