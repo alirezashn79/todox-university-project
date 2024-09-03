@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zPhoneSchema } from "@/schemas/schema";
 import client from "@/utils/client";
@@ -31,7 +32,6 @@ export default function Sms() {
   });
 
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
-    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
       setIsLoading(true);
       await client.post("/api/auth/sms/send", values);
@@ -47,14 +47,12 @@ export default function Sms() {
         console.log(error);
       }
     } finally {
-      toast.dismiss(loading);
       setIsLoading(false);
     }
   };
 
   const verifyCodeHandler = async (e?: React.FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
 
     try {
       setIsLoading(true);
@@ -73,7 +71,6 @@ export default function Sms() {
     } catch (error) {
       console.log(error);
     } finally {
-      toast.dismiss(loading);
       setIsLoading(false);
     }
   };
@@ -92,9 +89,7 @@ export default function Sms() {
 
         {!isSentCode && (
           <div className="form-control mt-6">
-            <button className="btn btn-primary" disabled={isLoading}>
-              ارسال کد
-            </button>
+            <Button loading={isLoading} type="submit" text="ارسال کد" />
           </div>
         )}
       </form>
@@ -133,13 +128,7 @@ export default function Sms() {
               }}
             />
             <div className="form-control mt-6">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isLoading}
-              >
-                تایید کد
-              </button>
+              <Button loading={isLoading} type="submit" text="تایید کد" />
             </div>
           </div>
         </form>

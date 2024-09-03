@@ -87,7 +87,7 @@ export default function Table() {
                 <th>
                   <ToggleDoneTodo id={item.id} isDone={item.isDone} />
                 </th>
-                <td className="min-w-64">{item.title}</td>
+                <td>{item.title}</td>
 
                 <td className="text-center">{item.time}</td>
 

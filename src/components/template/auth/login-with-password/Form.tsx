@@ -1,14 +1,13 @@
 "use client";
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zSignInForm } from "@/schemas/schema";
-import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { TypeOf } from "zod";
 
 type TLoginWithPassForm = TypeOf<typeof zSignInForm>;
@@ -21,19 +20,15 @@ export default function Form() {
   } = useForm<TLoginWithPassForm>({
     resolver: zodResolver(zSignInForm),
   });
-  const theme = useTheme((state) => state.theme);
   const { replace } = useRouter();
 
   const handleLogin: SubmitHandler<TLoginWithPassForm> = async (values) => {
-    const loading = FireToast({ type: "loading", message: "صبر کنید..." });
     try {
       await client.post("/api/auth/login", values);
       FireToast({ type: "success", message: "تایید شد" });
       replace("/");
     } catch (error) {
       console.log(error);
-    } finally {
-      toast.dismiss(loading);
     }
   };
   return (
@@ -59,9 +54,7 @@ export default function Form() {
         />
 
         <div className="form-control mt-6">
-          <button disabled={isSubmitting} className="btn btn-primary">
-            ورود
-          </button>
+          <Button loading={isSubmitting} type="submit" text="ورود" />
         </div>
       </form>
 
