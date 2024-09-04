@@ -4,8 +4,6 @@ import useGuest from "@/stores/GuestStore";
 import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { PulseLoader } from "react-spinners";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
@@ -64,53 +62,51 @@ export default function Table() {
   );
 
   const todoEl = (
-    <DndProvider backend={HTML5Backend}>
-      <div className="overflow-x-auto">
-        <table className="table table-zebra">
-          {/* head */}
-          <thead className="text-xs lg:text-sm">
-            <tr>
-              <th>
-                <AllCheckTodos checkAll={checkAll} />
-              </th>
-              <th>عنوان</th>
+    <div className="overflow-x-auto">
+      <table className="table table-zebra">
+        {/* head */}
+        <thead className="text-xs lg:text-sm">
+          <tr>
+            <th>
+              <AllCheckTodos checkAll={checkAll} />
+            </th>
+            <th>عنوان</th>
 
-              <th className="text-center">زمان</th>
-              <th className="text-center">عملیات</th>
-            </tr>
-          </thead>
-          <tbody className="text-base lg:text-lg">
-            {/* row 1 */}
-            {todosDate
-              ?.sort(
-                (a, b) =>
-                  (a.time.split(":")[0] as any) - (b.time.split(":")[0] as any)
-              )
-              .map((item) => (
-                <tr key={item.id.toString()}>
-                  <th>
-                    <ToggleDoneTodo id={item.id} isDone={item.isDone} />
-                  </th>
-                  <td className="lg:min-w-64">{item.title}</td>
+            <th className="text-center">زمان</th>
+            <th className="text-center">عملیات</th>
+          </tr>
+        </thead>
+        <tbody className="text-base lg:text-lg">
+          {/* row 1 */}
+          {todosDate
+            ?.sort(
+              (a, b) =>
+                (a.time.split(":")[0] as any) - (b.time.split(":")[0] as any)
+            )
+            .map((item) => (
+              <tr key={item.id.toString()}>
+                <th>
+                  <ToggleDoneTodo id={item.id} isDone={item.isDone} />
+                </th>
+                <td className="lg:min-w-64">{item.title}</td>
 
-                  <td className="text-center">{item.time || "--:--"}</td>
+                <td className="text-center">{item.time || "--:--"}</td>
 
-                  <th>
-                    <div className="flex items-center justify-center gap-4">
-                      <EditTodo
-                        id={item.id}
-                        time={item.time}
-                        title={item.title}
-                      />
-                      <DeleteTodo id={item.id} />
-                    </div>
-                  </th>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
-    </DndProvider>
+                <th>
+                  <div className="flex items-center justify-center gap-4">
+                    <EditTodo
+                      id={item.id}
+                      time={item.time}
+                      title={item.title}
+                    />
+                    <DeleteTodo id={item.id} />
+                  </div>
+                </th>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   return <>{loading ? loadingEl : !!todosDate?.length ? todoEl : noTodoEl}</>;
