@@ -9,8 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Countdown from "react-countdown";
 import { SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import OTPInput from "react-otp-input";
 import { TypeOf } from "zod";
 
@@ -20,6 +20,8 @@ export default function Sms() {
   const [otp, setOtp] = useState("");
   const [isSentCode, setIsSentCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [startCountDown, setStartCountDown] = useState(false);
+  const [date, setDate] = useState<number | null>(null);
 
   const { replace } = useRouter();
 
@@ -34,7 +36,8 @@ export default function Sms() {
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
     try {
       setIsLoading(true);
-      await client.post("/api/auth/sms/send", values);
+      const res = await client.post("/api/auth/sms/send", values);
+      setDate(res.data.expTime - 1_000);
       FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
@@ -43,11 +46,14 @@ export default function Sms() {
       if (error.response) {
         if (error.response.status === 451) {
           setIsSentCode(true);
+          FireToast({ type: "error", message: "رمز قبلا ارسال شده است" });
+          setDate(error.response.data.expTime - 1_000);
         }
         console.log(error);
       }
     } finally {
       setIsLoading(false);
+      setStartCountDown(true);
     }
   };
 
@@ -127,8 +133,49 @@ export default function Sms() {
                 backgroundColor: "transparent",
               }}
             />
+
             <div className="form-control mt-6">
-              <Button loading={isLoading} type="submit" text="تایید کد" />
+              <div className="flex items-center justify-center gap-x-4 my-2">
+                <button
+                  disabled={startCountDown}
+                  className="btn btn-link btn-ghost w-fit"
+                  type="button"
+                  onClick={async () => {
+                    setStartCountDown(true);
+                    sendCodeHandler({
+                      phone: sessionStorage.getItem("phone") as string,
+                    });
+                  }}
+                >
+                  ارسال مجدد رمز
+                </button>
+                {startCountDown ? (
+                  <Countdown
+                    onComplete={() => setStartCountDown(false)}
+                    renderer={({ minutes, seconds }) => (
+                      <span className="countdown text-lg  font-semibold">
+                        <span style={{ "--value": seconds } as any}></span>
+                        {"  :  "}
+                        <span style={{ "--value": minutes } as any}></span>
+                      </span>
+                    )}
+                    date={date || Date.now()}
+                  />
+                ) : (
+                  <>
+                    <span className="countdown text-lg">
+                      <span style={{ "--value": 0 } as any}></span>:
+                      <span style={{ "--value": 0 } as any}></span>
+                    </span>
+                  </>
+                )}
+              </div>
+              <Button
+                disabled={otp.length < 5}
+                loading={isLoading}
+                type="submit"
+                text="تایید کد"
+              />
             </div>
           </div>
         </form>

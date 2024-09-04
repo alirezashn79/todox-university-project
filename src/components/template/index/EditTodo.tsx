@@ -99,7 +99,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                 register={register("title")}
                 label="عنوان"
                 errors={errors}
-                placeholder="یک عنوان برای کارت تعریف کن"
+                placeholder="عنوان رو وارد کن"
               />
 
               <div className="form-control">

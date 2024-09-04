@@ -27,7 +27,7 @@ export default function NavigationDate() {
 
   const displayDates = getDisplayDates(date);
   return (
-    <>
+    <section>
       <button
         className="btn btn-primary btn-outline mb-6 ms-auto"
         onClick={() => changeDate(new Date())}
@@ -86,16 +86,13 @@ export default function NavigationDate() {
           امروز
         </button>
       </DatePicker>
-      <div
-        role="tablist"
-        className="tabs  tabs-boxed tabs-lg h-14 lg:h-16 transition-all"
-      >
+      <div role="tablist" className="tabs  tabs-boxed tabs-lg h-14 lg:h-16">
         {displayDates.map((d, index) => (
           <div
             key={index}
-            className={`tab transition-all h-full text-base lg:text-lg ${
+            className={`tab  h-full text-base lg:text-lg ${
               d.toDateString() === date.toDateString()
-                ? "tab-active  scale-x-105 scale-y-110 !-translate-y-1 font-bold btn-disabled"
+                ? "tab-active  scale-105 !-translate-y-1 font-bold btn-disabled"
                 : "hover:btn-link"
             }`}
             onClick={() => changeDate(d)}
@@ -106,6 +103,6 @@ export default function NavigationDate() {
           </div>
         ))}
       </div>
-    </>
+    </section>
   );
 }

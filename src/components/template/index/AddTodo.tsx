@@ -71,7 +71,7 @@ export default function AddTodo() {
                 register={register("title")}
                 label="عنوان"
                 errors={errors}
-                placeholder="یک عنوان برای کارت تعریف کن"
+                placeholder="عنوان رو وارد کن"
               />
 
               <div className="form-control">
