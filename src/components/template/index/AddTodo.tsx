@@ -5,7 +5,10 @@ import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
-import { convertToPersianTimeWithEnglishNumbers } from "@/utils/clientHelpers";
+import {
+  convertPersianDateToEnglishNumbers,
+  convertToPersianTimeWithEnglishNumbers,
+} from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "cn-func";
@@ -27,7 +30,7 @@ export default function AddTodo() {
   const setReload = useDateStore((state) => state.setReload);
 
   const [TimeValue, setTimeValue] = useState<Date | null>(null);
-  const [timeError, setTimeError] = useState<string | null>(null);
+  // const [timeError, setTimeError] = useState<string | null>(null);
 
   const {
     register,
@@ -38,14 +41,14 @@ export default function AddTodo() {
     resolver: zodResolver(zTodoSchemaClient),
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
-    if (!TimeValue) {
-      setTimeError("زمان الزامی است");
-      return;
-    }
+    // if (!TimeValue) {
+    //   setTimeError("زمان الزامی است");
+    //   return;
+    // }
     try {
       await client.post("/api/todo", {
         ...values,
-        date: date.toISOString().split("T")[0],
+        date: convertPersianDateToEnglishNumbers(date),
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
@@ -76,11 +79,7 @@ export default function AddTodo() {
 
               <div className="form-control">
                 <label className="label">
-                  <span
-                    className={cn("label-text", timeError ? "text-error" : "")}
-                  >
-                    زمان
-                  </span>
+                  <span className={cn("label-text")}>زمان</span>
                 </label>
                 <DatePicker
                   calendarPosition="top-left"
@@ -99,20 +98,20 @@ export default function AddTodo() {
                       readOnly
                       onClick={() => {
                         openCalendar();
-                        setTimeError(null);
+                        // setTimeError(null);
                       }}
                       type="text"
                       className={cn(
-                        "input input-bordered w-full",
-                        timeError ? "input-error" : "input"
+                        "input input-bordered w-full"
+                        // timeError ? "input-error" : "input"
                       )}
                       placeholder="ساعت؟"
                     />
                   )}
                 />
-                {timeError && (
+                {/* {timeError && (
                   <span className="text-error mt-1">{timeError}</span>
-                )}
+                )} */}
               </div>
 
               <button

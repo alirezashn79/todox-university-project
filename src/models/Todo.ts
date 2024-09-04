@@ -5,7 +5,7 @@ interface ITodoModel {
   isDone: boolean;
   user: Types.ObjectId;
   date: string;
-  time: string;
+  time?: string;
 }
 const schema = new Schema<ITodoModel>({
   title: {
@@ -30,10 +30,7 @@ const schema = new Schema<ITodoModel>({
     ref: "User",
     required: true,
   },
-  time: {
-    type: String,
-    required: true,
-  },
+  time: String,
   date: {
     type: String,
     required: true,

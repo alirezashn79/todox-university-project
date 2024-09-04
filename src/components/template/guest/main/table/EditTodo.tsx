@@ -27,7 +27,9 @@ interface IEditTodoProps {
 export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
-  const [TimeValue, setTimeValue] = useState<Date>(timeStringToDate(time));
+  const [TimeValue, setTimeValue] = useState<Date | null>(
+    !!time ? timeStringToDate(time) : null
+  );
   // const [timeError, setTimeError] = useState<null | string>(null);
   const setEditTodo = useGuest((state) => state.editTodo);
 
@@ -45,20 +47,11 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
-      // const timeValidation = zTimeSchema.safeParse({
-      //   time: convertToPersianTimeWithEnglishNumbers(TimeValue),
-      // });
-
-      // if (!timeValidation.success) {
-      //   setTimeError(
-      //     timeValidation.error.formErrors.fieldErrors.time?.[0] as string
-      //   );
-      //   return;
-      // }
-
       setEditTodo({
         id: _id,
-        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
+        time: !!TimeValue
+          ? convertToPersianTimeWithEnglishNumbers(TimeValue)
+          : "",
         title: values.title,
       });
 
@@ -138,9 +131,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                 className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={
-                  isSubmitting ||
-                  (watch("title") === title &&
-                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
+                  isSubmitting || (watch("title") === title && !TimeValue)
                 }
               >
                 ویرایش

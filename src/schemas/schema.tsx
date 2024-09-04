@@ -16,7 +16,13 @@ export const zCodeSchema = object({
 
 export const zVerifyOtpServerSchema = zPhoneSchema.and(zCodeSchema);
 export const zTimeSchema = object({
-  time: string().regex(/^([01][0-9]|2[0-3]):([0-5][0-9])$/g),
+  time: string().refine((value) => {
+    if (value) {
+      return string().regex(/^([01][0-9]|2[0-3]):([0-5][0-9])$/g);
+    } else {
+      return true;
+    }
+  }),
 });
 
 export const zTodoSchemaServer = object({

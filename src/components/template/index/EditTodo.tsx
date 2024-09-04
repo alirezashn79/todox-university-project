@@ -1,6 +1,6 @@
 "use client";
 import Input from "@/components/modules/input";
-import { zTimeSchema, zTodoSchemaClient } from "@/schemas/schema";
+import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
@@ -29,7 +29,9 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
   const setReload = useDateStore((state) => state.setReload);
-  const [TimeValue, setTimeValue] = useState<Date>(timeStringToDate(time));
+  const [TimeValue, setTimeValue] = useState<Date | null>(
+    !!time ? timeStringToDate(time) : null
+  );
 
   const {
     register,
@@ -45,13 +47,11 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
-      const timeValidation = zTimeSchema.safeParse({
-        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
-      });
-
       const res = await client.put(`/api/todo/${_id}`, {
         ...values,
-        time: convertToPersianTimeWithEnglishNumbers(TimeValue),
+        time: TimeValue
+          ? convertToPersianTimeWithEnglishNumbers(TimeValue)
+          : "",
       });
 
       if (res.status === 200) {
@@ -134,9 +134,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                 className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={
-                  isSubmitting ||
-                  (watch("title") === title &&
-                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
+                  isSubmitting || (watch("title") === title && !TimeValue)
                 }
               >
                 ویرایش

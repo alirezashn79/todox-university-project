@@ -8,6 +8,7 @@ import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
+import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 
 interface ITodo {
   id: string;
@@ -27,7 +28,8 @@ export default function Table() {
   useEffect(() => {
     const getData = () => {
       setLoading(true);
-      const isoDate = date.toISOString().split("T")[0];
+      // const isoDate = date.toISOString().split("T")[0];
+      const isoDate = convertPersianDateToEnglishNumbers(date);
       try {
         const filteredTodos = allTodos.filter((item) => item.date === isoDate);
         setTodosDate(filteredTodos);
@@ -89,7 +91,7 @@ export default function Table() {
                 </th>
                 <td>{item.title}</td>
 
-                <td className="text-center">{item.time}</td>
+                <td className="text-center">{item.time || "--:--"}</td>
 
                 <th>
                   <div className="flex items-center justify-center gap-4">
