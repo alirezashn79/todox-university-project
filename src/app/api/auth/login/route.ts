@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const user = await UserModel.findOne(
       {
         $or: [
-          { email: validationResult.data.identifier },
+          { username: validationResult.data.identifier },
           { phone: validationResult.data.identifier },
         ],
       },

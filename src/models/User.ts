@@ -4,7 +4,7 @@ interface IUserModel {
   fullName: string;
   phone: string;
   password: string;
-  email: string;
+  username: string;
   avatar?: string;
   refreshToken?: string;
 }
@@ -21,7 +21,7 @@ const schema = new Schema<IUserModel>({
     type: String,
     required: true,
   },
-  email: {
+  username: {
     type: String,
     required: true,
   },

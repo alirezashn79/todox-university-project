@@ -49,7 +49,7 @@ export default function Form() {
     try {
       const formData = new FormData();
       formData.append("fullName", values.fullName);
-      formData.append("email", values.email);
+      formData.append("username", values.username.toLocaleLowerCase());
       formData.append("password", values.password);
       formData.append("avatar", values.avatar[0]);
       await client.post("api/user", formData, {
@@ -140,12 +140,11 @@ export default function Form() {
       />
 
       <Input
-        name="email"
-        register={register("email")}
-        type="email"
-        label="ایمیل"
+        name="username"
+        register={register("username")}
+        label="نام کاربری"
         errors={errors}
-        placeholder="ایمیلت رو تایپ کن"
+        placeholder="نام کاربری رو وارد کن"
       />
 
       <Input

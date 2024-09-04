@@ -37,11 +37,11 @@ export async function POST(req: Request) {
 
     const formData = await req.formData();
     const fullName = formData.get("fullName");
-    const email = formData.get("email");
+    const username = formData.get("username");
     const password = formData.get("password");
     const avatar = formData.get("avatar") as File;
 
-    const body = { fullName, email, password, avatar };
+    const body = { fullName, username, password, avatar };
 
     const validationResult = zUserCreationServerSchema.safeParse(body);
 
@@ -60,12 +60,12 @@ export async function POST(req: Request) {
     await DbConnect();
 
     const isUser = await UserModel.exists({
-      email: validationResult.data.email,
+      username: validationResult.data.username,
     });
 
     if (!!isUser) {
       return Response.json(
-        { message: "Email already exist" },
+        { message: "Username already exist" },
         {
           status: 422,
         }

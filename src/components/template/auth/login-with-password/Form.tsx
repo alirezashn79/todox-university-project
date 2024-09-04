@@ -37,9 +37,9 @@ export default function Form() {
         <Input
           name="identifier"
           register={register("identifier")}
-          label="شماره موبایل یا ایمیل"
+          label="شماره موبایل یا نام کاربری"
           errors={errors}
-          placeholder="شماره یا ایمیل تو وارد کن"
+          placeholder="شماره یا نام کاربری تو وارد کن"
           dir="ltr"
         />
 

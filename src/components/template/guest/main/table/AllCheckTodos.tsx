@@ -1,6 +1,7 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
+import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
 import { useState } from "react";
 import { HashLoader } from "react-spinners";
@@ -19,7 +20,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
       setLoading(true);
 
       setCheckAll({
-        date: date.toISOString().split("T")[0],
+        date: convertPersianDateToEnglishNumbers(date),
         isCheck: !checkAll,
       });
       FireToast({

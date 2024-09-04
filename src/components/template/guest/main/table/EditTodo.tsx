@@ -19,12 +19,12 @@ import { TypeOf } from "zod";
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
 
 interface IEditTodoProps {
-  _id: string;
+  id: string;
   title: string;
   time: string;
 }
 
-export default function EditTodo({ _id, time, title }: IEditTodoProps) {
+export default function EditTodo({ id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
   const [TimeValue, setTimeValue] = useState<Date | null>(
@@ -37,6 +37,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<TTodo>({
     defaultValues: {
@@ -48,7 +49,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
       setEditTodo({
-        id: _id,
+        id,
         time: !!TimeValue
           ? convertToPersianTimeWithEnglishNumbers(TimeValue)
           : "",
@@ -101,37 +102,52 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">زمان</span>
+                  <span className={cn("label-text")}>زمان</span>
                 </label>
-                <DatePicker
-                  value={TimeValue}
-                  calendarPosition="top-center"
-                  onChange={(e) => setTimeValue(e?.toDate() as any)}
-                  disableDayPicker
-                  format="HH:mm"
-                  className={theme === "dark" ? "bg-dark" : ""}
-                  plugins={[<TimePicker hideSeconds />]}
-                  render={(_, openCalendar) => (
-                    <input
-                      value={TimeValue?.toLocaleTimeString("fa-ir", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                      readOnly
-                      onClick={openCalendar}
-                      type="text"
-                      className={cn("input input-bordered w-full")}
-                      placeholder="Time"
-                    />
+                <div className="relative">
+                  <DatePicker
+                    calendarPosition="top-center"
+                    value={TimeValue}
+                    onChange={(e) => setTimeValue(e?.toDate() as any)}
+                    disableDayPicker
+                    containerClassName="w-full"
+                    format="HH:mm"
+                    className={cn(theme === "dark" ? "bg-dark" : "")}
+                    plugins={[<TimePicker hideSeconds />]}
+                    render={(value, openCalendar) => (
+                      <input
+                        value={value}
+                        readOnly
+                        onClick={() => {
+                          openCalendar();
+                        }}
+                        type="text"
+                        className={cn(
+                          "input input-bordered w-full"
+                          // timeError ? "input-error" : "input"
+                        )}
+                        placeholder="ساعت؟"
+                      />
+                    )}
+                  />
+                  {!!TimeValue && (
+                    <div className="absolute end-4 top-0 bottom-0 flex items-center justify-center">
+                      <button type="button" onClick={() => setTimeValue(null)}>
+                        ❌
+                      </button>
+                    </div>
                   )}
-                />
+                </div>
               </div>
 
               <button
                 className="absolute bottom-6 end-28 btn btn-primary"
                 type="submit"
                 disabled={
-                  isSubmitting || (watch("title") === title && !TimeValue)
+                  isSubmitting ||
+                  (watch("title") === title &&
+                    !!TimeValue &&
+                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
                 }
               >
                 ویرایش
@@ -141,7 +157,15 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">بستن</button>
+              <button
+                onClick={() => {
+                  setValue("title", title);
+                  setTimeValue(!!time ? timeStringToDate(time) : null);
+                }}
+                className="btn"
+              >
+                بستن
+              </button>
             </form>
           </div>
         </div>

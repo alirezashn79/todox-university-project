@@ -1,9 +1,5 @@
 import { any, object, string } from "zod";
 
-export const zEmailSchema = object({
-  email: string().trim().email("تایپ ایمیل صحیح نیست"),
-});
-
 export const zPhoneSchema = object({
   phone: string().regex(
     /^(?:(?:(?:\\+?|00)(98))|(0))?((?:90|91|92|93|99)[0-9]{8})$/g,
@@ -84,25 +80,29 @@ export const zClientImageSchema = object({
 
 export const zUserCreationServerSchema = object({
   fullName: string().trim().min(1, "نام الزامی است"),
-  email: string().email("تایپ ایمیل صحیح نیست"),
+  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
 }).and(zServerAvatarSchema);
 
 export const zUserCreationClientSchema = object({
   fullName: string().trim().min(1, "نام الزامی است"),
-  email: string().trim().email("تایپ ایمیل صحیح نیست"),
+  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
 }).and(zClientImageSchema);
 
+const zUsernameSchema = object({
+  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+});
+
 export const zSignInForm = object({
   identifier: string().refine((value) => {
-    const validateEmail = zEmailSchema.safeParse({ email: value });
+    const validateUsername = zUsernameSchema.safeParse({ username: value });
     const validatePhone = zPhoneSchema.safeParse({ phone: value });
-    if (validateEmail.success || validatePhone.success) {
+    if (validateUsername.success || validatePhone.success) {
       return true;
     } else {
       return false;
     }
-  }, "ایمیل یا شماره صحیح نیست"),
+  }, "نام کاربری یا شماره صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
 });

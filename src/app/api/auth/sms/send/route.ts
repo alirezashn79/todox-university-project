@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       return Response.json({ message: "error to send code" }, { status: 400 });
     }
 
-    // const expTime = new Date().getTime() + 120_000;
+    // expTime = new Date().getTime() + 120_000;
     // await otpModel.create({
     //   phone: validationResult.phone,
     //   code,

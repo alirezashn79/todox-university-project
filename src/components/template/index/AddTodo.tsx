@@ -81,37 +81,40 @@ export default function AddTodo() {
                 <label className="label">
                   <span className={cn("label-text")}>زمان</span>
                 </label>
-                <DatePicker
-                  calendarPosition="top-left"
-                  value={TimeValue}
-                  onChange={(e) => setTimeValue(e?.toDate() as any)}
-                  disableDayPicker
-                  format="HH:mm"
-                  className={cn(theme === "dark" ? "bg-dark" : "")}
-                  plugins={[<TimePicker hideSeconds />]}
-                  render={(_, openCalendar) => (
-                    <input
-                      value={TimeValue?.toLocaleTimeString("fa-ir", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                      readOnly
-                      onClick={() => {
-                        openCalendar();
-                        // setTimeError(null);
-                      }}
-                      type="text"
-                      className={cn(
-                        "input input-bordered w-full"
-                        // timeError ? "input-error" : "input"
-                      )}
-                      placeholder="ساعت؟"
-                    />
+                <div className="relative">
+                  <DatePicker
+                    calendarPosition="top-center"
+                    value={TimeValue}
+                    onChange={(e) => setTimeValue(e?.toDate() as any)}
+                    disableDayPicker
+                    containerClassName="w-full"
+                    format="HH:mm"
+                    className={cn(theme === "dark" ? "bg-dark" : "")}
+                    plugins={[<TimePicker hideSeconds />]}
+                    render={(value, openCalendar) => (
+                      <input
+                        value={value}
+                        readOnly
+                        onClick={() => {
+                          openCalendar();
+                        }}
+                        type="text"
+                        className={cn(
+                          "input input-bordered w-full"
+                          // timeError ? "input-error" : "input"
+                        )}
+                        placeholder="ساعت؟"
+                      />
+                    )}
+                  />
+                  {!!TimeValue && (
+                    <div className="absolute end-4 top-0 bottom-0 flex items-center justify-center">
+                      <button type="button" onClick={() => setTimeValue(null)}>
+                        ❌
+                      </button>
+                    </div>
                   )}
-                />
-                {/* {timeError && (
-                  <span className="text-error mt-1">{timeError}</span>
-                )} */}
+                </div>
               </div>
 
               <button
@@ -126,7 +129,15 @@ export default function AddTodo() {
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">بستن</button>
+              <button
+                onClick={() => {
+                  reset();
+                  setTimeValue(null);
+                }}
+                className="btn"
+              >
+                بستن
+              </button>
             </form>
           </div>
         </div>
