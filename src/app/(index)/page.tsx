@@ -1,15 +1,11 @@
-import Navbar from "@/components/modules/navbar";
-import List from "@/components/template/index/List";
-import { IUser } from "@/types";
-import { isAuth } from "@/utils/serverHelpers";
+import NavigationDate from "@/components/template/index/NavigationDate";
+import Table from "@/components/template/index/Table";
 
-export default async function TodoList() {
-  const user = await isAuth();
-
+export default async function HomePage() {
   return (
     <main>
-      <Navbar user={user as IUser} />
-      <List />
+      <NavigationDate />
+      <Table />
     </main>
   );
 }

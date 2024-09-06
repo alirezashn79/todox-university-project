@@ -27,9 +27,9 @@ export default function NavigationDate() {
 
   const displayDates = getDisplayDates(date);
   return (
-    <section>
+    <section className="mb-4">
       <button
-        className="btn btn-primary btn-outline mb-6 ms-auto"
+        className="btn btn-primary btn-outline mb-8 ms-auto"
         onClick={() => changeDate(new Date())}
         disabled={date.toDateString() === new Date().toDateString()}
       >

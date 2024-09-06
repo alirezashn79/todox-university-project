@@ -70,11 +70,11 @@ export const zClientImageSchema = object({
       // }
     }, "عکس الزامی و حجم آن باید کمتر از 2 مگابایت باشد")
     .refine((files: File[]) => {
-      if (files && files[0]) {
-        return ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type);
-      } else {
-        return true;
-      }
+      // if (files && files[0]) {
+      return ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type);
+      // } else {
+      //   return true;
+      // }
     }, "تایپ های مورد قبول:  .jpg, .jpeg, .png and .webp formats are supported."),
 });
 
@@ -89,6 +89,19 @@ export const zUserCreationClientSchema = object({
   username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
 }).and(zClientImageSchema);
+
+export const zEditProfileSchema = object({
+  fullName: string().trim().min(1, "نام الزامی است"),
+  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+  password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+  avatar: any()
+    .refine((file: File) => {
+      return file?.size <= MAX_FILE_SIZE;
+    }, "حجم عکس باید کمتر از 2 مگابایت باشد")
+    .refine((file: File) => {
+      return ACCEPTED_IMAGE_TYPES.includes(file?.type);
+    }, "تایپ های مورد قبول:  .jpg, .jpeg, .png and .webp formats are supported."),
+}).partial();
 
 const zUsernameSchema = object({
   username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),

@@ -54,7 +54,7 @@ export default function Table() {
 
   const todoEl = (
     <div className="overflow-x-auto">
-      <table className="table table-zebra">
+      <table className="table table-zebra rounded-t-lg overflow-hidden">
         {/* head */}
         <thead className="text-xs lg:text-sm bg-primary/20">
           <tr>
