@@ -41,7 +41,9 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
     <>
       {loading ? (
         // <span className="loading loading-spinner text-primary loading-md"></span>
-        <HashLoader size={24} color="#00a96e" />
+        <div className="my-[2.5px] lg:my-[3.5px]">
+          <HashLoader size={24} color="#00a96e" />
+        </div>
       ) : (
         <input
           checked={checkAll}

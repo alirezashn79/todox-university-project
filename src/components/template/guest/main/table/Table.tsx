@@ -65,7 +65,7 @@ export default function Table() {
     <div className="overflow-x-auto">
       <table className="table table-zebra">
         {/* head */}
-        <thead className="text-xs lg:text-sm">
+        <thead className="text-xs lg:text-sm bg-primary/20">
           <tr>
             <th>
               <AllCheckTodos checkAll={checkAll} />
@@ -88,7 +88,7 @@ export default function Table() {
                 <th>
                   <ToggleDoneTodo id={item.id} isDone={item.isDone} />
                 </th>
-                <td className="lg:min-w-64">{item.title}</td>
+                <td className="break-all">{item.title}</td>
 
                 <td className="text-center">{item.time || "-:-"}</td>
 

@@ -29,7 +29,9 @@ export default function ToggleDoneTodo({
   return (
     <>
       {loading ? (
-        <HashLoader size={24} color="#7480ff" />
+        <div className="my-1 lg:my-[5px]">
+          <HashLoader size={24} color="#7480ff" />
+        </div>
       ) : (
         <label>
           <input

@@ -39,7 +39,9 @@ export default function ToggleDoneTodo({
     <>
       {loading ? (
         // <span className="loading loading-spinner text-primary loading-md"></span>
-        <HashLoader size={24} color="#7480ff" />
+        <div className="my-1 lg:my-[5px]">
+          <HashLoader size={24} color="#7480ff" />
+        </div>
       ) : (
         <label>
           <input
