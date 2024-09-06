@@ -21,7 +21,9 @@ export default function ToggleDoneTodo({
     try {
       setLoading(true);
       await client.put(`/api/todo/${id}/done`);
-      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
+      await mutate(
+        `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
+      );
       FireToast({
         type: "success",
         message: "اعمال شد",

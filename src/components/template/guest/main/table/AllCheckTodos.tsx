@@ -39,14 +39,14 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
     <>
       {loading ? (
         // <span className="loading loading-spinner text-primary loading-md"></span>
-        <HashLoader size={24} color="#7480ff" />
+        <HashLoader size={24} color="#00a96e" />
       ) : (
         <label>
           <input
             checked={checkAll}
             onChange={handleAllCheck}
             type="checkbox"
-            className="checkbox checkbox-lg checkbox-primary"
+            className="checkbox checkbox-success"
           />
         </label>
       )}

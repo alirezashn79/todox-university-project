@@ -55,7 +55,9 @@ export default function AddTodo() {
       FireToast({ type: "success", message: "اضافه شد" });
       modal.current.close();
       reset();
-      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
+      await mutate(
+        `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
+      );
     } catch (error) {
       console.log(error);
     }

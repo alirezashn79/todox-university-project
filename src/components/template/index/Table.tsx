@@ -2,7 +2,6 @@
 import useDateStore from "@/stores/DateStore";
 import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import useSWR from "swr";
 import AllCheckTodos from "./AllCheckTodos";
@@ -27,6 +26,15 @@ export default function Table() {
   const { data, error, isLoading } = useSWR<ITodo[]>(
     date ? `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}` : null,
     date ? fetcher : null
+  );
+
+  const errorEl = (
+    <div className=" max-w-lg mx-auto py-10 mt-32 lg:mt-24 flex flex-col items-center justify-center">
+      <Image height={200} width={200} src="/img/error.png" alt="error" />
+      <p className="text-gray-500 text-xl text-center font-semibold mt-2">
+        خطا در اتصال
+      </p>
+    </div>
   );
 
   const loadingEl = (
@@ -65,7 +73,7 @@ export default function Table() {
           {/* row 1 */}
           {data?.map((item) => (
             <tr key={item._id.toString()}>
-              <th className="ps-5">
+              <th>
                 <ToggleDoneTodo id={item._id} isDone={item.isDone} />
               </th>
               <td className="lg:min-w-64">{item.title}</td>
@@ -91,6 +99,6 @@ export default function Table() {
 
   if (isLoading) return loadingEl;
   if (!data?.length) return noTodoEl;
-  if (error) return "Error";
+  if (error) return errorEl;
   return todoEl;
 }

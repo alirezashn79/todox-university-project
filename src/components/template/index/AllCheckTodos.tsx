@@ -22,7 +22,9 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
         isCheck: !checkAll,
       });
 
-      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
+      await mutate(
+        `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
+      );
       FireToast({
         type: "success",
         message: `همه کارها در حالت  ${
@@ -39,16 +41,14 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
     <>
       {loading ? (
         // <span className="loading loading-spinner text-primary loading-md"></span>
-        <HashLoader size={24} color="#7480ff" />
+        <HashLoader size={24} color="#00a96e" />
       ) : (
-        <label>
-          <input
-            checked={checkAll}
-            onChange={handleAllCheck}
-            type="checkbox"
-            className="checkbox checkbox-lg checkbox-primary"
-          />
-        </label>
+        <input
+          checked={checkAll}
+          onChange={handleAllCheck}
+          type="checkbox"
+          className="checkbox checkbox-success"
+        />
       )}
     </>
   );

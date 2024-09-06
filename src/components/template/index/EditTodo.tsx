@@ -59,7 +59,9 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
       });
 
       if (res.status === 200) {
-        mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
+        await mutate(
+          `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
+        );
       }
       modalEdit.current.close();
 

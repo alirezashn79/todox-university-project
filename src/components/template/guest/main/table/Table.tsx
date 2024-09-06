@@ -85,7 +85,7 @@ export default function Table() {
             )
             .map((item) => (
               <tr key={item.id.toString()}>
-                <th className="ps-5">
+                <th>
                   <ToggleDoneTodo id={item.id} isDone={item.isDone} />
                 </th>
                 <td className="lg:min-w-64">{item.title}</td>
