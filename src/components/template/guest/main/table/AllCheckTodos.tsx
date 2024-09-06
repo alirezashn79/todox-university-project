@@ -46,7 +46,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
             checked={checkAll}
             onChange={handleAllCheck}
             type="checkbox"
-            className="checkbox checkbox-primary"
+            className="checkbox checkbox-lg checkbox-primary"
           />
         </label>
       )}

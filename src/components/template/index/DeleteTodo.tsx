@@ -1,10 +1,12 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
+import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import { fireConfrimSwal } from "@/utils/swal";
+import { mutate } from "swr";
 
 export default function DeleteTodo({ id }: { id: string }) {
-  const setReload = useDateStore((state) => state.setReload);
+  const date = useDateStore((state) => state.date);
 
   const handleDelete = (todoId: string) => {
     fireConfrimSwal({
@@ -12,7 +14,7 @@ export default function DeleteTodo({ id }: { id: string }) {
       subText: "این عمل برگشت پذیر نیست!",
       successFunction: async () => {
         await client.delete(`/api/todo/${todoId}`);
-        setReload();
+        mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
       },
       successText: "حذف شد",
     });

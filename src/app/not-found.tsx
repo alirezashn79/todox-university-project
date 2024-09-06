@@ -16,7 +16,7 @@ export default function notFound() {
           <span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-primary group-hover:translate-y-0 group-hover:translate-x-0"></span>
 
           <span className="relative block px-8 py-3 bg-primary text-white border border-current">
-            Go Home
+            بازگشت به صفحه اصلی
           </span>
         </Link>
       </button>

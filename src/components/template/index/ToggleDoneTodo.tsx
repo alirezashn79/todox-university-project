@@ -1,9 +1,11 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
+import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
 import { useState } from "react";
 import { HashLoader } from "react-spinners";
+import { mutate } from "swr";
 
 export default function ToggleDoneTodo({
   id,
@@ -13,13 +15,13 @@ export default function ToggleDoneTodo({
   isDone: boolean;
 }) {
   const [loading, setLoading] = useState(false);
-  const setReload = useDateStore((state) => state.setReload);
+  const date = useDateStore((state) => state.date);
 
   const handleToggleDoneTodo = async (id: string) => {
     try {
       setLoading(true);
       await client.put(`/api/todo/${id}/done`);
-      setReload();
+      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
       FireToast({
         type: "success",
         message: "اعمال شد",

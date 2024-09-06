@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isExpired } from "react-jwt";
 import client from "./utils/client";
+import { verifyRefreshToken } from "./utils/auth";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
@@ -24,7 +25,7 @@ export async function middleware(request: NextRequest) {
             httpOnly: true,
             path: "/",
             sameSite: "strict",
-            maxAge: 3600,
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
             secure: process.env.NODE_ENV === "production",
           });
           return responseWithCookies;

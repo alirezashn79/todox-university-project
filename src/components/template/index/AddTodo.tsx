@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
@@ -18,6 +19,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import "react-multi-date-picker/styles/layouts/mobile.css";
+import { mutate } from "swr";
 import { TypeOf } from "zod";
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
@@ -26,8 +28,6 @@ export default function AddTodo() {
   const modal = useRef<any>();
   const theme = useTheme((state) => state.theme);
   const date = useDateStore((state) => state.date);
-
-  const setReload = useDateStore((state) => state.setReload);
 
   const [TimeValue, setTimeValue] = useState<Date | null>(null);
   // const [timeError, setTimeError] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function AddTodo() {
       FireToast({ type: "success", message: "اضافه شد" });
       modal.current.close();
       reset();
-      setReload();
+      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
     } catch (error) {
       console.log(error);
     }
@@ -117,13 +117,11 @@ export default function AddTodo() {
                 </div>
               </div>
 
-              <button
-                className="absolute bottom-6 end-28 btn btn-primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                اضافه کردن
-              </button>
+              <Button
+                loading={isSubmitting}
+                text="اضافه کردن"
+                className="absolute bottom-6 end-28"
+              />
             </div>
           </form>
           <div className="modal-action">

@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
@@ -110,19 +111,25 @@ export default function AddTodo() {
                 </div>
               </div>
 
-              <button
-                className="absolute bottom-6 end-28 btn btn-primary"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                اضافه کردن
-              </button>
+              <Button
+                loading={isSubmitting}
+                text="اضافه کردن"
+                className="absolute bottom-6 end-28"
+              />
             </div>
           </form>
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">بستن</button>
+              <button
+                onClick={() => {
+                  reset();
+                  setTimeValue(null);
+                }}
+                className="btn "
+              >
+                بستن
+              </button>
             </form>
           </div>
         </div>

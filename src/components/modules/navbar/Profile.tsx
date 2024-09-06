@@ -21,7 +21,7 @@ export default function Profile({ user }: IProfileProps) {
       >
         <li className="font-semibold">
           <p className="px-2 py-3">
-            خوش اومدی <span className="text-primary">{user.fullName}</span>
+            خوش اومدی <span className="text-primary">{user?.fullName}</span>
           </p>
         </li>
         <li>

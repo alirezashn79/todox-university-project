@@ -1,10 +1,12 @@
 "use client";
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import client from "@/utils/client";
 import {
+  convertPersianDateToEnglishNumbers,
   convertToPersianTimeWithEnglishNumbers,
   timeStringToDate,
 } from "@/utils/clientHelpers";
@@ -15,6 +17,7 @@ import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import { mutate } from "swr";
 import { TypeOf } from "zod";
 
 type TTodo = TypeOf<typeof zTodoSchemaClient>;
@@ -28,7 +31,7 @@ interface IEditTodoProps {
 export default function EditTodo({ _id, time, title }: IEditTodoProps) {
   const modalEdit = useRef<any>(null);
   const theme = useTheme((state) => state.theme);
-  const setReload = useDateStore((state) => state.setReload);
+  const date = useDateStore((state) => state.date);
   const [TimeValue, setTimeValue] = useState<Date | null>(
     !!time ? timeStringToDate(time) : null
   );
@@ -56,7 +59,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
       });
 
       if (res.status === 200) {
-        setReload();
+        mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
       }
       modalEdit.current.close();
 
@@ -142,20 +145,16 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                   )}
                 </div>
               </div>
-
-              <button
-                className="absolute bottom-6 end-28 btn btn-primary"
-                type="submit"
+              <Button
+                loading={isSubmitting}
                 disabled={
-                  isSubmitting ||
-                  (watch("title") === title &&
-                    convertToPersianTimeWithEnglishNumbers(
-                      TimeValue as Date
-                    ) === time)
+                  watch("title") === title &&
+                  convertToPersianTimeWithEnglishNumbers(TimeValue as Date) ===
+                    time
                 }
-              >
-                ویرایش
-              </button>
+                text="ویرایش"
+                className="absolute bottom-6 end-28"
+              />
             </div>
           </form>
           <div className="modal-action">

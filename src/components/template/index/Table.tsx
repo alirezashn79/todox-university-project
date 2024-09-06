@@ -1,14 +1,14 @@
 "use client";
 import useDateStore from "@/stores/DateStore";
-import client from "@/utils/client";
+import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
+import useSWR from "swr";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
-import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 
 interface ITodo {
   _id: string;
@@ -19,31 +19,15 @@ interface ITodo {
   date: string;
 }
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function Table() {
   const date = useDateStore((state) => state.date);
-  const reload = useDateStore((state) => state.reload);
-  const [todosDate, setTodosDate] = useState<null | ITodo[]>(null);
-  const [loading, setLoading] = useState(true);
-  const [checkAll, setcheckAll] = useState(false);
 
-  useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
-      const isoDate = convertPersianDateToEnglishNumbers(date);
-      try {
-        const res = await client.get(`/api/user/todos/${isoDate}`);
-        const result = res.data.every((item: any) => item.isDone);
-
-        setcheckAll(result);
-        setTodosDate(res.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getData();
-  }, [date, reload]);
+  const { data, error, isLoading } = useSWR<ITodo[]>(
+    date ? `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}` : null,
+    date ? fetcher : null
+  );
 
   const loadingEl = (
     <div className=" max-w-lg mx-auto py-10 mt-52 lg:mt-36 flex items-center justify-center text-primary">
@@ -67,7 +51,9 @@ export default function Table() {
         <thead className="text-xs lg:text-sm">
           <tr>
             <th>
-              <AllCheckTodos checkAll={checkAll} />
+              <AllCheckTodos
+                checkAll={data?.every((item) => item.isDone) || false}
+              />
             </th>
             <th>عنوان</th>
 
@@ -77,36 +63,34 @@ export default function Table() {
         </thead>
         <tbody className="text-base lg:text-lg">
           {/* row 1 */}
-          {todosDate
-            ?.sort(
-              (a, b) =>
-                (a.time.split(":")[0] as any) - (b.time.split(":")[0] as any)
-            )
-            .map((item) => (
-              <tr key={item._id.toString()}>
-                <th>
-                  <ToggleDoneTodo id={item._id} isDone={item.isDone} />
-                </th>
-                <td className="lg:min-w-64">{item.title}</td>
+          {data?.map((item) => (
+            <tr key={item._id.toString()}>
+              <th className="ps-5">
+                <ToggleDoneTodo id={item._id} isDone={item.isDone} />
+              </th>
+              <td className="lg:min-w-64">{item.title}</td>
 
-                <td className="text-center">{item.time || "--:--"}</td>
+              <td className="text-center">{item.time || "-:-"}</td>
 
-                <th>
-                  <div className="flex items-center justify-center gap-4">
-                    <EditTodo
-                      _id={item._id}
-                      time={item.time}
-                      title={item.title}
-                    />
-                    <DeleteTodo id={item._id} />
-                  </div>
-                </th>
-              </tr>
-            ))}
+              <th>
+                <div className="flex items-center justify-center gap-4">
+                  <EditTodo
+                    _id={item._id}
+                    time={item.time}
+                    title={item.title}
+                  />
+                  <DeleteTodo id={item._id} />
+                </div>
+              </th>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 
-  return <>{loading ? loadingEl : !!todosDate?.length ? todoEl : noTodoEl}</>;
+  if (isLoading) return loadingEl;
+  if (!data?.length) return noTodoEl;
+  if (error) return "Error";
+  return todoEl;
 }

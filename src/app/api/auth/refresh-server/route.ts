@@ -41,7 +41,7 @@ export async function GET() {
       httpOnly: true,
       path: "/",
       sameSite: "strict",
-      maxAge: 3600,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       secure: process.env.NODE_ENV === "production",
     });
 

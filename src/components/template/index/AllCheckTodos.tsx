@@ -5,13 +5,13 @@ import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import { FireToast } from "@/utils/toast";
 import { useState } from "react";
 import { HashLoader } from "react-spinners";
+import { mutate } from "swr";
 
 interface IAllCheckProps {
   checkAll: boolean;
 }
 export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
   const date = useDateStore((state) => state.date);
-  const setReload = useDateStore((state) => state.setReload);
   const [loading, setLoading] = useState(false);
 
   const handleAllCheck = async () => {
@@ -22,7 +22,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
         isCheck: !checkAll,
       });
 
-      setReload();
+      mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
       FireToast({
         type: "success",
         message: `همه کارها در حالت  ${
@@ -46,7 +46,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
             checked={checkAll}
             onChange={handleAllCheck}
             type="checkbox"
-            className="checkbox checkbox-primary"
+            className="checkbox checkbox-lg checkbox-primary"
           />
         </label>
       )}
