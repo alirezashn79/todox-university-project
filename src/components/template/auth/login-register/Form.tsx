@@ -36,7 +36,7 @@ export default function Sms() {
   const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
     try {
       setIsLoading(true);
-      const res = await client.post("/api/auth/sms/send", values);
+      const res = await client.post("api/auth/sms/send", values);
       setDate(res.data.expTime - 1_000);
       FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
@@ -63,7 +63,7 @@ export default function Sms() {
     try {
       setIsLoading(true);
       const phone = sessionStorage.getItem("phone");
-      const res = await client.post("/api/auth/sms/verify", {
+      const res = await client.post("api/auth/sms/verify", {
         phone,
         code: otp,
       });

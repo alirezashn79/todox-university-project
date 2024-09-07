@@ -17,7 +17,7 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
   const handleAllCheck = async () => {
     try {
       setLoading(true);
-      await client.put("/api/todo", {
+      await client.put("api/todo", {
         date: convertPersianDateToEnglishNumbers(date),
         isCheck: !checkAll,
       });

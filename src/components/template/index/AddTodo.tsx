@@ -46,7 +46,7 @@ export default function AddTodo() {
     //   return;
     // }
     try {
-      await client.post("/api/todo", {
+      await client.post("api/todo", {
         ...values,
         date: convertPersianDateToEnglishNumbers(date),
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),

@@ -2,14 +2,14 @@
 import useDateStore from "@/stores/DateStore";
 import client from "@/utils/client";
 import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
-import { fireConfrimSwal } from "@/utils/swal";
+import { fireConfirmSwal } from "@/utils/swal";
 import { mutate } from "swr";
 
 export default function DeleteTodo({ id }: { id: string }) {
   const date = useDateStore((state) => state.date);
 
   const handleDelete = (todoId: string) => {
-    fireConfrimSwal({
+    fireConfirmSwal({
       confirmText: "آیا حذف شود؟",
       subText: "این عمل برگشت پذیر نیست!",
       successFunction: async () => {

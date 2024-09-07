@@ -91,9 +91,6 @@ export const zUserCreationClientSchema = object({
 }).and(zClientImageSchema);
 
 export const zEditProfileSchema = object({
-  fullName: string().trim().min(1, "نام الزامی است"),
-  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
-  password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
   avatar: any()
     .refine((file: File) => {
       return file?.size <= MAX_FILE_SIZE;
@@ -101,7 +98,46 @@ export const zEditProfileSchema = object({
     .refine((file: File) => {
       return ACCEPTED_IMAGE_TYPES.includes(file?.type);
     }, "تایپ های مورد قبول:  .jpg, .jpeg, .png and .webp formats are supported."),
+});
+
+export const zEditInfoSchema = object({
+  fullName: string().trim().min(1, "نام الزامی است"),
+  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
 }).partial();
+
+export const zPass = object({
+  prevPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+  newPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+  confirmPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+}).superRefine(({ prevPass, newPass, confirmPass }, ctx) => {
+  if (prevPass === newPass) {
+    ctx.addIssue({
+      code: "custom",
+      message: "رمز جدید باید متفاوت باشد",
+      path: ["newPass"],
+    });
+  }
+  if (newPass !== confirmPass) {
+    ctx.addIssue({
+      code: "custom",
+      message: "با رمزعبور جدید مغایرت دارد",
+      path: ["confirmPass"],
+    });
+  }
+});
+
+export const zPassServer = object({
+  prevPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+  newPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
+}).superRefine(({ prevPass, newPass }, ctx) => {
+  if (prevPass === newPass) {
+    ctx.addIssue({
+      code: "custom",
+      message: "رمز جدید باید متفاوت باشد",
+      path: ["newPass"],
+    });
+  }
+});
 
 const zUsernameSchema = object({
   username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),

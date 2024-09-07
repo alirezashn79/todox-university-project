@@ -17,7 +17,7 @@ client.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
         try {
-          await axios.get("/api/auth/refresh-server");
+          await axios.get("api/auth/refresh-server");
           // toast.success(res.data.message, {
           //   style: {
           //     backgroundColor: theme === "dark" ? "#1d232a" : undefined,

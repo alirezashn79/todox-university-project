@@ -1,7 +1,7 @@
 "use client";
 
 import client from "@/utils/client";
-import { fireConfrimSwal } from "@/utils/swal";
+import { fireConfirmSwal } from "@/utils/swal";
 import { useRouter } from "next/navigation";
 
 export default function LogoutBtn() {
@@ -9,10 +9,10 @@ export default function LogoutBtn() {
 
   const handleLogout = () => {
     const logout = async () => {
-      await client.get("/api/auth/logout");
+      await client.get("api/auth/logout");
       replace("/auth/login-register");
     };
-    fireConfrimSwal({
+    fireConfirmSwal({
       confirmText: "آیا میخواهید خارج شوید؟",
       successFunction: logout,
       successText: "خارج شدید",

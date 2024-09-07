@@ -19,7 +19,7 @@ export default function page() {
         }));
 
         try {
-          await client.post("/api/todo/guest", body);
+          await client.post("api/todo/guest", body);
 
           localStorage.removeItem("guest");
 

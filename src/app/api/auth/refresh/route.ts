@@ -7,9 +7,11 @@ interface IDecodedToken {
   phone: string;
 }
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
+  console.log("Sd");
   try {
     const refreshToken = req.headers.get("authorization")?.split(" ")[1];
+    console.log(refreshToken);
 
     if (!refreshToken || !verifyRefreshToken(refreshToken))
       throw new Error("refresh token is expired");

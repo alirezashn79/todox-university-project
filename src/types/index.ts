@@ -3,4 +3,5 @@ export interface IUser {
   fullName: string;
   phone: string;
   avatar: string;
+  username: string;
 }

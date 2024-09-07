@@ -1,12 +1,12 @@
 "use client";
 import useGuest from "@/stores/GuestStore";
-import { fireConfrimSwal } from "@/utils/swal";
+import { fireConfirmSwal } from "@/utils/swal";
 
 export default function DeleteTodo({ id }: { id: string }) {
   const deleteTodo = useGuest((state) => state.deleteTodo);
 
   const handleDelete = (todoId: string) => {
-    fireConfrimSwal({
+    fireConfirmSwal({
       confirmText: "آیا حذف شود؟",
       subText: "این عمل برگشت پذیر نیست!",
       successFunctionVoid: () => deleteTodo(todoId),

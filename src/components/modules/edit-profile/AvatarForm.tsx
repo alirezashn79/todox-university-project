@@ -11,11 +11,13 @@ import { TypeOf } from "zod";
 import Button from "../Button";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
+import { useRouter } from "next/navigation";
 
 type TAvatar = TypeOf<typeof zClientImageSchema>;
 
 export default function AvatarForm({ user }: { user: IUser }) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { refresh } = useRouter();
 
   const {
     register,
@@ -31,11 +33,14 @@ export default function AvatarForm({ user }: { user: IUser }) {
     try {
       const formData = new FormData();
       formData.append("avatar", values.avatar[0]);
-      await client.post("api/user", formData, {
+      await client.put("api/user/edit-profile/avatar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      reset();
+      refresh();
+
       FireToast({
         type: "success",
         message: "عکس پروفایل با موفقیت تغییر کرد",
@@ -104,8 +109,8 @@ export default function AvatarForm({ user }: { user: IUser }) {
           {!!watch("avatar") && (
             <Button
               type="button"
+              loading={false}
               text="لغو"
-              loading={isSubmitting}
               disabled={!watch("avatar")}
               className="btn-error btn-outline"
               onClick={reset}

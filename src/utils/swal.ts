@@ -5,7 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 import { FireToast } from "./toast";
 const MySwal = withReactContent(Swal);
 
-interface IConfrimSwal {
+interface IConfirmSwal {
   confirmText: string;
   subText?: string;
   successFunction?: () => Promise<void>;
@@ -27,13 +27,13 @@ export const fireSwal = (options: SweetAlertOptions) => {
   });
 };
 
-export const fireConfrimSwal = ({
+export const fireConfirmSwal = ({
   confirmText,
   subText,
   successFunction,
   successFunctionVoid,
   successText,
-}: IConfrimSwal) => {
+}: IConfirmSwal) => {
   fireSwal({
     title: confirmText,
     text: subText,
