@@ -1,7 +1,6 @@
 import { IUser } from "@/types";
-import Link from "next/link";
+import DropDownItem from "./DropDownItem";
 import LogoutBtn from "./LogoutBtn";
-import Image from "next/image";
 interface IProfileProps {
   user: IUser;
 }
@@ -13,8 +12,10 @@ export default function Profile({ user }: IProfileProps) {
         role="button"
         className="btn btn-ghost btn-circle avatar"
       >
-        <div className="w-10 rounded-full">
-          <img alt="avatar" src={user?.avatar} />
+        <div className="avatar online">
+          <div className="w-10 rounded-full">
+            <img alt="avatar" src={user?.avatar} />
+          </div>
         </div>
       </div>
       <ul
@@ -26,11 +27,7 @@ export default function Profile({ user }: IProfileProps) {
             خوش اومدی <span className="text-primary">{user?.fullName}</span>
           </span>
         </li>
-        <li className="font-semibold">
-          <Link className="px-2 py-3" href="/edit-profile">
-            ویرایش پروفایل
-          </Link>
-        </li>
+        <DropDownItem />
         <li>
           <LogoutBtn />
         </li>
