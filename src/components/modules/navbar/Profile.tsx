@@ -1,6 +1,7 @@
 import { IUser } from "@/types";
 import Link from "next/link";
 import LogoutBtn from "./LogoutBtn";
+import Image from "next/image";
 interface IProfileProps {
   user: IUser;
 }
@@ -13,7 +14,7 @@ export default function Profile({ user }: IProfileProps) {
         className="btn btn-ghost btn-circle avatar"
       >
         <div className="w-10 rounded-full">
-          <img width={40} height={40} alt="avatar" src={user?.avatar} />
+          <img alt="avatar" src={user?.avatar} />
         </div>
       </div>
       <ul

@@ -12,7 +12,6 @@ export async function middleware(request: NextRequest) {
   if (!token || isExpired(token.value)) {
     console.log("-----------------token expired-------------------");
     const refreshToken = request.cookies.get("refreshToken");
-    console.log(request.nextUrl);
     if (refreshToken) {
       try {
         const res = await axios.get(

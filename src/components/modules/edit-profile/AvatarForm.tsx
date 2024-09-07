@@ -106,7 +106,7 @@ export default function AvatarForm({ user }: { user: IUser }) {
             loading={isSubmitting}
             disabled={!watch("avatar")}
           />
-          {!!watch("avatar") && (
+          {!!watch("avatar") && !isSubmitting && (
             <Button
               type="button"
               loading={false}

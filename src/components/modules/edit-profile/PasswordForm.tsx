@@ -79,7 +79,7 @@ export default function PasswordForm() {
         />
 
         <div className="form-control">
-          <Button className=" sm:mt-9" loading={isSubmitting} text="ثبت" />
+          <Button className="sm:mt-9" loading={isSubmitting} text="ثبت" />
         </div>
       </div>
     </form>
