@@ -49,10 +49,14 @@ export default function InfoForm({ user }: IInfoProps) {
         message: "اطلاعات با موفقیت تغییر کرد",
       });
     } catch (error: any) {
-      setError("username", {
-        message: "نام کاربری وجود دارد",
-      });
-      console.log(error);
+      if (error.response) {
+        if (error.response.status === 409) {
+          setError("username", {
+            message: "نام کاربری وجود دارد",
+          });
+        }
+        console.log(error);
+      }
     }
   };
   return (

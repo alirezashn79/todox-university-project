@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DropDownItem from "./DropDownItem";
 
 export default function Profile() {
   return (
@@ -35,6 +36,7 @@ export default function Profile() {
               خوش اومدی <span className="text-primary">کاربر مهمان</span>
             </p>
           </li>
+          <DropDownItem />
           <li>
             <Link className="px-2 py-3" href="/auth/login-register">
               ثبت نام

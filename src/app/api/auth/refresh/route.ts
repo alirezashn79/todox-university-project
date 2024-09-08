@@ -11,9 +11,9 @@ export async function GET(req: Request) {
   try {
     const refreshToken = req.headers.get("authorization")?.split(" ")[1];
 
-    console.log(!refreshToken || !verifyRefreshToken(refreshToken));
-    if (!refreshToken || !verifyRefreshToken(refreshToken))
+    if (!refreshToken || !verifyRefreshToken(refreshToken)) {
       throw new Error("refresh token is expired");
+    }
 
     const decodedToken = decodeToken<IDecodedToken>(refreshToken);
 

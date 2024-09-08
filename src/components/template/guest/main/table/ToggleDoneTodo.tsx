@@ -22,7 +22,9 @@ export default function ToggleDoneTodo({
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     }
   };
 

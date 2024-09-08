@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
 import { zTodoSchemaClient } from "@/schemas/schema";
 import useGuest from "@/stores/GuestStore";
@@ -30,7 +31,7 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
   const [TimeValue, setTimeValue] = useState<Date | null>(
     !!time ? timeStringToDate(time) : null
   );
-  // const [timeError, setTimeError] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
   const setEditTodo = useGuest((state) => state.editTodo);
 
   const {
@@ -38,7 +39,7 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TTodo>({
     defaultValues: {
       title,
@@ -48,6 +49,7 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
+      setLoading(true);
       setEditTodo({
         id,
         time: !!TimeValue
@@ -55,9 +57,11 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
           : "",
         title: values.title,
       });
-
-      modalEdit.current.close();
-      FireToast({ type: "success", message: "تغییرات اعمال شد" });
+      setTimeout(() => {
+        setLoading(false);
+        modalEdit.current.close();
+        FireToast({ type: "success", message: "تغییرات اعمال شد" });
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -140,18 +144,17 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
                 </div>
               </div>
 
-              <button
-                className="absolute bottom-6 end-28 btn btn-primary"
-                type="submit"
+              <Button
+                text="ویرایش"
                 disabled={
-                  isSubmitting ||
+                  loading ||
                   (watch("title") === title &&
-                    !!TimeValue &&
-                    convertToPersianTimeWithEnglishNumbers(TimeValue) === time)
+                    convertToPersianTimeWithEnglishNumbers(TimeValue as any) ===
+                      time)
                 }
-              >
-                ویرایش
-              </button>
+                loading={loading}
+                className="absolute bottom-6 end-28 btn btn-primary"
+              />
             </div>
           </form>
           <div className="modal-action">

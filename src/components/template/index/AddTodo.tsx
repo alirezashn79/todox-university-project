@@ -63,7 +63,6 @@ export default function AddTodo() {
     }
   };
 
-  console.log(TimeValue);
   return (
     <>
       <dialog ref={modal} className="modal modal-bottom sm:modal-middle">

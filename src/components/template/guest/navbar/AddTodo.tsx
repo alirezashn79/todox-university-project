@@ -28,32 +28,34 @@ export default function AddTodo() {
   const theme = useTheme((state) => state.theme);
   const date = useDateStore((state) => state.date);
   const [TimeValue, setTimeValue] = useState<Date | null>(null);
-  // const [timeError, setTimeError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const addTodo = useGuest((state) => state.addTodo);
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TTodo>({
     resolver: zodResolver(zTodoSchemaClient),
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
-    // if (!TimeValue) {
-    //   setTimeError("زمان الزامی است");
-    //   return;
-    // }
-
-    addTodo({
-      title: values.title,
-      date: convertPersianDateToEnglishNumbers(date),
-      time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
-    });
-
-    FireToast({ type: "success", message: "ثبت شد" });
-    modal.current.close();
-    reset();
+    try {
+      setLoading(true);
+      addTodo({
+        title: values.title,
+        date: convertPersianDateToEnglishNumbers(date),
+        time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
+      });
+      setTimeout(() => {
+        reset();
+        setLoading(false);
+        modal.current.close();
+        FireToast({ type: "success", message: "ثبت شد" });
+      }, 500);
+    } catch (error) {
+      console.log(error);
+    }
   };
   console.log(TimeValue);
   return (
@@ -112,9 +114,10 @@ export default function AddTodo() {
               </div>
 
               <Button
-                loading={isSubmitting}
                 text="اضافه کردن"
-                className="absolute bottom-6 end-28"
+                disabled={loading}
+                loading={loading}
+                className="absolute bottom-6 end-28 btn btn-primary"
               />
             </div>
           </form>
