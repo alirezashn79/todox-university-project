@@ -9,6 +9,7 @@ interface IDecodedToken {
 
 export async function GET(req: Request) {
   try {
+    console.log("----------------enter api-----------------");
     const refreshToken = req.headers.get("authorization")?.split(" ")[1];
 
     if (!refreshToken || !verifyRefreshToken(refreshToken)) {
@@ -16,6 +17,7 @@ export async function GET(req: Request) {
     }
 
     const decodedToken = decodeToken<IDecodedToken>(refreshToken);
+    console.log("----------------decoded api-----------------");
 
     await DbConnect();
 
@@ -23,12 +25,18 @@ export async function GET(req: Request) {
       { phone: decodedToken?.phone },
       "phone"
     );
+    console.log("----------------userDb-----------------");
 
-    if (!userDB) throw new Error("Refresh Token not available");
+    if (!userDB) {
+      throw new Error("Refresh Token not available");
+    }
+    console.log("----------------user Db not found-----------------");
 
     const newAccessToken = generateAccessToken({
       phone: userDB.phone,
     });
+
+    console.log("----------------new Access-----------------");
 
     return Response.json(newAccessToken);
   } catch (error) {

@@ -19,9 +19,9 @@ export default function Warning() {
           />
         </svg>
       </div>
-      <p>
-        اینجا یک محیط همیشگی نیست و به منظور تست و آشنایی است! برای حفظ داده های
-        خود
+      <div>
+        صفحه مهمان برای تست است و داده های شما در دیتابیس ذخیره نمیشود! برای
+        ذخیره داده های خود
         <Link
           href="/auth/login-register"
           className=" btn px-1 text-warning btn-link"
@@ -29,7 +29,7 @@ export default function Warning() {
           ثبت نام
         </Link>
         کنید.
-      </p>
+      </div>
     </div>
   );
 }

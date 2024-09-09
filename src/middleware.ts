@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { isExpired } from "react-jwt";
+import baseURL from "./utils/baseUrl";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
@@ -10,14 +11,11 @@ export async function middleware(request: NextRequest) {
     const refreshToken = request.cookies.get("refreshToken");
     if (refreshToken) {
       try {
-        const res = await axios.get(
-          `${request.nextUrl.origin}/api/auth/refresh`,
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken.value}`,
-            },
-          }
-        );
+        const res = await axios.get(`${baseURL}/api/auth/refresh`, {
+          headers: {
+            Authorization: `Bearer ${refreshToken.value}`,
+          },
+        });
 
         console.log(
           "-----------------access token generated-------------------"

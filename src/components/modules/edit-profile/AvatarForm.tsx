@@ -40,7 +40,6 @@ export default function AvatarForm({ user }: { user: IUser }) {
       });
       reset();
       refresh();
-
       FireToast({
         type: "success",
         message: "عکس پروفایل با موفقیت تغییر کرد",
@@ -106,7 +105,7 @@ export default function AvatarForm({ user }: { user: IUser }) {
             loading={isSubmitting}
             disabled={!watch("avatar")}
           />
-          {!!watch("avatar") && !isSubmitting && (
+          {watch("avatar") && !isSubmitting && (
             <Button
               type="button"
               loading={false}

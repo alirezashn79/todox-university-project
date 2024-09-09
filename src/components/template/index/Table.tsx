@@ -8,6 +8,7 @@ import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
+import { useSwipeable } from "react-swipeable";
 
 interface ITodo {
   _id: string;
@@ -22,14 +23,20 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Table() {
   const date = useDateStore((state) => state.date);
-
+  const changeDate = useDateStore((state) => state.changeDate);
   const { data, error, isLoading } = useSWR<ITodo[]>(
     date ? `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}` : null,
     date ? fetcher : null
   );
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => changeDate(new Date(date.setDate(date.getDate() - 1))),
+    onSwipedRight: () => changeDate(new Date(date.setDate(date.getDate() + 1))),
+    trackMouse: true,
+  });
+
   const errorEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 lg:mt-24 flex flex-col items-center justify-center">
+    <div className="max-w-lg mx-auto py-10 mt-32 lg:mt-24 flex flex-col items-center justify-center select-none">
       <p className="text-gray-500 text-xl text-center font-semibold mt-2">
         خطا در اتصال
       </p>
@@ -37,19 +44,26 @@ export default function Table() {
   );
 
   const loadingEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-52 lg:mt-36 flex items-center justify-center text-primary">
+    <div
+      {...handlers}
+      className="w-full py-52 lg:py-36 flex items-center justify-center text-primary select-none"
+    >
       <PulseLoader color="#7480ff" size={18} margin={8} />
     </div>
   );
 
   const noTodoEl = (
-    <div className=" max-w-lg mx-auto py-10 mt-32 lg:mt-24 flex flex-col items-center justify-center">
+    <div
+      {...handlers}
+      className="w-full py-10 pt-32 lg:pt-24 flex flex-col items-center justify-center select-none"
+    >
       <Image
         unoptimized
         height={200}
         width={200}
         src="/img/empty.png"
         alt="empty"
+        className="pointer-events-none"
       />
       <p className="text-gray-500 text-xl text-center font-semibold mt-2">
         هنوز هیچ کاری اضافه نکردی!
@@ -58,10 +72,10 @@ export default function Table() {
   );
 
   const todoEl = (
-    <div className="overflow-x-auto">
+    <div {...handlers} className="overflow-x-auto select-none min-h-96">
       <table className="table table-zebra rounded-t-lg overflow-hidden">
         {/* head */}
-        <thead className="text-xs lg:text-sm bg-primary/20">
+        <thead className="text-xs lg:text-sm bg-[#7480ff]/10">
           <tr>
             <th>
               <AllCheckTodos

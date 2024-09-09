@@ -87,6 +87,7 @@ export default function Sms() {
         <Input
           name="phone"
           register={register("phone")}
+          disabled={isLoading || isSentCode}
           label="شماره موبایل"
           errors={errors}
           placeholder="09123456789"
