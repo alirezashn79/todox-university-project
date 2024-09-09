@@ -1,6 +1,7 @@
 import { IUser } from "@/types";
 import DropDownItem from "./DropDownItem";
 import LogoutBtn from "./LogoutBtn";
+import DropDown from "./DropDown";
 interface IProfileProps {
   user: IUser;
 }
@@ -28,6 +29,7 @@ export default function Profile({ user }: IProfileProps) {
           </span>
         </li>
         <DropDownItem />
+        <DropDown />
         <li>
           <LogoutBtn />
         </li>

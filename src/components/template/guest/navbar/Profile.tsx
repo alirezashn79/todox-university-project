@@ -1,5 +1,6 @@
 import Link from "next/link";
 import DropDownItem from "./DropDownItem";
+import DropDown from "@/components/modules/navbar/DropDown";
 
 export default function Profile() {
   return (
@@ -42,6 +43,7 @@ export default function Profile() {
               ثبت نام
             </Link>
           </li>
+          <DropDown />
         </ul>
       </div>
     </>

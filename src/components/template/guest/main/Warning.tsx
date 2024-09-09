@@ -10,7 +10,7 @@ export default function Warning() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="size-5"
+          className="size-5 animate-bounce"
         >
           <path
             strokeLinecap="round"
@@ -19,6 +19,7 @@ export default function Warning() {
           />
         </svg>
       </div>
+
       <div>
         صفحه مهمان برای تست است و داده های شما در دیتابیس ذخیره نمیشود! برای
         ذخیره داده های خود

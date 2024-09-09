@@ -30,9 +30,7 @@ export default function UsedPackagesPage() {
             برای validation کردن فرم ها و همچنین validation کردن داده ها در سمت
             سرور ( api ها )
           </Row>
-          <Row packageName="react-hook-form @hookform/resolvers @hookform/error-message">
-            برای مدیریت فرم های کلاینت
-          </Row>
+          <Row packageName="react-hook-form">برای مدیریت فرم های کلاینت</Row>
           <Row packageName="aws-sdk">
             برای ذخیره عکس پروفایل در فضای ذخیره سازی ابری
           </Row>
