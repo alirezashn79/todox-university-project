@@ -37,7 +37,7 @@ export default function Sms() {
     try {
       setIsLoading(true);
       const res = await client.post("api/auth/sms/send", values);
-      const currentTimeClient = Date.now() + 120_000;
+      const currentTimeClient = Date.now() + 121_000;
       const expirationTimeServer = res.data.expTime;
       const timeOffset = currentTimeClient - expirationTimeServer;
       const adjustedExpirationTime = expirationTimeServer + timeOffset;
