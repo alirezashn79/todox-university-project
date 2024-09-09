@@ -37,7 +37,12 @@ export default function Sms() {
     try {
       setIsLoading(true);
       const res = await client.post("api/auth/sms/send", values);
-      setDate(res.data.expTime - 1_000);
+      const currentTimeClient = Date.now() + 120_000;
+      const expirationTimeServer = res.data.expTime;
+      const timeOffset = currentTimeClient - expirationTimeServer;
+      const adjustedExpirationTime = expirationTimeServer + timeOffset;
+      setDate(adjustedExpirationTime);
+      sessionStorage.setItem("timeOffset", String(timeOffset));
       FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
@@ -45,9 +50,14 @@ export default function Sms() {
       console.log(error);
       if (error.response) {
         if (error.response.status === 451) {
-          setIsSentCode(true);
-          FireToast({ type: "error", message: "رمز قبلا ارسال شده است" });
-          setDate(error.response.data.expTime - 1_000);
+          if (!!sessionStorage.getItem("timeOffset")) {
+            setDate(
+              error.response.data.expTime +
+                Number(sessionStorage.getItem("timeOffset"))
+            );
+            setIsSentCode(true);
+            FireToast({ type: "error", message: "رمز قبلا ارسال شده است" });
+          }
         }
         console.log(error);
       }
@@ -69,6 +79,7 @@ export default function Sms() {
       });
       FireToast({ type: "success", message: "تایید شد" });
       sessionStorage.removeItem("phone");
+      sessionStorage.removeItem("timeOffset");
       if (res.status === 200) {
         replace("/");
       } else if (res.status === 202) {

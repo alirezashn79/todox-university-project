@@ -6,7 +6,6 @@ import { zPhoneSchema } from "@/schemas/schema";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Countdown from "react-countdown";
@@ -39,7 +38,12 @@ export default function PhoneForm() {
     try {
       setIsLoading(true);
       const res = await client.post("api/user/edit-profile/phone/send", values);
-      setDate(res.data.expTime - 1_000);
+      const currentTimeClient = Date.now() + 120_000;
+      const expirationTimeServer = res.data.expTime;
+      const timeOffset = currentTimeClient - expirationTimeServer;
+      const adjustedExpirationTime = expirationTimeServer + timeOffset;
+      setDate(adjustedExpirationTime);
+      sessionStorage.setItem("timeOffset", String(timeOffset));
       FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
       sessionStorage.setItem("phone", values.phone);
@@ -53,9 +57,14 @@ export default function PhoneForm() {
           setValue("phone", "");
         }
         if (error.response.status === 451) {
-          setIsSentCode(true);
-          FireToast({ type: "error", message: "رمز قبلا ارسال شده است" });
-          setDate(error.response.data.expTime - 1_000);
+          if (!!sessionStorage.getItem("timeOffset")) {
+            setDate(
+              error.response.data.expTime +
+                Number(sessionStorage.getItem("timeOffset"))
+            );
+            setIsSentCode(true);
+            FireToast({ type: "error", message: "رمز قبلا ارسال شده است" });
+          }
         }
         console.log(error);
       }
@@ -75,6 +84,7 @@ export default function PhoneForm() {
         code: otp,
       });
       sessionStorage.removeItem("phone");
+      sessionStorage.removeItem("timeOffset");
       await client.get("api/auth/logout");
       replace("/auth/login-with-password");
       FireToast({ type: "success", message: "تایید شد، مجدد لاگین کنید" });

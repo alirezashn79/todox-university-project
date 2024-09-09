@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const validationResult = await zPhoneSchema.parseAsync(reqBody);
 
     await DbConnect();
-    const now = new Date().getTime();
+    const now = Date.now();
 
     const result = await otpModel.findOne({
       phone: validationResult.phone,
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         patternCode: process.env.PATTERN_CODE,
         inputData: [{ "verification-code": code }],
       });
-      expTime = new Date().getTime() + 120_000;
+      expTime = Date.now() + 120_000;
       await otpModel.create({
         phone: validationResult.phone,
         code,
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       return Response.json({ message: "error to send code" }, { status: 400 });
     }
 
-    // expTime = new Date().getTime() + 120_000;
+    // expTime = Date.now() + 120_000;
     // await otpModel.create({
     //   phone: validationResult.phone,
     //   code,
