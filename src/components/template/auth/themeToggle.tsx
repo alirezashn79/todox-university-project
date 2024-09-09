@@ -6,7 +6,7 @@ export default function ThemeToggle() {
   const theme = useTheme((state) => state.theme);
   const toggleTheme = useTheme((state) => state.toggleTheme);
   return (
-    <div className="absolute end-8 top-8">
+    <div className="absolute end-8 top-8 z-10">
       <label className="swap swap-rotate btn btn-circle btn-active">
         <input
           type="checkbox"
