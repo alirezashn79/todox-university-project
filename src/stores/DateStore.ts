@@ -4,19 +4,15 @@ interface IDateStore {
   date: Date;
   changeDate: (newDate: Date) => void;
   reload: boolean;
-  setReload: () => void;
 }
 
-const useDateStore = create<IDateStore>((set) => ({
+const useDateStore = create<IDateStore>((set, get) => ({
   date: new Date(),
   isChange: false,
   changeDate: (newDate) => {
-    set({ date: newDate });
+    set((state) => ({ date: newDate, reload: !state.reload }));
   },
   reload: false,
-  setReload: () => {
-    set((state) => ({ reload: !state.reload }));
-  },
 }));
 
 export default useDateStore;

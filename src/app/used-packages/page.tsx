@@ -10,7 +10,7 @@ export default function UsedPackagesPage() {
 
       <div className="my-8">
         <div className="mockup-code space-y-2">
-          <Row packageName="next">هسته مرکزی Front و Back در پروژه</Row>
+          <Row packageName="next">هسته اصلی پروژه (ورژن 14)</Row>
           <Row packageName="typescript">
             تایپ اسکریپت برای به صفر رساندن خطاهای پروژه
           </Row>
@@ -52,7 +52,7 @@ export default function UsedPackagesPage() {
           <Row packageName="axios">برای رکوئست ها</Row>
 
           <Row packageName="react-swipeable">
-            برای استفاده از قابلیت عو کردن روزهای تقویم با Swap کردن
+            برای استفاده از قابلیت عوض کردن روزهای تقویم با Swap کردن
           </Row>
           <Row packageName="react-otp-input">
             برای هندل و نمایش بهتر Input های کد تایید ارسالی از طریق SMS
@@ -67,7 +67,7 @@ export default function UsedPackagesPage() {
           <Row packageName="react-spinners">Loading های جذاب پروژه</Row>
 
           <Row packageName="cn-func">
-            پکیجی برای Merge کزدن ClassName های Tailwindcss{" "}
+            پکیجی برای Merge کردن ClassName های Tailwindcss{" "}
           </Row>
         </div>
       </div>

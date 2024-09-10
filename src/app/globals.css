@@ -10,10 +10,60 @@
     margin: 0;
     -moz-appearance: textfield !important;
   }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #7480ffb7;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7480ff;
+  }
 }
-/* .react-time-picker__wrapper {
-  border: none !important;
+
+@layer components {
+  .dateBtn {
+    @apply tab h-full text-base lg:text-lg;
+  }
+  .activeDateBtn {
+    @apply tab-active  scale-105 !-translate-y-1 font-bold btn-disabled;
+  }
+  .deActiveDateBtn {
+    @apply hover:btn-link;
+  }
+  .date_animation_up {
+    animation: dateUp 150ms;
+  }
+  @keyframes dateUp {
+    0% {
+      transform: scale(0.8) translateY(0);
+    }
+    100% {
+      transform: scale(1) translateY(1);
+    }
+  }
+  .date_animation_down {
+    animation: dateDown 150ms;
+  }
+  @keyframes dateDown {
+    0% {
+      transform: scale(0.8) translateY(0);
+    }
+    100% {
+      transform: scale(1) translateY(1);
+    }
+  }
 }
-.react-time-picker__clock-button {
-  display: none !important;
-} */

@@ -33,7 +33,7 @@ export default async function AuthLayout({
 
       <div className="absolute start-0 end-0 top-8 flex justify-center">
         <Link className="btn btn-outline" href="/used-packages">
-          پکیج های استفاده شده
+          پکیج های مهم پروژه
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
