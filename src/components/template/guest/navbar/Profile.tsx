@@ -39,7 +39,10 @@ export default function Profile() {
           </li>
           <DropDownItem />
           <li>
-            <Link className="px-2 py-3" href="/auth/login-register">
+            <Link
+              className="px-2 py-3 font-semibold"
+              href="/auth/login-register"
+            >
               ثبت نام
             </Link>
           </li>

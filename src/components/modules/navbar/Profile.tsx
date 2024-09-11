@@ -24,9 +24,12 @@ export default function Profile({ user }: IProfileProps) {
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
       >
         <li className="font-semibold">
-          <span className="px-2 py-3">
-            خوش اومدی <span className="text-primary">{user?.fullName}</span>
-          </span>
+          <div className="flex flex-col items-start px-2 py-3">
+            <p>
+              خوش اومدی <span className="text-primary">{user?.fullName}</span>
+            </p>
+            <span>{user.phone}</span>
+          </div>
         </li>
         <DropDownItem />
         <DropDown />

@@ -43,3 +43,11 @@ export function timeStringToDate(timeString: string) {
 
   return today;
 }
+
+export function percentage(total: number, checked: number = 0) {
+  if (!total) {
+    return 0;
+  }
+  let percent = Math.round((checked * 100) / total);
+  return percent;
+}

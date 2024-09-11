@@ -9,6 +9,7 @@ import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
 import { useSwipeable } from "react-swipeable";
+import TodoStateStyle from "@/components/modules/TodoStateStyle";
 
 interface ITodo {
   id: string;
@@ -88,42 +89,49 @@ export default function Table() {
   );
 
   const todoEl = (
-    <div className="overflow-x-auto min-h-96">
-      <table className="table table-zebra rounded-t-lg overflow-hidden">
-        {/* head */}
-        <thead className="text-xs lg:text-sm bg-[#7480ff]/10">
-          <tr>
-            <th>
-              <AllCheckTodos checkAll={checkAll} />
-            </th>
-            <th>عنوان</th>
-
-            <th className="text-center">زمان</th>
-            <th className="text-center">عملیات</th>
-          </tr>
-        </thead>
-        <tbody className="text-base lg:text-lg">
-          {/* row 1 */}
-          {todosDate?.map((item) => (
-            <tr key={item.id.toString()}>
+    <section>
+      <TodoStateStyle data={todosDate as any} />
+      <div className="overflow-x-auto min-h-96">
+        <table className="table table-zebra rounded-t-lg overflow-hidden">
+          {/* head */}
+          <thead className="text-xs lg:text-sm bg-[#7480ff]/10">
+            <tr>
               <th>
-                <ToggleDoneTodo id={item.id} isDone={item.isDone} />
+                <AllCheckTodos checkAll={checkAll} />
               </th>
-              <td className="break-all">{item.title}</td>
+              <th>عنوان</th>
 
-              <td className="text-center">{item.time || "-:-"}</td>
-
-              <th>
-                <div className="flex items-center justify-center gap-4">
-                  <EditTodo id={item.id} time={item.time} title={item.title} />
-                  <DeleteTodo id={item.id} />
-                </div>
-              </th>
+              <th className="text-center">زمان</th>
+              <th className="text-center">عملیات</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="text-base lg:text-lg">
+            {/* row 1 */}
+            {todosDate?.map((item) => (
+              <tr key={item.id.toString()}>
+                <th>
+                  <ToggleDoneTodo id={item.id} isDone={item.isDone} />
+                </th>
+                <td className="break-all">{item.title}</td>
+
+                <td className="text-center">{item.time || "-:-"}</td>
+
+                <th>
+                  <div className="flex items-center justify-center gap-4">
+                    <EditTodo
+                      id={item.id}
+                      time={item.time}
+                      title={item.title}
+                    />
+                    <DeleteTodo id={item.id} />
+                  </div>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 
   return (

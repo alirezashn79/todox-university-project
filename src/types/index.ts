@@ -5,3 +5,11 @@ export interface IUser {
   avatar: string;
   username: string;
 }
+
+export interface ITodo {
+  _id: string;
+  title: string;
+  isDone: boolean;
+  time: string;
+  date: string;
+}

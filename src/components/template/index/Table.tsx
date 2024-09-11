@@ -1,29 +1,23 @@
 "use client";
+import TodoStateStyle from "@/components/modules/TodoStateStyle";
 import useDateStore from "@/stores/DateStore";
+import { ITodo } from "@/types";
 import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import Image from "next/image";
 import { PulseLoader } from "react-spinners";
+import { useSwipeable } from "react-swipeable";
 import useSWR from "swr";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
-import { useSwipeable } from "react-swipeable";
-
-interface ITodo {
-  _id: string;
-  title: string;
-
-  isDone: boolean;
-  time: string;
-  date: string;
-}
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Table() {
   const date = useDateStore((state) => state.date);
   const changeDate = useDateStore((state) => state.changeDate);
+
   const { data, error, isLoading } = useSWR<ITodo[]>(
     date ? `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}` : null,
     date ? fetcher : null
@@ -93,48 +87,51 @@ export default function Table() {
   );
 
   const todoEl = (
-    <div {...handlers} className="overflow-x-auto select-none min-h-96">
-      <table className="table table-zebra rounded-t-lg overflow-hidden">
-        {/* head */}
-        <thead className="text-xs lg:text-sm bg-[#7480ff]/10">
-          <tr>
-            <th>
-              <AllCheckTodos
-                checkAll={data?.every((item) => item.isDone) || false}
-              />
-            </th>
-            <th>عنوان</th>
-
-            <th className="text-center">زمان</th>
-            <th className="text-center">عملیات</th>
-          </tr>
-        </thead>
-        <tbody className="text-base lg:text-lg">
-          {/* row 1 */}
-          {data?.map((item) => (
-            <tr key={item._id.toString()}>
+    <section>
+      <TodoStateStyle data={data as ITodo[]} />
+      <div {...handlers} className="overflow-x-auto select-none min-h-96">
+        <table className="table table-zebra rounded-t-lg overflow-hidden">
+          {/* head */}
+          <thead className="text-xs lg:text-sm bg-[#7480ff]/10">
+            <tr>
               <th>
-                <ToggleDoneTodo id={item._id} isDone={item.isDone} />
+                <AllCheckTodos
+                  checkAll={data?.every((item) => item.isDone) || false}
+                />
               </th>
-              <td className="text-justify">{item.title}</td>
+              <th>عنوان</th>
 
-              <td className="text-center">{item.time || "-:-"}</td>
-
-              <th>
-                <div className="flex items-center justify-center gap-4">
-                  <EditTodo
-                    _id={item._id}
-                    time={item.time}
-                    title={item.title}
-                  />
-                  <DeleteTodo id={item._id} />
-                </div>
-              </th>
+              <th className="text-center">زمان</th>
+              <th className="text-center">عملیات</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="text-base lg:text-lg">
+            {/* row 1 */}
+            {data?.map((item) => (
+              <tr key={item._id.toString()}>
+                <th>
+                  <ToggleDoneTodo id={item._id} isDone={item.isDone} />
+                </th>
+                <td className="text-justify">{item.title}</td>
+
+                <td className="text-center">{item.time || "-:-"}</td>
+
+                <th>
+                  <div className="flex items-center justify-center gap-4">
+                    <EditTodo
+                      _id={item._id}
+                      time={item.time}
+                      title={item.title}
+                    />
+                    <DeleteTodo id={item._id} />
+                  </div>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 
   if (isLoading) return loadingEl;

@@ -41,10 +41,6 @@ export default function AddTodo() {
     resolver: zodResolver(zTodoSchemaClient),
   });
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
-    // if (!TimeValue) {
-    //   setTimeError("زمان الزامی است");
-    //   return;
-    // }
     try {
       await client.post("api/todo", {
         ...values,
@@ -52,12 +48,13 @@ export default function AddTodo() {
         time: convertToPersianTimeWithEnglishNumbers(TimeValue as Date),
       });
 
-      FireToast({ type: "success", message: "اضافه شد" });
-      modal.current.close();
-      reset();
       await mutate(
         `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
       );
+      modal.current.close();
+      reset();
+      setTimeValue(null);
+      FireToast({ type: "success", message: "اضافه شد" });
     } catch (error) {
       console.log(error);
     }
