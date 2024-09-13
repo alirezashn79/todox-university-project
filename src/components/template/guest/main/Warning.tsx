@@ -15,7 +15,10 @@ export default function Warning() {
             <div className="text-justify">
               صفحه مهمان برای تست است و داده های شما در دیتابیس ذخیره نمیشود!
               برای ذخیره داده های خود می توانید
-              <Link href="/auth/login-register" className="px-1 text-[#facea8]">
+              <Link
+                href="/auth/login-register"
+                className="mx-1.5 inline-block text-[#facea8]"
+              >
                 ثبت نام
               </Link>
               کنید.

@@ -145,17 +145,9 @@ export const zEditInfoSchema = object({
 }).partial();
 
 export const zPass = object({
-  prevPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
   newPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
   confirmPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
-}).superRefine(({ prevPass, newPass, confirmPass }, ctx) => {
-  if (prevPass === newPass) {
-    ctx.addIssue({
-      code: "custom",
-      message: "رمز جدید باید متفاوت باشد",
-      path: ["newPass"],
-    });
-  }
+}).superRefine(({ newPass, confirmPass }, ctx) => {
   if (newPass !== confirmPass) {
     ctx.addIssue({
       code: "custom",
@@ -166,16 +158,7 @@ export const zPass = object({
 });
 
 export const zPassServer = object({
-  prevPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
   newPass: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
-}).superRefine(({ prevPass, newPass }, ctx) => {
-  if (prevPass === newPass) {
-    ctx.addIssue({
-      code: "custom",
-      message: "رمز جدید باید متفاوت باشد",
-      path: ["newPass"],
-    });
-  }
 });
 
 const zUsernameSchema = object({

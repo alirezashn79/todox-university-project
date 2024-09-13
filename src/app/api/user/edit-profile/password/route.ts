@@ -34,20 +34,6 @@ export async function PUT(req: Request) {
 
     await DbConnect();
 
-    const verifyPrevPass = await comparePass(
-      validationResult.data.prevPass,
-      user.password
-    );
-
-    if (!verifyPrevPass) {
-      return Response.json(
-        { message: "prev pass is not correct" },
-        {
-          status: 400,
-        }
-      );
-    }
-
     const hashedNewPass = await hashPass(validationResult.data.newPass);
 
     await UserModel.findByIdAndUpdate(user._id, {
