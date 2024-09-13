@@ -80,15 +80,51 @@ export const zClientImageSchema = object({
 
 export const zUserCreationServerSchema = object({
   fullName: string().trim().min(1, "نام الزامی است"),
-  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+  username: string()
+    .trim()
+    .regex(/^[a-z0-9_-]{3,15}$/g)
+    .min(4, "تایپ نام کاربری صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
-}).and(zServerAvatarSchema);
+  avatar: any()
+    .refine((file: File) => {
+      if (!!file) {
+        return file?.size <= MAX_FILE_SIZE;
+      } else {
+        return true;
+      }
+    }, "عکس الزامی و حجم آن باید کمتر از 2 مگابایت باشد")
+    .refine((file: File) => {
+      if (!!file) {
+        return ACCEPTED_IMAGE_TYPES.includes(file?.type);
+      } else {
+        return true;
+      }
+    }, "تایپ های مورد قبول:  .jpg, .jpeg, .png and .webp formats are supported."),
+});
 
 export const zUserCreationClientSchema = object({
   fullName: string().trim().min(1, "نام الزامی است"),
-  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+  username: string()
+    .trim()
+    .regex(/^[a-z0-9_-]{3,15}$/g)
+    .min(4, "تایپ نام کاربری صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
-}).and(zClientImageSchema);
+  avatar: any()
+    .refine((files: File[]) => {
+      if (files && files[0]) {
+        return files?.[0]?.size <= MAX_FILE_SIZE;
+      } else {
+        return true;
+      }
+    }, "عکس الزامی و حجم آن باید کمتر از 2 مگابایت باشد")
+    .refine((files: File[]) => {
+      if (files && files[0]) {
+        return ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type);
+      } else {
+        return true;
+      }
+    }, "تایپ های مورد قبول:  .jpg, .jpeg, .png and .webp formats are supported."),
+});
 
 export const zEditProfileSchema = object({
   avatar: any()
@@ -102,7 +138,10 @@ export const zEditProfileSchema = object({
 
 export const zEditInfoSchema = object({
   fullName: string().trim().min(1, "نام الزامی است"),
-  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+  username: string()
+    .trim()
+    .regex(/^[a-z0-9_-]{3,15}$/g)
+    .min(4, "تایپ نام کاربری صحیح نیست"),
 }).partial();
 
 export const zPass = object({
@@ -140,7 +179,10 @@ export const zPassServer = object({
 });
 
 const zUsernameSchema = object({
-  username: string().trim().min(4, "تایپ نام کاربری صحیح نیست"),
+  username: string()
+    .trim()
+    .regex(/^[a-z0-9_-]{3,15}$/g)
+    .min(4, "تایپ نام کاربری صحیح نیست"),
 });
 
 export const zSignInForm = object({

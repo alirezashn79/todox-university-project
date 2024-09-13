@@ -51,7 +51,10 @@ export default function Form() {
       formData.append("fullName", values.fullName);
       formData.append("username", values.username.toLocaleLowerCase());
       formData.append("password", values.password);
-      formData.append("avatar", values.avatar[0]);
+      if (avatar) {
+        formData.append("avatar", values.avatar[0]);
+        console.log(avatar);
+      }
       await client.post("api/user", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -123,6 +126,9 @@ export default function Form() {
           </div>
         )}
       </label>
+      <p className="text-xs text-warning">
+        در صورت تمایل به انتخاب عکس روی آیکن بالا کلیک کنید.
+      </p>
       <ErrorMessage
         errors={errors}
         name="avatar"

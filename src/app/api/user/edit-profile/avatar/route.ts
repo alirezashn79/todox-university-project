@@ -54,23 +54,26 @@ export async function PUT(req: Request) {
       Key: fileName,
       Body: buffer,
     };
-    await s3
-      .deleteObject({
-        Bucket: process.env.LIARA_BUCKET_NAME,
-        Key: user.avatar.split("/avatars/")[1],
-      } as any)
-      .promise();
+
+    if (user.avatar) {
+      await s3
+        .deleteObject({
+          Bucket: process.env.LIARA_BUCKET_NAME,
+          Key: user.avatar.split("/avatars/")[1],
+        } as any)
+        .promise();
+    }
     const response = await s3.upload(params as any).promise();
     const fileUrl = response.Location;
 
     await UserModel.findByIdAndUpdate(user._id, {
-      avatar: fileUrl,
+      $set: { avatar: fileUrl },
     });
 
     return Response.json({ message: "profile updated" });
   } catch (error) {
     return Response.json(
-      { message: "Server Error" },
+      { message: "Server Error", error: error.message },
       {
         status: 500,
       }

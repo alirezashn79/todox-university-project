@@ -61,6 +61,9 @@ export default function AvatarForm({ user }: { user: IUser }) {
   return (
     <form onSubmit={handleSubmit(handleChangeAvatar)}>
       <div className="flex items-center flex-col gap-8">
+        <p className="text-xs text-warning">
+          برای انتخاب عکس روی عکس کلیک کنید.
+        </p>
         <label className="flex items-center justify-center label cursor-pointer">
           <input
             type="file"
@@ -85,12 +88,15 @@ export default function AvatarForm({ user }: { user: IUser }) {
           ) : (
             <div className="avatar">
               <div className="ring-primary ring-offset-base-100 w-40 lg:w-64 rounded-full ring ring-offset-2">
-                <img src={user?.avatar} />
+                {user.avatar ? (
+                  <img src={user?.avatar} />
+                ) : (
+                  <img src="/img/user-no-avatar.png" />
+                )}
               </div>
             </div>
           )}
         </label>
-
         <ErrorMessage
           errors={errors}
           name="avatar"
@@ -98,7 +104,6 @@ export default function AvatarForm({ user }: { user: IUser }) {
             <span className="mt-2 text-error">{message}</span>
           )}
         />
-
         <div className="flex items-center gap-4">
           <Button
             text="تغییر عکس"

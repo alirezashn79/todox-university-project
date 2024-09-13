@@ -41,14 +41,21 @@ export async function POST(req: Request) {
     const password = formData.get("password");
     const avatar = formData.get("avatar") as File;
 
-    const body = { fullName, username, password, avatar };
+    const body = {
+      fullName,
+      username,
+      password,
+      avatar,
+    };
+
+    console.log("boody", body);
 
     const validationResult = zUserCreationServerSchema.safeParse(body);
 
     if (!validationResult.success) {
       return Response.json(
         {
-          message: "Invalid Date",
+          message: "Invalid Data",
           error: validationResult.error.formErrors.fieldErrors,
         },
         {
@@ -75,14 +82,12 @@ export async function POST(req: Request) {
     const hashedPass = await hashPass(validationResult.data.password);
 
     let fileUrl;
-    if (avatar) {
-      // const fileName = `${Date.now()}-${avatar.name}`;
+    if (!!avatar) {
       const fileName = `avatar-${payload.phone}-${avatar.name}`;
 
       const arrayBuffer = await avatar.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      // await writeFile(filePath, buffer);
       const s3 = new S3({
         accessKeyId: process.env.LIARA_ACCESS_KEY,
         secretAccessKey: process.env.LIARA_SECRET_KEY,

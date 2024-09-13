@@ -15,7 +15,11 @@ export default function Profile({ user }: IProfileProps) {
       >
         <div className="avatar online">
           <div className="w-10 rounded-full">
-            <img alt="avatar" src={user?.avatar} />
+            {user.avatar ? (
+              <img alt="avatar" src={user.avatar} />
+            ) : (
+              <img alt="avatar" src="/img/user-no-avatar.png" />
+            )}
           </div>
         </div>
       </div>

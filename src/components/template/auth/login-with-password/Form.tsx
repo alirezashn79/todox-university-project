@@ -24,7 +24,10 @@ export default function Form() {
 
   const handleLogin: SubmitHandler<TLoginWithPassForm> = async (values) => {
     try {
-      await client.post("api/auth/login", values);
+      await client.post("api/auth/login", {
+        identifier: values.identifier.trim().toLowerCase(),
+        password: values.password.trim(),
+      });
       FireToast({ type: "success", message: "تایید شد" });
       replace("/");
     } catch (error) {
