@@ -2,7 +2,6 @@
 import { ITodo } from "@/types";
 import { percentage } from "@/utils/clientHelpers";
 import { cn } from "cn-func";
-import React from "react";
 
 export default function TodoStateStyle({ data }: { data: ITodo[] }) {
   let percent = 0;
@@ -34,10 +33,14 @@ export default function TodoStateStyle({ data }: { data: ITodo[] }) {
     let emoji = "";
     if (percent === 0) {
       emoji = "😡";
+    } else if (percent < 10) {
+      emoji = "😠";
     } else if (percent >= 10 && percent < 20) {
-      emoji = "🥴";
-    } else if (percent >= 20 && percent < 50) {
+      emoji = "🙄";
+    } else if (percent >= 20 && percent < 35) {
       emoji = "🙂";
+    } else if (percent >= 35 && percent < 50) {
+      emoji = "😏";
     } else if (percent >= 50 && percent < 75) {
       emoji = "😊";
     } else if (percent >= 75 && percent < 85) {
@@ -48,6 +51,7 @@ export default function TodoStateStyle({ data }: { data: ITodo[] }) {
       emoji = "🤩";
     } else if (percent === 100) {
       emoji = "😎";
+      // setIsExploding(true);
     }
     return emoji;
   };
@@ -67,7 +71,7 @@ export default function TodoStateStyle({ data }: { data: ITodo[] }) {
         <span className="text-base">درصد موفقیت: </span>
         <span>%</span>
         <span> {percent}</span>
-        <span className="mx-1 animate-pulse text-xl">
+        <span className="mx-1 animate_emoji inline-block text-2xl">
           {percentEmojiStyle()}
         </span>
       </div>

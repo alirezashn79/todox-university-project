@@ -2,17 +2,23 @@
 import useDateStore from "@/stores/DateStore";
 import useTheme from "@/stores/ThemeStore";
 import { cn } from "cn-func";
-import { useState } from "react";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
+import { useSwipeable } from "react-swipeable";
 
 export default function NavigationDate() {
   const date = useDateStore((state) => state.date);
   const changeDate = useDateStore((state) => state.changeDate);
   const reload = useDateStore((state) => state.reload);
   const theme = useTheme((state) => state.theme);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => changeDate(new Date(date.setDate(date.getDate() - 1))),
+    onSwipedRight: () => changeDate(new Date(date.setDate(date.getDate() + 1))),
+    trackMouse: true,
+  });
 
   const getDisplayDates = (currentDate: Date) => {
     const dates = [];
@@ -30,7 +36,7 @@ export default function NavigationDate() {
 
   const displayDates = getDisplayDates(date);
   return (
-    <section className="pb-2">
+    <section {...handlers} className="pb-2">
       <div>
         <button
           className="btn btn-primary btn-outline mb-8 ms-auto"

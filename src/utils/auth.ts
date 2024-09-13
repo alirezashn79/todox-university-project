@@ -7,13 +7,13 @@ export function generateTempraryToken(payload: { phone: string }) {
 
 export function generateAccessToken(payload: { phone: string }) {
   return sign(payload, process.env.ACCESS_SECRET_KEY as string, {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
 }
 
 export function generateRefreshToken(payload: { phone: string }) {
   return sign(payload, process.env.REFRESH_SECRET_KEY as string, {
-    expiresIn: "24h",
+    expiresIn: "14 days",
   });
 }
 

@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    /* @apply overflow-x-hidden; */
+  }
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"] {
@@ -65,5 +68,18 @@
     100% {
       transform: scale(1) translateY(1);
     }
+  }
+
+  @keyframes emiji {
+    from {
+      transform: rotateZ(10deg);
+    }
+    to {
+      transform: rotateZ(-10deg);
+    }
+  }
+
+  .animate_emoji {
+    animation: emiji 1s infinite alternate;
   }
 }

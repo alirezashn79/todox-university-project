@@ -1,15 +1,15 @@
 "use client";
+import TodoStateStyle from "@/components/modules/TodoStateStyle";
 import useDateStore from "@/stores/DateStore";
 import useGuest from "@/stores/GuestStore";
 import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import AllCheckTodos from "./AllCheckTodos";
 import DeleteTodo from "./DeleteTodo";
 import EditTodo from "./EditTodo";
 import ToggleDoneTodo from "./ToggleDoneTodo";
-import { useSwipeable } from "react-swipeable";
-import TodoStateStyle from "@/components/modules/TodoStateStyle";
 
 interface ITodo {
   id: string;
@@ -87,7 +87,6 @@ export default function Table() {
       </div>
     </div>
   );
-
   const todoEl = (
     <section>
       <TodoStateStyle data={todosDate as any} />

@@ -12,7 +12,8 @@ export default async function page() {
   return (
     <section className="mt-8">
       <NavigationDate />
-      <div className="mt-10">
+
+      <div className="mt-4">
         <Table />
       </div>
     </section>

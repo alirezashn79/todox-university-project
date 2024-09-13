@@ -18,7 +18,6 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
   const handleAllCheck = async () => {
     try {
       setLoading(true);
-
       setCheckAll({
         date: convertPersianDateToEnglishNumbers(date),
         isCheck: !checkAll,
