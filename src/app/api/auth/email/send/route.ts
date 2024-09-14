@@ -65,9 +65,55 @@ export async function POST(req: Request) {
         from: MAIL_ADDRESS,
         to: validationResult.email,
         subject: "کد تایید تود ایکس",
-        html: `<h1>
-        ${code}
-          </h1>`,
+        html: `<section
+  style="direction: rtl; text-align: right; max-width: 42rem; padding: 2rem 1.5rem; margin: 0 auto; background-color: #111827;font-family: Arial, sans-serif;"
+>
+  <header>
+    <h1 style="font-size: 1.5rem; color: #3b82f6;">تودو ایکس</h1>
+  </header>
+
+  <main style="margin-top: 2rem;">
+
+    <p style="margin-top: 0.5rem; line-height: 1.75; color: #d1d5db;">کد تایید شما</p>
+
+    <div
+      style="margin-top: 1rem;"
+    >
+     ${String(code)
+       .split("")
+       .map(
+         (item) =>
+           `
+       <div
+        style="display: inline-block; width: fit-content; padding: 0.5rem 1rem; margin: 0 0.5rem; font-size: 1.5rem; font-weight: 500; border-radius: 0.375rem; border: 1px solid #3b82f6; color: #3b82f6;"
+      >
+        ${item}
+      </div>
+      `
+       )}
+    </div>
+
+    <p style="margin-top: 1rem; line-height: 1.75; color: #d1d5db;">
+      این کد 2 دقیقه اعتبار دارد
+    </p>
+
+    <p style="margin-top: 2rem; color: #d1d5db;">
+      با احترام, <br />
+      تودو ایکس
+    </p>
+  </main>
+
+  <footer style="margin-top: 2rem;">
+    <p style="color: #9ca3af;">
+      این ایمیل صرفا برای تایید شما در تودو ایکس است
+    </p>
+
+    <p style="margin-top: 0.75rem; color: #9ca3af;">
+      © ${new Date().getFullYear()} Todox . All Rights Reserved.
+    </p>
+  </footer>
+</section>
+`,
       });
     } catch (error) {
       return Response.json({ message: "error to send code" }, { status: 400 });

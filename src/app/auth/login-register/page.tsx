@@ -9,8 +9,8 @@ import { useSwipeable } from "react-swipeable";
 export default function LoginRegisterPage() {
   const [activeTab, setActiveTab] = useState<"phone" | "email">("email");
   const handlers = useSwipeable({
-    onSwipedLeft: () => setActiveTab("phone"),
-    onSwipedRight: () => setActiveTab("email"),
+    onSwipedLeft: () => setActiveTab("email"),
+    onSwipedRight: () => setActiveTab("phone"),
     trackMouse: true,
   });
   return (
