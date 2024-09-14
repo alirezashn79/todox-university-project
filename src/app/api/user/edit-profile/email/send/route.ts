@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       });
 
       await transporter.sendMail({
-        from: MAIL_ADDRESS,
+        from: `Todox Info <${MAIL_ADDRESS}>`,
         to: validationResult.email,
         subject: "کد تایید تود ایکس",
         html: `<section
