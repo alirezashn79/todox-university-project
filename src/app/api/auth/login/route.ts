@@ -32,10 +32,11 @@ export async function POST(request: Request) {
       {
         $or: [
           { username: validationResult.data.identifier },
+          { email: validationResult.data.identifier },
           { phone: validationResult.data.identifier },
         ],
       },
-      "password phone"
+      "password phone email"
     );
 
     if (!user) {
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
 
     const cookieStore = cookies();
 
-    const token = generateAccessToken({ phone: user.phone });
+    const token = generateAccessToken({ identifier: user.phone || user.email });
     cookieStore.set("token", token, {
       httpOnly: true,
       path: "/",
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
     });
 
     const refreshToken = generateRefreshToken({
-      phone: user.phone,
+      identifier: user.email || user.phone,
     });
     cookieStore.set("refreshToken", refreshToken, {
       httpOnly: true,

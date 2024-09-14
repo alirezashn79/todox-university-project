@@ -13,13 +13,19 @@ export async function isAuth() {
 
   if (token && !isExpired(token.value)) {
     const decodedToken = decodeToken<{
-      phone: string;
+      identifier: string;
     }>(token.value);
     await DbConnect();
 
+    await UserModel.findOne();
     const userDB = await UserModel.findOne(
-      { phone: decodedToken?.phone },
-      "avatar fullName phone username"
+      {
+        $or: [
+          { phone: decodedToken?.identifier },
+          { email: decodedToken?.identifier },
+        ],
+      },
+      "avatar fullName phone username email"
     );
     if (userDB) {
       user = JSON.parse(JSON.stringify(userDB)) as IUser;
@@ -37,12 +43,18 @@ export async function isAuthPrivate() {
 
   if (token && !isExpired(token.value)) {
     const decodedToken = decodeToken<{
-      phone: string;
+      identifier: string;
     }>(token.value);
+
     await DbConnect();
 
     const userDB = await UserModel.findOne(
-      { phone: decodedToken?.phone },
+      {
+        $or: [
+          { phone: decodedToken?.identifier },
+          { email: decodedToken?.identifier },
+        ],
+      },
       "password"
     );
     if (userDB) {

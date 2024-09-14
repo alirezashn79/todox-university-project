@@ -94,7 +94,7 @@ export default function Sms() {
   };
 
   return (
-    <div className="card-body">
+    <>
       <form onSubmit={handleSubmit(sendCodeHandler)}>
         <Input
           name="phone"
@@ -108,7 +108,11 @@ export default function Sms() {
 
         {!isSentCode && (
           <div className="form-control mt-6">
-            <Button loading={isLoading} type="submit" text="ارسال کد" />
+            <Button
+              loading={isLoading}
+              type="submit"
+              text="ارسال کد به شماره موبایل"
+            />
           </div>
         )}
       </form>
@@ -193,14 +197,6 @@ export default function Sms() {
           </div>
         </form>
       )}
-      <div className="flex justify-around gap-1 text-right mt-4">
-        <Link className="btn w-fit" href="/auth/login-with-password">
-          ورود با رمزعبور
-        </Link>
-        <Link className="btn w-fit" href="/guest">
-          ورود به عنوان مهمان
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }

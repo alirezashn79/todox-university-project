@@ -1,4 +1,5 @@
 import AvatarForm from "@/components/modules/edit-profile/AvatarForm";
+import EmailForm from "@/components/modules/edit-profile/EmailForm";
 import InfoForm from "@/components/modules/edit-profile/InfoForm";
 import PasswordForm from "@/components/modules/edit-profile/PasswordForm";
 import PhoneForm from "@/components/modules/edit-profile/PhoneForm";
@@ -13,7 +14,7 @@ export default async function EditProfilePage() {
       <div className="space-y-2">
         <details className="collapse collapse-arrow bg-base-200">
           <summary className="collapse-title text-lg font-medium">
-            ویرایش عکس پروفایل
+            ویرایش / اضافه کردن عکس پروفایل
           </summary>
           <div className="collapse-content">
             <AvatarForm user={user as IUser} />
@@ -22,12 +23,22 @@ export default async function EditProfilePage() {
 
         <details className="collapse collapse-arrow bg-base-200">
           <summary className="collapse-title text-lg font-medium">
-            ویرایش اطلاعات
+            ویرایش / اضافه کردن ایمیل
           </summary>
           <div className="collapse-content">
-            <InfoForm user={user as IUser} />
+            <EmailForm />
           </div>
         </details>
+
+        <details className="collapse collapse-arrow bg-base-200">
+          <summary className="collapse-title text-lg font-medium">
+            ویرایش / اضافه کردن شماره موبایل
+          </summary>
+          <div className="collapse-content">
+            <PhoneForm />
+          </div>
+        </details>
+
         <details className="collapse collapse-arrow bg-base-200">
           <summary className="collapse-title text-lg font-medium">
             ویرایش رمزعبور
@@ -39,10 +50,10 @@ export default async function EditProfilePage() {
 
         <details className="collapse collapse-arrow bg-base-200">
           <summary className="collapse-title text-lg font-medium">
-            ویرایش شماره موبایل
+            ویرایش اطلاعات
           </summary>
           <div className="collapse-content">
-            <PhoneForm />
+            <InfoForm user={user as IUser} />
           </div>
         </details>
       </div>

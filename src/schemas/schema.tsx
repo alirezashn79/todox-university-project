@@ -6,11 +6,15 @@ export const zPhoneSchema = object({
     "شماره موبایل صحیح نیست"
   ),
 });
+export const zEmailSchema = object({
+  email: string().trim().email("فرمت ایمیل صحیح نیست"),
+});
 export const zCodeSchema = object({
   code: string().min(5).max(5),
 });
 
 export const zVerifyOtpServerSchema = zPhoneSchema.and(zCodeSchema);
+export const zVerifyEmailOtpServerSchema = zEmailSchema.and(zCodeSchema);
 export const zTimeSchema = object({
   time: string().refine((value) => {
     if (value) {
@@ -172,11 +176,16 @@ export const zSignInForm = object({
   identifier: string().refine((value) => {
     const validateUsername = zUsernameSchema.safeParse({ username: value });
     const validatePhone = zPhoneSchema.safeParse({ phone: value });
-    if (validateUsername.success || validatePhone.success) {
+    const validateEmail = zEmailSchema.safeParse({ email: value });
+    if (
+      validateUsername.success ||
+      validatePhone.success ||
+      validateEmail.success
+    ) {
       return true;
     } else {
       return false;
     }
-  }, "نام کاربری یا شماره صحیح نیست"),
+  }, "نام کاربری یا شماره یا ایمیل صحیح نیست"),
   password: string().trim().min(4, "حداقل 4 کاراکتر وارد کنید"),
 });

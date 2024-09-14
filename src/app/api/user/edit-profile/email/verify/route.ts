@@ -1,6 +1,6 @@
 import otpModel from "@/models/Otp";
 import UserModel from "@/models/User";
-import { zVerifyOtpServerSchema } from "@/schemas/schema";
+import { zVerifyEmailOtpServerSchema } from "@/schemas/schema";
 import DbConnect from "@/utils/dbConnection";
 import { isAuth } from "@/utils/serverHelpers";
 
@@ -18,7 +18,9 @@ export async function POST(req: Request) {
     }
     const reqBody = await req.json();
 
-    const validationResult = await zVerifyOtpServerSchema.parseAsync(reqBody);
+    const validationResult = await zVerifyEmailOtpServerSchema.parseAsync(
+      reqBody
+    );
 
     await DbConnect();
 
@@ -56,10 +58,10 @@ export async function POST(req: Request) {
     });
 
     await UserModel.findByIdAndUpdate(user._id, {
-      $set: { phone: validationResult.phone },
+      $set: { email: validationResult.email },
     });
 
-    return Response.json({ message: "phone changed" });
+    return Response.json({ message: "email changed" });
   } catch (error) {
     return Response.json(
       { message: "Server Error", error },

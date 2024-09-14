@@ -2,7 +2,8 @@ import { model, models, Schema } from "mongoose";
 
 interface IOtpModel {
   code: string;
-  phone: string;
+  phone?: string;
+  email?: string;
   expTime: number;
   isExpired: boolean;
 }
@@ -11,10 +12,8 @@ const schema = new Schema<IOtpModel>({
     type: String,
     required: true,
   },
-  phone: {
-    type: String,
-    required: true,
-  },
+  phone: String,
+  email: String,
   expTime: {
     type: Number,
     required: true,

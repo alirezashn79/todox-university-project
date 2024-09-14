@@ -1,17 +1,17 @@
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 
-export function generateTempraryToken(payload: { phone: string }) {
+export function generateTempraryToken(payload: { identifier: string }) {
   return sign(payload, process.env.TEMPORARY_SECRET_KEY as string);
 }
 
-export function generateAccessToken(payload: { phone: string }) {
+export function generateAccessToken(payload: { identifier: string }) {
   return sign(payload, process.env.ACCESS_SECRET_KEY as string, {
     expiresIn: "24h",
   });
 }
 
-export function generateRefreshToken(payload: { phone: string }) {
+export function generateRefreshToken(payload: { identifier: string }) {
   return sign(payload, process.env.REFRESH_SECRET_KEY as string, {
     expiresIn: "14 days",
   });
@@ -21,7 +21,7 @@ export function verifyTemporaryToken(token: string) {
   let result = null;
   try {
     result = verify(token, process.env.TEMPORARY_SECRET_KEY as string) as {
-      phone: string;
+      identifier: string;
     };
   } catch (error: any) {
     console.log(error.message);
@@ -34,7 +34,7 @@ export function verifyAccessToken(token: string) {
   let result = null;
   try {
     result = verify(token, process.env.ACCESS_SECRET_KEY as string) as {
-      phone: string;
+      identifier: string;
     };
   } catch (error: any) {
     console.log(error.message);

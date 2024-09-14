@@ -23,7 +23,7 @@ export async function GET() {
 
     const result = await UserModel.findOne(
       { refreshToken },
-      "refreshToken phone"
+      "refreshToken phone email"
     );
 
     if (!result) {
@@ -35,7 +35,9 @@ export async function GET() {
       );
     }
 
-    const newAccessToken = generateAccessToken({ phone: result.phone });
+    const newAccessToken = generateAccessToken({
+      identifier: result.phone || result.email,
+    });
 
     cookieStore.set("token", newAccessToken, {
       httpOnly: true,

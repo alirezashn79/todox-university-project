@@ -1,6 +1,6 @@
 import otpModel from "@/models/Otp";
 import UserModel from "@/models/User";
-import { zVerifyOtpServerSchema } from "@/schemas/schema";
+import { zVerifyEmailOtpServerSchema } from "@/schemas/schema";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -13,7 +13,9 @@ export async function POST(req: Request) {
   try {
     const reqBody = await req.json();
 
-    const validationResult = await zVerifyOtpServerSchema.parseAsync(reqBody);
+    const validationResult = await zVerifyEmailOtpServerSchema.parseAsync(
+      reqBody
+    );
 
     await DbConnect();
 
@@ -52,10 +54,10 @@ export async function POST(req: Request) {
 
     const cookiesStore = cookies();
 
-    const user = await UserModel.exists({ phone: validationResult.phone });
+    const user = await UserModel.exists({ email: validationResult.email });
 
     if (user) {
-      const token = generateAccessToken({ identifier: validationResult.phone });
+      const token = generateAccessToken({ identifier: validationResult.email });
       cookiesStore.set("token", token, {
         httpOnly: true,
         path: "/",
@@ -65,7 +67,7 @@ export async function POST(req: Request) {
       });
 
       const refreshToken = generateRefreshToken({
-        identifier: validationResult.phone,
+        identifier: validationResult.email,
       });
       cookiesStore.set("refreshToken", refreshToken, {
         httpOnly: true,
@@ -86,7 +88,7 @@ export async function POST(req: Request) {
       );
     } else {
       const temporaryToken = generateTempraryToken({
-        identifier: validationResult.phone,
+        identifier: validationResult.email,
       });
       cookiesStore.set("temporaryToken", temporaryToken, {
         httpOnly: true,

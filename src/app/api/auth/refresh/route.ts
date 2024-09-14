@@ -4,7 +4,7 @@ import DbConnect from "@/utils/dbConnection";
 import { decodeToken } from "react-jwt";
 
 interface IDecodedToken {
-  phone: string;
+  identifier: string;
 }
 
 export async function GET(req: Request) {
@@ -22,8 +22,14 @@ export async function GET(req: Request) {
     await DbConnect();
 
     const userDB = await UserModel.findOne(
-      { phone: decodedToken?.phone },
-      "phone"
+      {
+        $or: [
+          { phone: decodedToken?.identifier },
+          { email: decodedToken?.identifier },
+        ],
+      },
+
+      "phone email"
     );
     console.log("----------------userDb-----------------");
 
@@ -33,7 +39,7 @@ export async function GET(req: Request) {
     console.log("----------------user Db not found-----------------");
 
     const newAccessToken = generateAccessToken({
-      phone: userDB.phone,
+      identifier: userDB.phone || userDB.email,
     });
 
     console.log("----------------new Access-----------------");

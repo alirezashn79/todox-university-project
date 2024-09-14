@@ -25,6 +25,7 @@ export default function DropDownItem() {
       <li className="font-semibold" onClick={handleClick}>
         <Link className="px-2 py-3" href="/guest/edit-profile">
           ویرایش پروفایل
+          <span className="text-[10px] text-warning">صرفا برای دیدن</span>
         </Link>
       </li>
     );

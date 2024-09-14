@@ -7,7 +7,7 @@ interface IInput {
   disabled?: boolean;
   register: React.InputHTMLAttributes<HTMLInputElement>;
   dir?: "ltr" | "rtl";
-  type?: "text" | "password";
+  type?: "text" | "password" | "email";
   errors: any;
   name: string;
   placeholder: string;

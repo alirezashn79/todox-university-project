@@ -2,7 +2,7 @@
 
 import Button from "@/components/modules/Button";
 import Input from "@/components/modules/input";
-import { zPhoneSchema } from "@/schemas/schema";
+import { zEmailSchema } from "@/schemas/schema";
 import client from "@/utils/client";
 import { FireToast } from "@/utils/toast";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,9 +13,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import OTPInput from "react-otp-input";
 import { TypeOf } from "zod";
 
-type TPhoneSchema = TypeOf<typeof zPhoneSchema>;
+type TEmailSchema = TypeOf<typeof zEmailSchema>;
 
-export default function PhoneForm() {
+export default function EmailForm() {
   const [otp, setOtp] = useState("");
   const [isSentCode, setIsSentCode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,14 +30,14 @@ export default function PhoneForm() {
     setError,
     setValue,
     formState: { errors },
-  } = useForm<TPhoneSchema>({
-    resolver: zodResolver(zPhoneSchema),
+  } = useForm<TEmailSchema>({
+    resolver: zodResolver(zEmailSchema),
   });
 
-  const sendCodeHandler: SubmitHandler<TPhoneSchema> = async (values) => {
+  const sendCodeHandler: SubmitHandler<TEmailSchema> = async (values) => {
     try {
       setIsLoading(true);
-      const res = await client.post("api/user/edit-profile/phone/send", values);
+      const res = await client.post("api/user/edit-profile/email/send", values);
       const currentTimeClient = Date.now() + 120_000;
       const expirationTimeServer = res.data.expTime;
       const timeOffset = currentTimeClient - expirationTimeServer;
@@ -46,15 +46,15 @@ export default function PhoneForm() {
       sessionStorage.setItem("timeOffset", String(timeOffset));
       FireToast({ type: "success", message: "کد ارسال شد" });
       setIsSentCode(true);
-      sessionStorage.setItem("phone", values.phone);
+      sessionStorage.setItem("email", values.email);
     } catch (error: any) {
       console.log(error);
       if (error.response) {
         if (error.response.status === 409) {
-          setError("phone", {
-            message: "شماره وجود دارد",
+          setError("email", {
+            message: "ایمیل وجود دارد",
           });
-          setValue("phone", "");
+          setValue("email", "");
         }
         if (error.response.status === 451) {
           if (!!sessionStorage.getItem("timeOffset")) {
@@ -79,12 +79,12 @@ export default function PhoneForm() {
     e?.preventDefault();
     try {
       setIsLoading(true);
-      const phone = sessionStorage.getItem("phone");
-      await client.post("api/user/edit-profile/phone/verify", {
-        phone,
+      const email = sessionStorage.getItem("email");
+      await client.post("api/user/edit-profile/email/verify", {
+        email,
         code: otp,
       });
-      sessionStorage.removeItem("phone");
+      sessionStorage.removeItem("email");
       sessionStorage.removeItem("timeOffset");
       await client.get("api/auth/logout");
       replace("/auth/login-with-password");
@@ -101,13 +101,14 @@ export default function PhoneForm() {
       <form onSubmit={handleSubmit(sendCodeHandler)}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <Input
-            name="phone"
-            register={register("phone")}
-            label="شماره موبایل جدید"
+            name="email"
+            register={register("email")}
+            label="ایمیل"
             errors={errors}
-            placeholder="09123456789"
+            placeholder="a@gmail.com"
             dir="ltr"
             disabled={isLoading}
+            type="email"
           />
 
           {!isSentCode && (
@@ -116,7 +117,7 @@ export default function PhoneForm() {
                 className="sm:mt-9"
                 loading={isLoading}
                 type="submit"
-                text="ارسال کد به شماره موبایل"
+                text="ارسال کد به ایمیل"
               />
             </div>
           )}
@@ -167,7 +168,7 @@ export default function PhoneForm() {
                     type="button"
                     onClick={async () => {
                       await sendCodeHandler({
-                        phone: sessionStorage.getItem("phone") as string,
+                        email: sessionStorage.getItem("email") as string,
                       });
                       setStartCountDown(true);
                     }}

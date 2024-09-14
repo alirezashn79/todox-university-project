@@ -30,9 +30,11 @@ export default function Profile({ user }: IProfileProps) {
         <li className="font-semibold">
           <div className="flex flex-col items-start px-2 py-3">
             <p>
-              خوش اومدی <span className="text-primary">{user?.fullName}</span>
+              خوش اومدی{" "}
+              <span className="text-primary mx-1">{user?.fullName}</span>
             </p>
-            <span>{user.phone}</span>
+            {user.phone && <span className="text-primary">{user.phone}</span>}
+            {user.email && <span className="text-primary">{user.email}</span>}
           </div>
         </li>
         <DropDownItem />

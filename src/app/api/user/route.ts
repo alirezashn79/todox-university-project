@@ -1,5 +1,5 @@
 import UserModel from "@/models/User";
-import { zUserCreationServerSchema } from "@/schemas/schema";
+import { zEmailSchema, zUserCreationServerSchema } from "@/schemas/schema";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
 
     let fileUrl;
     if (!!avatar) {
-      const fileName = `avatar-${payload.phone}-${avatar.name}`;
+      const fileName = `avatar-${payload.identifier}-${avatar.name}`;
 
       const arrayBuffer = await avatar.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       fileUrl = response.Location;
     }
 
-    const token = generateAccessToken({ phone: payload.phone });
+    const token = generateAccessToken({ identifier: payload.identifier });
 
     cookieStore.set("token", token, {
       httpOnly: true,
@@ -114,7 +114,7 @@ export async function POST(req: Request) {
     });
 
     const refreshToken = generateRefreshToken({
-      phone: payload.phone,
+      identifier: payload.identifier,
     });
     cookieStore.set("refreshToken", refreshToken, {
       httpOnly: true,
@@ -124,10 +124,15 @@ export async function POST(req: Request) {
       sameSite: "strict",
     });
 
+    const isEmailOrIsPhone = zEmailSchema.safeParse({
+      email: payload.identifier,
+    });
+
     const data = await UserModel.create({
       ...validationResult.data,
       password: hashedPass,
-      phone: payload.phone,
+      phone: isEmailOrIsPhone.success ? undefined : payload.identifier,
+      email: isEmailOrIsPhone.success ? isEmailOrIsPhone.data.email : undefined,
       avatar: fileUrl,
       refreshToken,
     });
