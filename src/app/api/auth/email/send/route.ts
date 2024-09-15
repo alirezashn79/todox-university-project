@@ -79,18 +79,9 @@ export async function POST(req: Request) {
     <div
       style="margin-top: 1rem;"
     >
-     ${String(code)
-       .split("")
-       .map(
-         (item) =>
-           `
-       <div
-        style="display: inline-block; width: fit-content; padding: 0.5rem 1rem; margin: 0 0.5rem; font-size: 1.5rem; font-weight: 500; border-radius: 0.375rem; border: 1px solid #3b82f6; color: #3b82f6;"
-      >
-        ${item}
-      </div>
-      `
-       )}
+       <p style="font-size: 1rem; font-weight: bold;">
+           ${code}
+       </p>
     </div>
 
     <p style="margin-top: 1rem; line-height: 1.75; color: #d1d5db;">
