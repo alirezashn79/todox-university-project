@@ -102,7 +102,7 @@ export async function POST(req: Request) {
           <div
             style="margin-top: 1rem;"
           >
-           <p style="font-size: 1rem; font-weight: bold;">
+           <p style="font-size: 1.2rem; font-weight: bold; color: #d1d5db">
            ${code}
            </p>
           </div>

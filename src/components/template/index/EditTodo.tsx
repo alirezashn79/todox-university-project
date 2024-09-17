@@ -130,10 +130,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                           openCalendar();
                         }}
                         type="text"
-                        className={cn(
-                          "input input-bordered w-full"
-                          // timeError ? "input-error" : "input"
-                        )}
+                        className={cn("input input-bordered w-full")}
                         placeholder="ساعت؟"
                       />
                     )}
@@ -150,7 +147,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               <Button
                 loading={isSubmitting}
                 disabled={
-                  watch("title") === title &&
+                  watch("title").trim() === title &&
                   convertToPersianTimeWithEnglishNumbers(TimeValue as Date) ===
                     time
                 }

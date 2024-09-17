@@ -34,7 +34,11 @@ export default function Profile({ user }: IProfileProps) {
               <span className="text-primary mx-1">{user?.fullName}</span>
             </p>
             {user.phone && <span className="text-primary">{user.phone}</span>}
-            {user.email && <span className="text-primary">{user.email}</span>}
+            {user.email && (
+              <span className="text-primary text-xs text-wrap">
+                {user.email}
+              </span>
+            )}
           </div>
         </li>
         <DropDownItem />

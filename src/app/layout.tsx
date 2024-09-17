@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import Footer from "@/components/modules/footer/Footer";
 
 const Vazir = localFont({
   src: [
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html dir="rtl" lang="en">
       <body className={Vazir.className}>
         {children}
+        <Footer />
         <Toaster />
         <InitialTheme />
       </body>

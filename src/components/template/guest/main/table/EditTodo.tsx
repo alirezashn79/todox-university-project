@@ -148,7 +148,7 @@ export default function EditTodo({ id, time, title }: IEditTodoProps) {
                 text="ویرایش"
                 disabled={
                   loading ||
-                  (watch("title") === title &&
+                  (watch("title").trim() === title &&
                     convertToPersianTimeWithEnglishNumbers(TimeValue as any) ===
                       time)
                 }
