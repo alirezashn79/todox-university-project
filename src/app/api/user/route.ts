@@ -48,8 +48,6 @@ export async function POST(req: Request) {
       avatar,
     };
 
-    console.log("boody", body);
-
     const validationResult = zUserCreationServerSchema.safeParse(body);
 
     if (!validationResult.success) {

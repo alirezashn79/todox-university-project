@@ -47,10 +47,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html dir="rtl" lang="en">
+    <html dir="rtl" lang="fa">
       <body className={Vazir.className}>
         {children}
-        <Footer />
+        <div className="mt-10">
+          <Footer />
+        </div>
         <Toaster />
         <InitialTheme />
       </body>

@@ -31,7 +31,7 @@ export default async function AuthLayout({
         </div>
       </div>
 
-      <div className="absolute start-0 end-0 top-1 flex justify-center">
+      <div className="absolute start-0 end-0 top-0.5 flex justify-center">
         <Link className="btn btn-outline" href="/used-packages">
           پکیج های مهم پروژه
           <div>

@@ -1,12 +1,11 @@
 "use client";
 import { fireSwal } from "@/utils/swal";
 import Link from "next/link";
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Warning() {
   const isChecked = useRef<boolean>(false);
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!localStorage.getItem("gurst_warning")) {
       fireSwal({
         titleText: "توجه!",
