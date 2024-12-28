@@ -115,12 +115,6 @@ Feel free to reach out for any questions or collaboration opportunities! ✨
 
 ---
 
-## 📸 Screenshots
-
-Showcase your TodoX experience! Add screenshots of the app here.
-
----
-
 ## 🌟 Acknowledgments
 
 Thanks to all the contributors and the open-source community for their amazing work! 🙌
@@ -130,4 +124,3 @@ Thanks to all the contributors and the open-source community for their amazing w
 ## ⚡ Quick Links
 
 - [Live Demo](http://todox.ir)
-- [Documentation](./docs/README.md)
