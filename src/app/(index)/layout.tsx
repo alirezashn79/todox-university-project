@@ -7,6 +7,7 @@ export default async function IndexLayout({
 }: {
   readonly children: React.ReactNode;
 }) {
+  // constants
   const user = await isAuth();
   return (
     <div className="container">
