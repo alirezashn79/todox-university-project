@@ -12,14 +12,6 @@ const schema = new Schema<ITodoModel>({
     type: String,
     required: true,
   },
-  // body: {
-  //   type: String,
-  //   required: true,
-  // },
-  // priority: {
-  //   type: String,
-  //   default: "1",
-  // },
   isDone: {
     type: Boolean,
     default: false,
