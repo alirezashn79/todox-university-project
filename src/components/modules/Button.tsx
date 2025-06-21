@@ -15,7 +15,7 @@ export default function Button({
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
-}) {
+}){
   return (
     <button
       type={type}
