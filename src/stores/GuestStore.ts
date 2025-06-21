@@ -7,7 +7,7 @@ interface ITodo {
   date: string;
   time: string;
 }
-interface IGuest {
+interface IGuest{
   todos: ITodo[] | [];
   addTodo: (todo: Omit<ITodo, "isDone" | "id">) => void;
   editTodo: (todo: Omit<ITodo, "isDone" | "date">) => void;
