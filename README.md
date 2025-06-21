@@ -1,4 +1,4 @@
-# 🚀 TodoX - The Ultimate Task Manager
+# 🚀 TodoX - The Ultimate Task Manager For University Project
 
 Welcome to **TodoX**! 🎯 Manage your tasks effortlessly with our advanced features and beautiful design. Now live at [todox.ir](http://todox.ir)! 🌟
 
@@ -15,7 +15,7 @@ Welcome to **TodoX**! 🎯 Manage your tasks effortlessly with our advanced feat
 
 ---
 
-## 🌍 Live Demo
+## 🌍 Live
 
 Explore TodoX live at [todox.ir](http://todox.ir) and experience its amazing features! 🚀
 
