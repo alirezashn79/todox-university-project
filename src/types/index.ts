@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUser{
   _id: string;
   fullName: string;
   phone?: string;
@@ -7,7 +7,7 @@ export interface IUser {
   username: string;
 }
 
-export interface ITodo {
+export interface ITodo{
   _id: string;
   title: string;
   isDone: boolean;
