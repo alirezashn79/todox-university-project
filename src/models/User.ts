@@ -20,7 +20,7 @@ const schema = new Schema<IUserModel>({
     type: String,
     required: true,
   },
-  username: {
+  username:{
     type: String,
     required: true,
   },
