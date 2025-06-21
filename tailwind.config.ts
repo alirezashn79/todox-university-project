@@ -7,9 +7,9 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    container: {
+    container:{
       center: true,
-      padding: {
+      padding:{
         DEFAULT: "0.5rem",
         sm: "1rem",
         lg: "2rem",
