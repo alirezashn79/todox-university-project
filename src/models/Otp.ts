@@ -8,7 +8,7 @@ interface IOtpModel {
   isExpired: boolean;
 }
 const schema = new Schema<IOtpModel>({
-  code: {
+  code:{
     type: String,
     required: true,
   },
