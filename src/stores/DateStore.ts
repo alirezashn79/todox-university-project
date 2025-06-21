@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface IDateStore {
+interface IDateStore{
   date: Date;
   changeDate: (newDate: Date) => void;
   reload: boolean;
