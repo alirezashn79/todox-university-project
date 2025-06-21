@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
 
   if (!token || isExpired(token.value)) {
-    console.log("-----------------token expired-------------------");
+    console.log("----------------token expired------------------");
     const refreshToken = request.cookies.get("refreshToken");
     if (refreshToken) {
       try {
@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
         });
 
         console.log(
-          "-----------------access token generated-------------------"
+          "---------------access token generated-----------------"
         );
 
         const responseWithCookies = NextResponse.redirect(request.url);
