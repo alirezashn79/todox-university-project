@@ -1,14 +1,18 @@
-import { model, models, Schema } from "mongoose";
+import { model, models, Schema } from 'mongoose'
+
+type UserRole = 'ADMIN' | 'USER'
 
 interface IUserModel {
-  fullName: string;
-  phone?: string;
-  email?: string;
-  password: string;
-  username: string;
-  avatar?: string;
-  refreshToken?: string;
+  fullName: string
+  phone?: string
+  email?: string
+  password: string
+  username: string
+  avatar?: string
+  refreshToken?: string
+  role?: UserRole
 }
+
 const schema = new Schema<IUserModel>({
   fullName: {
     type: String,
@@ -20,14 +24,20 @@ const schema = new Schema<IUserModel>({
     type: String,
     required: true,
   },
-  username:{
+  username: {
     type: String,
     required: true,
   },
   avatar: String,
   refreshToken: String,
-});
+  role: {
+    type: String,
+    enum: ['ADMIN', 'USER'],
+    default: 'USER',
+    required: true,
+  },
+})
 
-const UserModel = models.User || model<IUserModel>("User", schema);
+const UserModel = models.User || model<IUserModel>('User', schema)
 
-export default UserModel;
+export default UserModel

@@ -1,82 +1,72 @@
-import UserModel from "@/models/User";
-import { zEditProfileSchema } from "@/schemas/schema";
-import DbConnect from "@/utils/dbConnection";
-import { isAuth } from "@/utils/serverHelpers";
-import { S3 } from "aws-sdk";
+import UserModel from '@/models/User'
+import { zEditProfileSchema } from '@/schemas/schema'
+import DbConnect from '@/utils/dbConnection'
+import { isAuth } from '@/utils/serverHelpers'
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3 } from 'aws-sdk'
+import { s3 } from '@/libs/s3'
 
 export async function PUT(req: Request) {
   try {
-    const user = await isAuth();
+    const user = await isAuth()
 
     if (!user) {
       return Response.json(
-        { message: "please login" },
+        { message: 'please login' },
         {
           status: 401,
         }
-      );
+      )
     }
 
-    const formData = await req.formData();
-    const avatar = formData.get("avatar") as File;
+    const formData = await req.formData()
+    const avatar = formData.get('avatar') as File
 
     const validationResult = zEditProfileSchema.safeParse({
       avatar,
-    });
+    })
 
     if (!validationResult.success) {
       return Response.json(
         {
-          message: "Invalid Date",
+          message: 'Invalid Date',
           error: validationResult.error.formErrors.fieldErrors,
         },
         {
           status: 422,
         }
-      );
+      )
     }
 
-    await DbConnect();
+    await DbConnect()
 
-    const fileName = `avatar-${user.phone}-${avatar.name}`;
+    const fileName = `avatar-${user.phone}-${avatar.name}`
+    const arrayBuffer = await avatar.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
 
-    const arrayBuffer = await avatar.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const s3 = new S3({
-      accessKeyId: process.env.LIARA_ACCESS_KEY,
-      secretAccessKey: process.env.LIARA_SECRET_KEY,
-      endpoint: process.env.LIARA_ENDPOINT,
-    });
-
-    const params = {
+    const command = new PutObjectCommand({
       Bucket: process.env.LIARA_BUCKET_NAME,
       Key: fileName,
       Body: buffer,
-    };
+      ContentType: validationResult.data.avatar.type,
+    })
 
-    if (user.avatar) {
-      await s3
-        .deleteObject({
-          Bucket: process.env.LIARA_BUCKET_NAME,
-          Key: user.avatar.split("/avatars/")[1],
-        } as any)
-        .promise();
-    }
-    const response = await s3.upload(params as any).promise();
-    const fileUrl = response.Location;
+    const response = await s3.send(command)
+
+    const fileUrl = `${process.env.LIARA_ENDPOINT_IMAGE}/${fileName}`
 
     await UserModel.findByIdAndUpdate(user._id, {
       $set: { avatar: fileUrl },
-    });
+    })
 
-    return Response.json({ message: "profile updated" });
+    return Response.json({ message: 'profile updated' })
   } catch (error) {
+    console.log(error)
     return Response.json(
-      { message: "Server Error", error: error.message },
+      { message: 'Server Error', error: error.message },
       {
         status: 500,
       }
-    );
+    )
   }
 }
