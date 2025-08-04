@@ -1,112 +1,108 @@
-import otpModel from "@/models/Otp";
-import UserModel from "@/models/User";
-import { zVerifyOtpServerSchema } from "@/schemas/schema";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  generateTempraryToken,
-} from "@/utils/auth";
-import DbConnect from "@/utils/dbConnection";
-import { cookies } from "next/headers";
+import otpModel from '@/models/Otp'
+import UserModel from '@/models/User'
+import { zVerifyOtpServerSchema } from '@/schemas/schema'
+import { generateAccessToken, generateRefreshToken, generateTempraryToken } from '@/utils/auth'
+import DbConnect from '@/utils/dbConnection'
+import { cookies } from 'next/headers'
 
 export async function POST(req: Request) {
   try {
-    const reqBody = await req.json();
+    const reqBody = await req.json()
 
-    const validationResult = await zVerifyOtpServerSchema.parseAsync(reqBody);
+    const validationResult = await zVerifyOtpServerSchema.parseAsync(reqBody)
 
-    await DbConnect();
+    await DbConnect()
 
     const otpRecord = await otpModel.findOne({
       ...validationResult,
       isExpired: false,
-    });
+    })
 
     if (!otpRecord) {
       return Response.json(
-        { message: "invalid code" },
+        { message: 'invalid code' },
         {
           status: 400,
         }
-      );
+      )
     }
 
-    const now = new Date().getTime();
+    const now = new Date().getTime()
 
     if (now > otpRecord.expTime) {
       await otpModel.findByIdAndUpdate(otpRecord._id, {
         isExpired: true,
-      });
+      })
 
       return Response.json(
-        { message: "code expired" },
+        { message: 'code expired' },
         {
           status: 410,
         }
-      );
+      )
     }
 
     await otpModel.findByIdAndUpdate(otpRecord._id, {
       isExpired: true,
-    });
+    })
 
-    const cookiesStore = cookies();
+    const cookiesStore = cookies()
 
-    const user = await UserModel.exists({ phone: validationResult.phone });
+    const user = await UserModel.exists({ phone: validationResult.phone })
 
     if (user) {
-      const token = generateAccessToken({ identifier: validationResult.phone });
-      cookiesStore.set("token", token, {
+      const token = generateAccessToken({ identifier: validationResult.phone })
+      cookiesStore.set('token', token, {
         httpOnly: true,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        sameSite: "strict",
-      });
+        sameSite: 'strict',
+      })
 
       const refreshToken = generateRefreshToken({
         identifier: validationResult.phone,
-      });
-      cookiesStore.set("refreshToken", refreshToken, {
+      })
+      cookiesStore.set('refreshToken', refreshToken, {
         httpOnly: true,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-        sameSite: "strict",
-      });
+        sameSite: 'strict',
+      })
 
       await UserModel.findByIdAndUpdate(user._id, {
         refreshToken,
-      });
+      })
       return Response.json(
-        { message: "Welcome Back" },
+        { message: 'Welcome Back' },
         {
           status: 200,
         }
-      );
+      )
     } else {
       const temporaryToken = generateTempraryToken({
         identifier: validationResult.phone,
-      });
-      cookiesStore.set("temporaryToken", temporaryToken, {
+      })
+      cookiesStore.set('temporaryToken', temporaryToken, {
         httpOnly: true,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      });
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+      })
       return Response.json(
-        { message: "Please Complete Your Profile" },
+        { message: 'Please Complete Your Profile' },
         {
           status: 202,
         }
-      );
+      )
     }
   } catch (error) {
     return Response.json(
-      { message: "Server Error", error },
+      { message: 'Server Error', error },
       {
         status: 500,
       }
-    );
+    )
   }
 }

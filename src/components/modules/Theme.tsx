@@ -1,19 +1,15 @@
-"use client";
+'use client'
 
-import useTheme from "@/stores/ThemeStore";
+import useTheme from '@/stores/ThemeStore'
 
 export default function Theme() {
-  const theme = useTheme((state) => state.theme);
-  const toggleTheme = useTheme((state) => state.toggleTheme);
+  const theme = useTheme((state) => state.theme)
+  const toggleTheme = useTheme((state) => state.toggleTheme)
 
   return (
     <div className="mx-4">
       <label className="swap swap-rotate text-2xl">
-        <input
-          type="checkbox"
-          checked={theme === "dark"}
-          onChange={toggleTheme}
-        />
+        <input type="checkbox" checked={theme === 'dark'} onChange={toggleTheme} />
 
         <div className="swap-off">
           <svg
@@ -41,5 +37,5 @@ export default function Theme() {
         </div>
       </label>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import NavigationDate from "@/components/template/index/NavigationDate";
-import Table from "@/components/template/index/Table";
+import NavigationDate from '@/components/template/index/NavigationDate'
+import Table from '@/components/template/index/Table'
 
 export default async function HomePage() {
   return (
@@ -7,5 +7,5 @@ export default async function HomePage() {
       <NavigationDate />
       <Table />
     </main>
-  );
+  )
 }

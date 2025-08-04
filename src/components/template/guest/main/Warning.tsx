@@ -1,51 +1,45 @@
-"use client";
-import { fireSwal } from "@/utils/swal";
-import Link from "next/link";
-import { useEffect, useRef } from "react";
+'use client'
+import { fireSwal } from '@/utils/swal'
+import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 
 export default function Warning() {
-  const isChecked = useRef<boolean>(false);
+  const isChecked = useRef<boolean>(false)
   useEffect(() => {
-    if (!localStorage.getItem("gurst_warning")) {
+    if (!localStorage.getItem('gurst_warning')) {
       fireSwal({
-        titleText: "توجه!",
+        titleText: 'توجه!',
         html: (
           <div>
             <div className="text-justify">
-              صفحه مهمان برای تست است و داده های شما در دیتابیس ذخیره نمیشود!
-              برای ذخیره داده های خود می توانید
-              <Link
-                href="/auth/login-register"
-                className="mx-1.5 inline-block text-[#facea8]"
-              >
+              صفحه مهمان برای تست است و داده های شما در دیتابیس ذخیره نمیشود! برای ذخیره داده های
+              خود می توانید
+              <Link href="/auth/login-register" className="mx-1.5 inline-block text-[#facea8]">
                 ثبت نام
               </Link>
               کنید.
             </div>
             <div className="form-control mt-2">
-              <label className="label w-fit flex items-center gap-2 ms-auto cursor-pointer">
+              <label className="label ms-auto flex w-fit cursor-pointer items-center gap-2">
                 <span className="label-text">دیگر نمایش نده</span>
                 <input
                   defaultChecked={isChecked.current}
                   onChange={() => (isChecked.current = !isChecked.current)}
                   type="checkbox"
-                  className="checkbox checkbox-sm checkbox-primary"
+                  className="checkbox-primary checkbox checkbox-sm"
                 />
               </label>
             </div>
           </div>
         ),
-        confirmButtonText: "فهمیدم",
-        icon: "warning",
+        confirmButtonText: 'فهمیدم',
+        icon: 'warning',
       }).then(() => {
         if (isChecked.current) {
-          localStorage.setItem(
-            "gurst_warning",
-            JSON.stringify(isChecked.current)
-          );
+          localStorage.setItem('gurst_warning', JSON.stringify(isChecked.current))
         }
-      });
+      })
     }
-  }, []);
-  return null;
+  }, [])
+  return null
 }

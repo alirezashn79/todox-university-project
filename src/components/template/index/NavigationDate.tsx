@@ -1,45 +1,45 @@
-"use client";
-import useDateStore from "@/stores/DateStore";
-import useTheme from "@/stores/ThemeStore";
-import { cn } from "cn-func";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
-import DatePicker from "react-multi-date-picker";
-import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
-import { useSwipeable } from "react-swipeable";
+'use client'
+import useDateStore from '@/stores/DateStore'
+import useTheme from '@/stores/ThemeStore'
+import { cn } from '@/utils/cn'
+import persian from 'react-date-object/calendars/persian'
+import persian_fa from 'react-date-object/locales/persian_fa'
+import DatePicker from 'react-multi-date-picker'
+import 'react-multi-date-picker/styles/backgrounds/bg-dark.css'
+import { useSwipeable } from 'react-swipeable'
 
 export default function NavigationDate() {
-  const date = useDateStore((state) => state.date);
-  const changeDate = useDateStore((state) => state.changeDate);
-  const reload = useDateStore((state) => state.reload);
-  const theme = useTheme((state) => state.theme);
+  const date = useDateStore((state) => state.date)
+  const changeDate = useDateStore((state) => state.changeDate)
+  const reload = useDateStore((state) => state.reload)
+  const theme = useTheme((state) => state.theme)
 
   const handlers = useSwipeable({
     onSwipedLeft: () => changeDate(new Date(date.setDate(date.getDate() - 1))),
     onSwipedRight: () => changeDate(new Date(date.setDate(date.getDate() + 1))),
     trackMouse: true,
-  });
+  })
 
   const getDisplayDates = (currentDate: Date) => {
-    const dates = [];
-    let count = 1;
+    const dates = []
+    let count = 1
 
     for (let i = -count; i <= count; i++) {
-      const newDate = new Date(currentDate);
+      const newDate = new Date(currentDate)
 
-      newDate.setDate(currentDate.getDate() + i);
-      dates.push(newDate);
+      newDate.setDate(currentDate.getDate() + i)
+      dates.push(newDate)
     }
 
-    return dates;
-  };
+    return dates
+  }
 
-  const displayDates = getDisplayDates(date);
+  const displayDates = getDisplayDates(date)
   return (
     <section {...handlers} className="pb-2">
       <div>
         <button
-          className="btn btn-primary btn-outline mb-8 ms-auto"
+          className="btn btn-outline btn-primary mb-8 ms-auto"
           onClick={() => changeDate(new Date())}
           disabled={date.toDateString() === new Date().toDateString()}
         >
@@ -64,10 +64,10 @@ export default function NavigationDate() {
           value={date}
           calendar={persian}
           locale={persian_fa}
-          className={theme === "dark" ? "bg-dark" : ""}
+          className={theme === 'dark' ? 'bg-dark' : ''}
           onChange={(e) => changeDate(e?.toDate() as Date)}
           render={
-            <button className=" btn btn-primary btn-outline mb-4 ms-4">
+            <button className="btn btn-outline btn-primary mb-4 ms-4">
               برو به تاریخ
               <div>
                 <svg
@@ -89,7 +89,7 @@ export default function NavigationDate() {
           }
         >
           <button
-            className="btn btn-primary btn-sm btn-outline mb-4 text-xs"
+            className="btn btn-outline btn-primary btn-sm mb-4 text-xs"
             onClick={() => changeDate(new Date())}
             disabled={date.toDateString() === new Date().toDateString()}
           >
@@ -97,27 +97,27 @@ export default function NavigationDate() {
           </button>
         </DatePicker>
       </div>
-      <div role="tablist" className="tabs tabs-boxed tabs-lg h-14 lg:h-16">
+      <div role="tablist" className="tabs-boxed tabs tabs-lg h-14 lg:h-16">
         {displayDates.map((d, index) => (
           <div
             key={index}
             className={cn(
-              "dateBtn",
+              'dateBtn',
               d.toDateString() === date.toDateString()
-                ? "activeDateBtn date_animation_up"
-                : "deActiveDateBtn",
+                ? 'activeDateBtn date_animation_up'
+                : 'deActiveDateBtn',
               d.toDateString() === date.toDateString() && reload
-                ? "date_animation_up"
-                : "date_animation_down"
+                ? 'date_animation_up'
+                : 'date_animation_down'
             )}
             onClick={() => changeDate(d)}
           >
-            {d.toLocaleDateString("fa-ir", { weekday: "long" })}
+            {d.toLocaleDateString('fa-ir', { weekday: 'long' })}
             <br />
-            {d.toLocaleDateString("fa-ir")}
+            {d.toLocaleDateString('fa-ir')}
           </div>
         ))}
       </div>
     </section>
-  );
+  )
 }

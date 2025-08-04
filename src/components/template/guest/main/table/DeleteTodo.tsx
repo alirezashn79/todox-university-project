@@ -1,18 +1,18 @@
-"use client";
-import useGuest from "@/stores/GuestStore";
-import { fireConfirmSwal } from "@/utils/swal";
+'use client'
+import useGuest from '@/stores/GuestStore'
+import { fireConfirmSwal } from '@/utils/swal'
 
 export default function DeleteTodo({ id }: { id: string }) {
-  const deleteTodo = useGuest((state) => state.deleteTodo);
+  const deleteTodo = useGuest((state) => state.deleteTodo)
 
   const handleDelete = (todoId: string) => {
     fireConfirmSwal({
-      confirmText: "آیا حذف شود؟",
-      subText: "این عمل برگشت پذیر نیست!",
+      confirmText: 'آیا حذف شود؟',
+      subText: 'این عمل برگشت پذیر نیست!',
       successFunctionVoid: () => deleteTodo(todoId),
-      successText: "حذف شد",
-    });
-  };
+      successText: 'حذف شد',
+    })
+  }
 
   return (
     <button onClick={() => handleDelete(id)} className="text-error">
@@ -31,5 +31,5 @@ export default function DeleteTodo({ id }: { id: string }) {
         />
       </svg>
     </button>
-  );
+  )
 }

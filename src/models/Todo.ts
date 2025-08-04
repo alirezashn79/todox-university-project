@@ -1,11 +1,11 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types } from 'mongoose'
 
 interface ITodoModel {
-  title: string;
-  isDone: boolean;
-  user: Types.ObjectId;
-  date: string;
-  time?: string;
+  title: string
+  isDone: boolean
+  user: Types.ObjectId
+  date: string
+  time?: string
 }
 const schema = new Schema<ITodoModel>({
   title: {
@@ -19,7 +19,7 @@ const schema = new Schema<ITodoModel>({
 
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   time: String,
@@ -27,8 +27,8 @@ const schema = new Schema<ITodoModel>({
     type: String,
     required: true,
   },
-});
+})
 
-const TodoModel = models.Todo || model<ITodoModel>("Todo", schema);
+const TodoModel = models.Todo || model<ITodoModel>('Todo', schema)
 
-export default TodoModel;
+export default TodoModel

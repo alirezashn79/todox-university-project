@@ -81,7 +81,9 @@ export async function POST(req: Request) {
       sameSite: 'strict',
     })
 
-    const refreshToken = generateRefreshToken({ identifier: payload.identifier })
+    const refreshToken = generateRefreshToken({
+      identifier: payload.identifier,
+    })
     cookieStore.set('refreshToken', refreshToken, {
       httpOnly: true,
       path: '/',

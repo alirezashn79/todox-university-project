@@ -1,12 +1,12 @@
-"use client";
-import useGuest from "@/stores/GuestStore";
-import client from "@/utils/client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+'use client'
+import useGuest from '@/stores/GuestStore'
+import client from '@/utils/client'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function page() {
-  const todos = useGuest((state) => state.todos);
-  const { replace } = useRouter();
+  const todos = useGuest((state) => state.todos)
+  const { replace } = useRouter()
 
   useEffect(() => {
     const transferDate = async () => {
@@ -16,29 +16,29 @@ export default function page() {
           isDone: item.isDone,
           time: item.time,
           title: item.title,
-        }));
+        }))
 
         try {
-          await client.post("api/todo/guest", body);
+          await client.post('api/todo/guest', body)
 
-          localStorage.removeItem("guest");
+          localStorage.removeItem('guest')
 
           setTimeout(() => {
-            replace("/");
-          }, 2000);
+            replace('/')
+          }, 2000)
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
       }
-    };
-    transferDate();
-  }, []);
+    }
+    transferDate()
+  }, [])
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div className="text-center space-y-4">
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="space-y-4 text-center">
         <p className="block"> داده های شما در حال ثبت در پایگاه داده هستند</p>
         <progress className="progress w-56"></progress>
       </div>
     </div>
-  );
+  )
 }

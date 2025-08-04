@@ -1,80 +1,78 @@
-"use client";
-import { ITodo } from "@/types";
-import { percentage } from "@/utils/clientHelpers";
-import { cn } from "cn-func";
+'use client'
+import { ITodo } from '@/types'
+import { percentage } from '@/utils/clientHelpers'
+import { cn } from '@/utils/cn'
 
 export default function TodoStateStyle({ data }: { data: ITodo[] }) {
-  let percent = 0;
-  let checkedCount = 0;
-  let totalCount = 0;
+  let percent = 0
+  let checkedCount = 0
+  let totalCount = 0
   if (!!data?.length) {
-    totalCount = data?.length;
-    checkedCount = data?.filter((item) => item.isDone).length;
-    percent = percentage(totalCount, checkedCount);
+    totalCount = data?.length
+    checkedCount = data?.filter((item) => item.isDone).length
+    percent = percentage(totalCount, checkedCount)
   }
 
   const percentCountStyle = (): string => {
-    let style = "";
+    let style = ''
     if (percent < 10) {
-      style = "text-rose-900";
+      style = 'text-rose-900'
     } else if (percent >= 10 && percent < 25) {
-      style = "text-error";
+      style = 'text-error'
     } else if (percent >= 20 && percent < 50) {
-      style = "text-warning";
+      style = 'text-warning'
     } else if (percent >= 50 && percent < 79) {
-      style = "text-info";
+      style = 'text-info'
     } else {
-      style = "text-success";
+      style = 'text-success'
     }
-    return style;
-  };
+    return style
+  }
 
   const percentEmojiStyle = (): string => {
-    let emoji = "";
+    let emoji = ''
     if (percent === 0) {
-      emoji = "😡";
+      emoji = '😡'
     } else if (percent < 10) {
-      emoji = "😠";
+      emoji = '😠'
     } else if (percent >= 10 && percent < 20) {
-      emoji = "🙄";
+      emoji = '🙄'
     } else if (percent >= 20 && percent < 35) {
-      emoji = "🙂";
+      emoji = '🙂'
     } else if (percent >= 35 && percent < 50) {
-      emoji = "😏";
+      emoji = '😏'
     } else if (percent >= 50 && percent < 75) {
-      emoji = "😊";
+      emoji = '😊'
     } else if (percent >= 75 && percent < 85) {
-      emoji = "😇";
+      emoji = '😇'
     } else if (percent >= 85 && percent < 95) {
-      emoji = "🥳";
+      emoji = '🥳'
     } else if (percent >= 95 && percent < 100) {
-      emoji = "🤩";
+      emoji = '🤩'
     } else if (percent === 100) {
-      emoji = "😎";
+      emoji = '😎'
       // setIsExploding(true);
     }
-    return emoji;
-  };
+    return emoji
+  }
 
   return (
     <div className="mb-2.5 flex items-center justify-evenly">
-      <div className={cn("flex items-center gap-2", percentCountStyle())}>
+      <div className={cn('flex items-center gap-2', percentCountStyle())}>
         <span>وضعیت: </span>
-        <p className={"text-lg"}>
+        <p className={'text-lg'}>
           <span>{checkedCount}</span>
-          {" از "}
+          {' از '}
           <span>{totalCount}</span>
         </p>
       </div>
 
-      <div className={cn(percentCountStyle(), "text-lg")}>
+      <div className={cn(percentCountStyle(), 'text-lg')}>
         <span className="text-base">درصد موفقیت: </span>
         <span>%</span>
         <span> {percent}</span>
-        <span className="mx-1 animate_emoji inline-block text-2xl">
-          {percentEmojiStyle()}
-        </span>
+        <span className="animate_emoji mx-1 inline-block text-2xl">{percentEmojiStyle()}</span>
       </div>
     </div>
-  );
+  )
 }

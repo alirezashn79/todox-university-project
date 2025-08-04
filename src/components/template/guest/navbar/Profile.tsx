@@ -1,16 +1,12 @@
-import Link from "next/link";
-import DropDownItem from "./DropDownItem";
-import DropDown from "@/components/modules/navbar/DropDown";
+import Link from 'next/link'
+import DropDownItem from './DropDownItem'
+import DropDown from '@/components/modules/navbar/DropDown'
 
 export default function Profile() {
   return (
     <>
       <div className="dropdown dropdown-end ms-4">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn btn-ghost btn-circle avatar"
-        >
+        <div tabIndex={0} role="button" className="avatar btn btn-circle btn-ghost">
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +26,7 @@ export default function Profile() {
         </div>
         <ul
           tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
         >
           <li className="font-semibold">
             <p className="px-2 py-3">
@@ -39,10 +35,7 @@ export default function Profile() {
           </li>
           <DropDownItem />
           <li>
-            <Link
-              className="px-2 py-3 font-semibold"
-              href="/auth/login-register"
-            >
+            <Link className="px-2 py-3 font-semibold" href="/auth/login-register">
               ثبت نام
             </Link>
           </li>
@@ -50,5 +43,5 @@ export default function Profile() {
         </ul>
       </div>
     </>
-  );
+  )
 }

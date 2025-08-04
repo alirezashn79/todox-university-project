@@ -6,9 +6,9 @@
   body {
     /* @apply overflow-x-hidden; */
   }
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"] {
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
     -webkit-appearance: none;
     margin: 0;
     -moz-appearance: textfield !important;
@@ -42,7 +42,7 @@
     @apply tab h-full text-base lg:text-lg;
   }
   .activeDateBtn {
-    @apply tab-active  scale-105 !-translate-y-1 font-bold btn-disabled;
+    @apply tab-active btn-disabled !-translate-y-1 scale-105 font-bold;
   }
   .deActiveDateBtn {
     @apply hover:btn-link;

@@ -1,24 +1,24 @@
-"use client";
-import useDateStore from "@/stores/DateStore";
-import client from "@/utils/client";
-import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
-import { fireConfirmSwal } from "@/utils/swal";
-import { mutate } from "swr";
+'use client'
+import useDateStore from '@/stores/DateStore'
+import client from '@/utils/client'
+import { convertPersianDateToEnglishNumbers } from '@/utils/clientHelpers'
+import { fireConfirmSwal } from '@/utils/swal'
+import { mutate } from 'swr'
 
 export default function DeleteTodo({ id }: { id: string }) {
-  const date = useDateStore((state) => state.date);
+  const date = useDateStore((state) => state.date)
 
   const handleDelete = (todoId: string) => {
     fireConfirmSwal({
-      confirmText: "آیا حذف شود؟",
-      subText: "این عمل برگشت پذیر نیست!",
+      confirmText: 'آیا حذف شود؟',
+      subText: 'این عمل برگشت پذیر نیست!',
       successFunction: async () => {
-        await client.delete(`/api/todo/${todoId}`);
-        mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`);
+        await client.delete(`/api/todo/${todoId}`)
+        mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`)
       },
-      successText: "حذف شد",
-    });
-  };
+      successText: 'حذف شد',
+    })
+  }
 
   return (
     <button onClick={() => handleDelete(id)} className="text-error">
@@ -37,5 +37,5 @@ export default function DeleteTodo({ id }: { id: string }) {
         />
       </svg>
     </button>
-  );
+  )
 }

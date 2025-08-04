@@ -1,40 +1,38 @@
-"use client";
-import Button from "@/components/modules/Button";
-import Input from "@/components/modules/input";
-import { zTodoSchemaClient } from "@/schemas/schema";
-import useDateStore from "@/stores/DateStore";
-import useTheme from "@/stores/ThemeStore";
-import client from "@/utils/client";
+'use client'
+import Button from '@/components/modules/Button'
+import Input from '@/components/modules/input'
+import { zTodoSchemaClient } from '@/schemas/schema'
+import useDateStore from '@/stores/DateStore'
+import useTheme from '@/stores/ThemeStore'
+import client from '@/utils/client'
 import {
   convertPersianDateToEnglishNumbers,
   convertToPersianTimeWithEnglishNumbers,
   timeStringToDate,
-} from "@/utils/clientHelpers";
-import { FireToast } from "@/utils/toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "cn-func";
-import { useRef, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { mutate } from "swr";
-import { TypeOf } from "zod";
+} from '@/utils/clientHelpers'
+import { FireToast } from '@/utils/toast'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { cn } from '@/utils/cn'
+import { useRef, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import DatePicker from 'react-multi-date-picker'
+import TimePicker from 'react-multi-date-picker/plugins/time_picker'
+import { mutate } from 'swr'
+import { TypeOf } from 'zod'
 
-type TTodo = TypeOf<typeof zTodoSchemaClient>;
+type TTodo = TypeOf<typeof zTodoSchemaClient>
 
 interface IEditTodoProps {
-  _id: string;
-  title: string;
-  time: string;
+  _id: string
+  title: string
+  time: string
 }
 
 export default function EditTodo({ _id, time, title }: IEditTodoProps) {
-  const modalEdit = useRef<any>(null);
-  const theme = useTheme((state) => state.theme);
-  const date = useDateStore((state) => state.date);
-  const [TimeValue, setTimeValue] = useState<Date | null>(
-    !!time ? timeStringToDate(time) : null
-  );
+  const modalEdit = useRef<any>(null)
+  const theme = useTheme((state) => state.theme)
+  const date = useDateStore((state) => state.date)
+  const [TimeValue, setTimeValue] = useState<Date | null>(!!time ? timeStringToDate(time) : null)
 
   const {
     register,
@@ -47,36 +45,29 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
       title,
     },
     resolver: zodResolver(zTodoSchemaClient),
-  });
+  })
 
   const addTodoHandler: SubmitHandler<TTodo> = async (values) => {
     try {
       const res = await client.put(`/api/todo/${_id}`, {
         ...values,
-        time: TimeValue
-          ? convertToPersianTimeWithEnglishNumbers(TimeValue)
-          : "",
-      });
+        time: TimeValue ? convertToPersianTimeWithEnglishNumbers(TimeValue) : '',
+      })
 
       if (res.status === 200) {
-        await mutate(
-          `/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`
-        );
+        await mutate(`/api/user/todos/${convertPersianDateToEnglishNumbers(date)}`)
       }
-      modalEdit.current.close();
+      modalEdit.current.close()
 
-      FireToast({ type: "success", message: "اعمال شد" });
+      FireToast({ type: 'success', message: 'اعمال شد' })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return (
     <>
-      <button
-        onClick={() => modalEdit.current.showModal()}
-        className="text-info"
-      >
+      <button onClick={() => modalEdit.current.showModal()} className="text-info">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -92,17 +83,14 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
           />
         </svg>
       </button>
-      <dialog
-        ref={modalEdit}
-        className="modal modal-bottom sm:modal-middle font-normal"
-      >
+      <dialog ref={modalEdit} className="modal modal-bottom font-normal sm:modal-middle">
         <div className="modal-box !h-auto">
-          <h3 className="font-bold text-lg">ویرایش</h3>
+          <h3 className="text-lg font-bold">ویرایش</h3>
           <form onSubmit={handleSubmit(addTodoHandler)}>
-            <div className="modal-middle space-y-4 mt-8">
+            <div className="modal-middle mt-8 space-y-4">
               <Input
                 name="title"
-                register={register("title")}
+                register={register('title')}
                 label="عنوان"
                 errors={errors}
                 placeholder="عنوان رو وارد کن"
@@ -110,7 +98,7 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
 
               <div className="form-control">
                 <label className="label">
-                  <span className={cn("label-text")}>زمان</span>
+                  <span className={cn('label-text')}>زمان</span>
                 </label>
                 <div className="relative">
                   <DatePicker
@@ -120,23 +108,23 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
                     disableDayPicker
                     containerClassName="w-full"
                     format="HH:mm"
-                    className={cn(theme === "dark" ? "bg-dark" : "")}
+                    className={cn(theme === 'dark' ? 'bg-dark' : '')}
                     plugins={[<TimePicker hideSeconds />]}
                     render={(value, openCalendar) => (
                       <input
                         value={value}
                         readOnly
                         onClick={() => {
-                          openCalendar();
+                          openCalendar()
                         }}
                         type="text"
-                        className={cn("input input-bordered w-full")}
+                        className={cn('input input-bordered w-full')}
                         placeholder="ساعت؟"
                       />
                     )}
                   />
                   {!!TimeValue && (
-                    <div className="absolute end-4 top-0 bottom-0 flex items-center justify-center">
+                    <div className="absolute bottom-0 end-4 top-0 flex items-center justify-center">
                       <button type="button" onClick={() => setTimeValue(null)}>
                         ❌
                       </button>
@@ -147,9 +135,8 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               <Button
                 loading={isSubmitting}
                 disabled={
-                  watch("title").trim() === title &&
-                  convertToPersianTimeWithEnglishNumbers(TimeValue as Date) ===
-                    time
+                  watch('title').trim() === title &&
+                  convertToPersianTimeWithEnglishNumbers(TimeValue as Date) === time
                 }
                 text="ویرایش"
                 className="absolute bottom-6 end-28"
@@ -161,8 +148,8 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
               {/* if there is a button in form, it will close the modal */}
               <button
                 onClick={() => {
-                  setValue("title", title);
-                  setTimeValue(!!time ? timeStringToDate(time) : null);
+                  setValue('title', title)
+                  setTimeValue(!!time ? timeStringToDate(time) : null)
                 }}
                 className="btn"
               >
@@ -173,5 +160,5 @@ export default function EditTodo({ _id, time, title }: IEditTodoProps) {
         </div>
       </dialog>
     </>
-  );
+  )
 }

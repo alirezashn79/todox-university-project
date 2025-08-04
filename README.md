@@ -66,7 +66,6 @@ Ensure you have the following installed:
    ```
 
 3. Set up environment variables:
-
    - Copy `.env.example` to `.env`.
    - Add your database URI, JWT secret, email credentials, and SMS provider API keys.
 

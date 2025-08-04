@@ -1,11 +1,11 @@
-import Form from "@/components/template/auth/login-with-password/Form";
-import Link from "next/link";
+import Form from '@/components/template/auth/login-with-password/Form'
+import Link from 'next/link'
 
 export default function LoginWithPassword() {
   return (
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl border">
-      <h1 className="card-title text-center mt-8 block">ورود با رمز عبور</h1>
-      <div className="text-warning leading-3 text-xs md:text-sm flex items-center ms-8 mt-4 gap-2">
+    <div className="card w-full max-w-sm shrink-0 border bg-base-100 shadow-2xl">
+      <h1 className="card-title mt-8 block text-center">ورود با رمز عبور</h1>
+      <div className="ms-8 mt-4 flex items-center gap-2 text-xs leading-3 text-warning md:text-sm">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -24,10 +24,7 @@ export default function LoginWithPassword() {
         </div>
         <p>
           اگه هنوز ثبت نام نکردی
-          <Link
-            href="/auth/login-register"
-            className=" btn px-1 text-warning btn-link"
-          >
+          <Link href="/auth/login-register" className="btn btn-link px-1 text-warning">
             ثبت نام
           </Link>
           کن.
@@ -35,5 +32,5 @@ export default function LoginWithPassword() {
       </div>
       <Form />
     </div>
-  );
+  )
 }

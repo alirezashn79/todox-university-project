@@ -1,41 +1,39 @@
-"use client";
-import useDateStore from "@/stores/DateStore";
-import useGuest from "@/stores/GuestStore";
-import { convertPersianDateToEnglishNumbers } from "@/utils/clientHelpers";
-import { FireToast } from "@/utils/toast";
-import { useState } from "react";
-import { HashLoader } from "react-spinners";
+'use client'
+import useDateStore from '@/stores/DateStore'
+import useGuest from '@/stores/GuestStore'
+import { convertPersianDateToEnglishNumbers } from '@/utils/clientHelpers'
+import { FireToast } from '@/utils/toast'
+import { useState } from 'react'
+import { HashLoader } from 'react-spinners'
 
 interface IAllCheckProps {
-  checkAll: boolean;
+  checkAll: boolean
 }
 
 export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
-  const date = useDateStore((state) => state.date);
-  const [loading, setLoading] = useState(false);
-  const setCheckAll = useGuest((state) => state.checkAll);
+  const date = useDateStore((state) => state.date)
+  const [loading, setLoading] = useState(false)
+  const setCheckAll = useGuest((state) => state.checkAll)
 
   const handleAllCheck = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       setCheckAll({
         date: convertPersianDateToEnglishNumbers(date),
         isCheck: !checkAll,
-      });
+      })
       FireToast({
-        type: "success",
-        message: `همه کارها در حالت  ${
-          !checkAll ? "انجام شده" : "انجام نشده"
-        } قرار گرفتند`,
-      });
+        type: 'success',
+        message: `همه کارها در حالت  ${!checkAll ? 'انجام شده' : 'انجام نشده'} قرار گرفتند`,
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
       setTimeout(() => {
-        setLoading(false);
-      }, 300);
+        setLoading(false)
+      }, 300)
     }
-  };
+  }
   return (
     <>
       {loading ? (
@@ -49,10 +47,10 @@ export default function AllCheckTodos({ checkAll }: IAllCheckProps) {
             checked={checkAll}
             onChange={handleAllCheck}
             type="checkbox"
-            className="checkbox checkbox-success"
+            className="checkbox-success checkbox"
           />
         </label>
       )}
     </>
-  );
+  )
 }

@@ -1,28 +1,22 @@
-import ThemeToggle from "@/components/template/auth/themeToggle";
-import { isAuth } from "@/utils/serverHelpers";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import ThemeToggle from '@/components/template/auth/themeToggle'
+import { isAuth } from '@/utils/serverHelpers'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-export default async function AuthLayout({
-  children,
-}: {
-  readonly children: React.ReactNode;
-}) {
-  const user = await isAuth();
+export default async function AuthLayout({ children }: { readonly children: React.ReactNode }) {
+  const user = await isAuth()
 
   if (user) {
-    return redirect("/");
+    return redirect('/')
   }
   return (
     <div className="container">
       <div className="hero min-h-screen">
-        <div className="hero-content flex lg:flex-row flex-col">
+        <div className="hero-content flex flex-col lg:flex-row">
           <div className="text-center lg:text-left">
-            <h1 className="text-5xl text-center leading-[4rem] font-bold">
+            <h1 className="text-center text-5xl font-bold leading-[4rem]">
               به
-              <span className="inline-block text-primary animate-bounce mx-2">
-                تودو ایکس
-              </span>
+              <span className="mx-2 inline-block animate-bounce text-primary">تودو ایکس</span>
               <br className="block lg:hidden" />
               خوش آمدید
             </h1>
@@ -31,7 +25,7 @@ export default async function AuthLayout({
         </div>
       </div>
 
-      <div className="absolute start-0 end-0 top-0.5 flex justify-center">
+      <div className="absolute end-0 start-0 top-0.5 flex justify-center">
         <Link className="btn btn-outline" href="/used-packages">
           پکیج های مهم پروژه
           <div>
@@ -49,5 +43,5 @@ export default async function AuthLayout({
 
       <ThemeToggle />
     </div>
-  );
+  )
 }

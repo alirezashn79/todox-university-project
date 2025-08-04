@@ -1,32 +1,28 @@
-import UserModel from "@/models/User";
-import { zSignInForm } from "@/schemas/schema";
-import {
-  comparePass,
-  generateAccessToken,
-  generateRefreshToken,
-} from "@/utils/auth";
-import DbConnect from "@/utils/dbConnection";
-import { cookies } from "next/headers";
+import UserModel from '@/models/User'
+import { zSignInForm } from '@/schemas/schema'
+import { comparePass, generateAccessToken, generateRefreshToken } from '@/utils/auth'
+import DbConnect from '@/utils/dbConnection'
+import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
   try {
-    const reqBody = await request.json();
+    const reqBody = await request.json()
 
-    const validationResult = zSignInForm.safeParse(reqBody);
+    const validationResult = zSignInForm.safeParse(reqBody)
 
     if (!validationResult.success) {
       return Response.json(
         {
-          message: "invalid data",
+          message: 'invalid data',
           error: validationResult.error.formErrors.fieldErrors,
         },
         {
           status: 422,
         }
-      );
+      )
     }
 
-    await DbConnect();
+    await DbConnect()
 
     const user = await UserModel.findOne(
       {
@@ -36,68 +32,65 @@ export async function POST(request: Request) {
           { phone: validationResult.data.identifier },
         ],
       },
-      "password phone email"
-    );
+      'password phone email'
+    )
 
     if (!user) {
       return Response.json(
-        { message: "user not found" },
+        { message: 'user not found' },
         {
           status: 403,
         }
-      );
+      )
     }
 
-    const verifyPass = await comparePass(
-      validationResult.data.password,
-      user.password
-    );
+    const verifyPass = await comparePass(validationResult.data.password, user.password)
 
     if (!verifyPass) {
-      return Response.json({ message: "user not found!!" }, { status: 403 });
+      return Response.json({ message: 'user not found!!' }, { status: 403 })
     }
 
-    const cookieStore = cookies();
+    const cookieStore = cookies()
 
-    const token = generateAccessToken({ identifier: user.phone || user.email });
-    cookieStore.set("token", token, {
+    const token = generateAccessToken({ identifier: user.phone || user.email })
+    cookieStore.set('token', token, {
       httpOnly: true,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      sameSite: "strict",
-    });
+      sameSite: 'strict',
+    })
 
     const refreshToken = generateRefreshToken({
       identifier: user.email || user.phone,
-    });
-    cookieStore.set("refreshToken", refreshToken, {
+    })
+    cookieStore.set('refreshToken', refreshToken, {
       httpOnly: true,
-      path: "/",
-      secure: process.env.NODE_ENV === "production",
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
       expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      sameSite: "strict",
-    });
+      sameSite: 'strict',
+    })
 
     await UserModel.findByIdAndUpdate(user._id, {
       refreshToken,
-    });
+    })
 
     return Response.json(
-      { message: "Welcome Back" },
+      { message: 'Welcome Back' },
       {
         status: 200,
       }
-    );
+    )
   } catch (error) {
     return Response.json(
       {
-        message: "Server Error!",
+        message: 'Server Error!',
         error: error.message,
       },
       {
         status: 500,
       }
-    );
+    )
   }
 }
