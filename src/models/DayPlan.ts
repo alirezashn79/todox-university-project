@@ -7,7 +7,6 @@ export interface IDayPlanModel {
   date: string
   important?: string
   notes?: string
-  gratitude?: string
   mood: MoodType
 }
 
@@ -17,7 +16,6 @@ const DayPlanSchema = new Schema<IDayPlanModel>(
     date: { type: String, required: true },
     important: { type: String },
     notes: { type: String },
-    gratitude: { type: String },
     mood: {
       type: String,
       enum: ['AWESOME', 'GOOD', 'FAIR', 'BAD', 'TERRIBLE'],
