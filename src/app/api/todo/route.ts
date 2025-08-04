@@ -1,7 +1,9 @@
+import GroupModel from '@/models/Group'
 import TodoModel from '@/models/Todo'
 import { zTodoSchemaServer } from '@/schemas/schema'
 import DbConnect from '@/utils/dbConnection'
 import { isAuth } from '@/utils/serverHelpers'
+import { ObjectId } from 'mongoose'
 
 export async function POST(req: Request) {
   try {
@@ -17,9 +19,21 @@ export async function POST(req: Request) {
 
     await DbConnect()
 
+    const group = validationResult.group
+
+    let groupId: any
+
+    if (group) {
+      const groupExists = await GroupModel.exists({ _id: group })
+      if (groupExists) {
+        groupId = groupExists._id
+      }
+    }
+
     const data = await TodoModel.create({
       ...validationResult,
       user,
+      group: groupId,
     })
 
     return Response.json(

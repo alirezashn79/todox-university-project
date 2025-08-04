@@ -1,4 +1,4 @@
-import { model, models, Schema } from 'mongoose'
+import { Model, model, models, Schema, Types } from 'mongoose'
 
 interface IOtpModel {
   code: string
@@ -24,6 +24,10 @@ const schema = new Schema<IOtpModel>({
   },
 })
 
-const otpModel = models.Otp || model<IOtpModel>('Otp', schema)
+const otpModel = (models.Otp as Model<IOtpModel>) || model<IOtpModel>('Otp', schema)
 
 export default otpModel
+
+export type IOtpSchema = IOtpModel & {
+  _id: Types.ObjectId
+}

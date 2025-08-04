@@ -1,8 +1,8 @@
-import { model, models, Schema } from 'mongoose'
+import { Model, model, models, Schema, Types } from 'mongoose'
 
-type UserRole = 'ADMIN' | 'USER'
+export type UserRole = 'ADMIN' | 'USER'
 
-interface IUserModel {
+export interface IUserModel {
   fullName: string
   phone?: string
   email?: string
@@ -11,33 +11,33 @@ interface IUserModel {
   avatar?: string
   refreshToken?: string
   role?: UserRole
+  groups?: Types.ObjectId[]
 }
 
-const schema = new Schema<IUserModel>({
-  fullName: {
-    type: String,
-    required: true,
+const UserSchema = new Schema<IUserModel>(
+  {
+    fullName: { type: String, required: true },
+    phone: { type: String },
+    email: { type: String },
+    password: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    avatar: { type: String },
+    refreshToken: { type: String },
+    role: {
+      type: String,
+      enum: ['ADMIN', 'USER'],
+      default: 'USER',
+      required: true,
+    },
+    groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
   },
-  phone: String,
-  email: String,
-  password: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  avatar: String,
-  refreshToken: String,
-  role: {
-    type: String,
-    enum: ['ADMIN', 'USER'],
-    default: 'USER',
-    required: true,
-  },
-})
-
-const UserModel = models.User || model<IUserModel>('User', schema)
-
+  {
+    timestamps: true,
+  }
+)
+const UserModel = (models.User as Model<IUserModel>) || model<IUserModel>('User', UserSchema)
 export default UserModel
+
+export type IUserSchema = IUserModel & {
+  _id: Types.ObjectId
+}

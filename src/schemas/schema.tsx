@@ -28,6 +28,7 @@ export const zTimeSchema = object({
 export const zTodoSchemaServer = object({
   title: string().trim().min(1, 'عنوان الزامی است'),
   date: string().trim().min(4),
+  group: string().optional(),
 }).and(zTimeSchema)
 
 export const zTodoEditServer = object({

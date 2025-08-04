@@ -29,7 +29,7 @@ export async function isAuth() {
     }
   }
 
-  return user
+  return user as IUser
 }
 
 export async function isAuthPrivate() {
