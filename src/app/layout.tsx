@@ -3,31 +3,49 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
 import './globals.css'
-import Footer from '@/components/modules/footer/Footer'
+import ReactQueryProvider from '@/providers/ReactQueryProvider'
 
-const Vazir = localFont({
+const dana = localFont({
   src: [
     {
-      path: '../../public/fonts/Vazirmatn-FD-Regular.woff2',
+      path: '../assets/fonts/dana/DanaFaNum-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Vazirmatn-FD-Medium.woff2',
+      path: '../assets/fonts/dana/DanaFaNum-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Vazirmatn-FD-SemiBold.woff2',
+      path: '../assets/fonts/dana/DanaFaNum-SemiBold.woff2',
       weight: '600',
       style: 'normal',
     },
+  ],
+  variable: '--ffont-dana',
+  display: 'swap',
+})
+
+const morabba = localFont({
+  src: [
     {
-      path: '../../public/fonts/Vazirmatn-FD-Bold.woff2',
+      path: '../assets/fonts/morabba/Morabba-Light.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/morabba/Morabba-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../assets/fonts/morabba/Morabba-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
   ],
+  variable: '--ffont-morabba',
   display: 'swap',
 })
 // const inter = Inter({ subsets: ["latin"] });
@@ -47,14 +65,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html dir="rtl" lang="fa">
-      <body className={Vazir.className}>
-        {children}
-        <div className="mt-10">
-          <Footer />
-        </div>
-        <Toaster />
-        <InitialTheme />
+    <html lang="fa" dir="rtl" className={`${dana.variable} ${morabba.variable}`}>
+      <body className={dana.className}>
+        <ReactQueryProvider>
+          {children}
+          <Toaster />
+          <InitialTheme />
+        </ReactQueryProvider>
       </body>
     </html>
   )

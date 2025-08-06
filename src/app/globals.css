@@ -6,6 +6,15 @@
   body {
     /* @apply overflow-x-hidden; */
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-morabba;
+  }
+
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button,
   input[type='number'] {
@@ -13,7 +22,6 @@
     margin: 0;
     -moz-appearance: textfield !important;
   }
-
   /* width */
   ::-webkit-scrollbar {
     width: 8px;
@@ -37,9 +45,21 @@
   }
 }
 
+@layer utilities {
+  /* برای مخفی کردن بار اسکرول افقی و عمودی */
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* برای Webkit-based browsers (Chrome, Safari, Opera) */
+  }
+}
+
 @layer components {
   .dateBtn {
-    @apply tab h-full text-base lg:text-lg;
+    @apply tab h-full text-sm lg:text-base;
   }
   .activeDateBtn {
     @apply tab-active btn-disabled !-translate-y-1 scale-105 font-bold;
@@ -81,5 +101,38 @@
 
   .animate_emoji {
     animation: emiji 1s infinite alternate;
+  }
+
+  .masonry-layout {
+    column-gap: 1em;
+  }
+
+  .masonry-item {
+    margin-bottom: 1em;
+    break-inside: avoid;
+    border-radius: 1em;
+    padding: 1em;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 576px) {
+    .masonry-layout {
+      column-count: 2;
+    }
+  }
+  @media (min-width: 768px) {
+    .masonry-layout {
+      column-count: 4;
+    }
+  }
+  @media (min-width: 992px) {
+    .masonry-layout {
+      column-count: 6;
+    }
+  }
+  @media (min-width: 1200px) {
+    .masonry-layout {
+      column-count: 8;
+    }
   }
 }

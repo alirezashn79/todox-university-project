@@ -17,7 +17,10 @@ const config: Config = {
         '2xl': '4rem',
       },
     },
-    extend: {},
+    fontFamily: {
+      dana: ['var(--ffont-dana)'],
+      morabba: ['var(--ffont-morabba)'],
+    },
   },
   plugins: [require('daisyui')],
   daisyui: {

@@ -37,9 +37,9 @@ export default function NavigationDate() {
   const displayDates = getDisplayDates(date)
   return (
     <section {...handlers} className="pb-2">
-      <div>
+      <div className="mb-2">
         <button
-          className="btn btn-outline btn-primary mb-8 ms-auto"
+          className="btn btn-outline btn-primary ms-auto"
           onClick={() => changeDate(new Date())}
           disabled={date.toDateString() === new Date().toDateString()}
         >
@@ -67,7 +67,7 @@ export default function NavigationDate() {
           className={theme === 'dark' ? 'bg-dark' : ''}
           onChange={(e) => changeDate(e?.toDate() as Date)}
           render={
-            <button className="btn btn-outline btn-primary mb-4 ms-4">
+            <button className="btn btn-outline btn-primary ms-4">
               برو به تاریخ
               <div>
                 <svg
@@ -97,7 +97,7 @@ export default function NavigationDate() {
           </button>
         </DatePicker>
       </div>
-      <div role="tablist" className="tabs-boxed tabs tabs-lg h-14 lg:h-16">
+      <div role="tablist" className="tabs-boxed tabs tabs-lg h-10 lg:h-12">
         {displayDates.map((d, index) => (
           <div
             key={index}
