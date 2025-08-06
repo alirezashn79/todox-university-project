@@ -21,7 +21,7 @@ export async function GET(req: Request) {
 
   const todos = await TodoModel.find(filter)
     .select('-__v')
-    .populate('group') // در صورت نیاز می‌توانید فیلدهای group را انتخاب کنید
+    .populate('group')
     .sort({ date: 1, time: 1 })
 
   return NextResponse.json(todos)

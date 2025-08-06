@@ -1,9 +1,8 @@
 // app/api/groups/route.ts
-import { NextResponse } from 'next/server'
-import { nanoid } from 'nanoid'
 import GroupModel from '@/models/Group'
 import { isAuth } from '@/utils/serverHelpers'
-import DbConnect from '@/utils/dbConnection'
+import { nanoid } from 'nanoid'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   const user = await isAuth()
