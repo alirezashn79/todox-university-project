@@ -4,5 +4,6 @@ const endpoints = {
   groups: 'api/todos/groups',
   goals: 'api/todos/goals',
   appointments: 'api/todos/appointments',
+  shoppingLists: 'api/todos/shoppingLists',
 }
 export default endpoints
