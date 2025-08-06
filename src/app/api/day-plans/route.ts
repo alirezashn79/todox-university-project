@@ -33,17 +33,29 @@ export async function POST(req: Request) {
   const { date, important, notes, mood } = body
 
   // date و mood اجباری‌اند
-  if (!date || !mood) {
+  if (!date) {
     return NextResponse.json({ message: 'date and mood are required' }, { status: 400 })
   }
 
   // اعتبارسنجی مقدار mood
   const allowedMoods = ['AWESOME', 'GOOD', 'FAIR', 'BAD', 'TERRIBLE']
-  if (!allowedMoods.includes(mood)) {
+  if (mood && !allowedMoods.includes(mood)) {
     return NextResponse.json({ message: 'invalid mood value' }, { status: 400 })
   }
 
   try {
+    const isDayPlanExist = await DayPlanModel.exists({ user: user._id, date })
+
+    if (isDayPlanExist) {
+      const updatedDayPlan = await DayPlanModel.findByIdAndUpdate(isDayPlanExist._id, {
+        ...(important && { important }),
+        ...(notes && { notes }),
+        ...(mood && { mood }),
+        user: user._id,
+        date,
+      })
+      return NextResponse.json(updatedDayPlan, { status: 201 })
+    }
     const newPlan = await DayPlanModel.create({
       user: user._id,
       date,

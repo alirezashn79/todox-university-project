@@ -1,4 +1,3 @@
-// app/api/groups/join/route.ts
 import GroupModel from '@/models/Group'
 import { isAuth } from '@/utils/serverHelpers'
 import { NextResponse } from 'next/server'
