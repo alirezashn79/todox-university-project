@@ -1,4 +1,3 @@
-// app/api/appointments/[id]/route.ts
 import { NextResponse } from 'next/server'
 import AppointmentModel from '@/models/Appointment'
 import GroupModel from '@/models/Group'
