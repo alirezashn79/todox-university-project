@@ -5,6 +5,7 @@ export interface IAppointmentModel {
   description?: string
   date: string
   time: string
+  isDone: boolean
   user: Types.ObjectId
   group?: Types.ObjectId
 }
@@ -15,6 +16,7 @@ const AppointmentSchema = new Schema<IAppointmentModel>(
     description: { type: String },
     date: { type: String, required: true },
     time: { type: String, required: true },
+    isDone: { type: Boolean, default: false },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     group: { type: Schema.Types.ObjectId, ref: 'Group' },
   },
