@@ -8,6 +8,7 @@ interface IProps {
   id: string
   title?: string
   time?: string
+  isDone?: boolean
   group?: string
   date?: string
 }

@@ -3,21 +3,25 @@
 import { cn } from '@/utils/cn'
 
 import { convertToPersianTimeWithEnglishNumbers, timeStringToDate } from '@/utils/clientHelpers'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import Flatpickr from 'react-flatpickr'
+import useUpdateTodo from '@/hooks/queries/todos/useUpdateTodo'
 
 interface IProps {
+  id: string
   title: string
   time?: string
   isDone: boolean
 }
 
-export default function TodoItem({ title, isDone, time }: IProps) {
+export default function TodoItem({ id, title, isDone, time }: IProps) {
   const [isShow, setIsShow] = useState(false)
   const [isChecked, setIsChecked] = useState(isDone)
   const [isEdit, setIsEdit] = useState(false)
   const [editTime, setEditTime] = useState(time ?? '')
   const [editText, setEditText] = useState(title ?? '')
+
+  const { mutateAsync: updateTodo, isPending: isPendingUpdateTodo } = useUpdateTodo()
 
   const toggleCheck = () => setIsChecked((prev) => !prev)
 
@@ -37,6 +41,24 @@ export default function TodoItem({ title, isDone, time }: IProps) {
     }
   }, [isChecked, setIsShow])
 
+  useEffect(() => {
+    setIsChecked(isDone)
+  }, [isDone])
+
+  const handleChangeIsDone = async (e: ChangeEvent<HTMLInputElement>) => {
+    await updateTodo(
+      {
+        id,
+        isDone: e.target.checked,
+      },
+      {
+        onSuccess: () => {
+          setIsChecked(e.target.checked)
+        },
+      }
+    )
+  }
+
   return (
     <li
       className={cn(
@@ -45,14 +67,18 @@ export default function TodoItem({ title, isDone, time }: IProps) {
         isChecked && 'border border-success !bg-success/5'
       )}
     >
-      <label className="w-fit translate-y-0.5">
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={(e) => setIsChecked(e.target.checked)}
-          className="checkbox-accent checkbox checkbox-xs"
-        />
-      </label>
+      {isPendingUpdateTodo ? (
+        <div className="checkbox-xs size-4 animate-spin rounded-full border-t-[9px] border-t-success" />
+      ) : (
+        <label className="w-fit translate-y-0.5">
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleChangeIsDone}
+            className="checkbox-accent checkbox checkbox-xs"
+          />
+        </label>
+      )}
       <div
         onClick={() => {
           if (!isShow) setIsShow(true)
@@ -101,13 +127,7 @@ export default function TodoItem({ title, isDone, time }: IProps) {
         </div>
 
         {isShow && (
-          <div className="my-2 flex items-center justify-end gap-2">
-            <button
-              className={cn('btn btn-success btn-xs', isChecked && 'btn-warning')}
-              onClick={toggleCheck}
-            >
-              {isChecked ? 'انجام نشده' : 'انجام شد'}
-            </button>
+          <div className="mt-4 flex items-center justify-end gap-2">
             <button
               className={cn('btn btn-info btn-xs', isEdit && '!btn-success')}
               onClick={handleEdit}

@@ -8,7 +8,7 @@ interface IProps {
   id: string
 }
 
-export default function useUpdateTodo() {
+export default function useDeleteTodo() {
   const refreshTodos = useRefresh(['user-todos'])
   return useMutation({
     mutationKey: ['delete-todo'],
