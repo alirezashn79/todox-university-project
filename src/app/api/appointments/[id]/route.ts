@@ -60,10 +60,11 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   const body = await req.json()
-  const { title, date, time, description, group } = body
+  const { title, date, time, description, group, isDone } = body
 
   if (title !== undefined) appt.title = title
   if (date !== undefined) appt.date = date
+  if (isDone !== undefined) appt.isDone = isDone
   if (time !== undefined) appt.time = time
   if (description !== undefined) appt.description = description
 

@@ -5,11 +5,12 @@ import endpoints from '@/utils/endpoints'
 import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
-interface IUpdateAppointmentInput {
+export interface IUpdateAppointmentInput {
   id: string
   title?: string
   date?: string
   time?: string
+  isDone?: boolean
   description?: string | null
   group?: string | null
 }

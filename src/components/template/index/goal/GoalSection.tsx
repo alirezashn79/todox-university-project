@@ -36,7 +36,7 @@ export default function GoalSection() {
   let donedCount = goals?.filter((item) => item.isAchieved).length
 
   return (
-    <div className="!hide-scrollbar card h-full min-h-52 overflow-y-auto bg-base-300 sm:min-h-64 xl:h-auto xl:min-h-max xl:basis-2/3">
+    <div className="!hide-scrollbar card h-full min-h-80 overflow-hidden bg-base-300 md:h-40 xl:h-full xl:min-h-max">
       <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
         <h2 className="mb-4 pt-2 text-center text-lg text-warning">اهداف روز</h2>
         {!isEmpty && (
@@ -47,7 +47,7 @@ export default function GoalSection() {
           </div>
         )}
       </div>
-      <ul className="list-disc space-y-2 text-pretty p-2 text-sm">
+      <div className="h-full space-y-2 overflow-y-auto text-pretty p-2 text-sm">
         {isPending && (
           <div className="animate-pulse space-y-2">
             <div className="h-10 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
@@ -57,7 +57,7 @@ export default function GoalSection() {
 
         {isEmpty && !isAdd && !isPending && (
           <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
-            <h4>کاری اضافه نکردی</h4>
+            <h4>هدفی اضافه نکردی</h4>
             <button onClick={openAdd} className="btn btn-warning btn-xs">
               افزودن
             </button>
@@ -154,7 +154,7 @@ export default function GoalSection() {
             isAchieved={goal.isAchieved}
           />
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

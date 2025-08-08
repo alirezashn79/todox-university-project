@@ -5,6 +5,7 @@ export interface IAppointment {
   date: string
   time: string
   user: string
+  isDone: boolean
   group?: {
     _id: string
     name: string
