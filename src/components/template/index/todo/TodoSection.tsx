@@ -13,7 +13,7 @@ import useMarkAll from '@/hooks/queries/todos/useMarkAll'
 export default function TodoSection() {
   const { data: todos, isPending, isRefetching } = useGetUserTodos()
   const { control, handleSubmit, reset, resetField } = useForm<ICreateTodo>()
-  const { mutateAsync: createTodo } = useCreateTodo()
+  const { mutateAsync: createTodo, isPending: isPenginsCreateTodo } = useCreateTodo()
   const { mutateAsync: markAll, isPending: isPendingMarkAll } = useMarkAll()
   const [isAdd, setIsAdd] = useState(false)
 
@@ -143,10 +143,23 @@ export default function TodoSection() {
               </div>
 
               <div className="mt-2 flex items-center justify-end gap-2">
-                <button type="submit" className="btn btn-success btn-xs">
-                  ثبت
+                <button
+                  disabled={isPenginsCreateTodo}
+                  type="submit"
+                  className="btn btn-success btn-xs"
+                >
+                  {!isPenginsCreateTodo ? (
+                    'ثبت'
+                  ) : (
+                    <div className="size-3 animate-spin rounded-full border-t-2" />
+                  )}
                 </button>
-                <button onClick={closeAdd} type="button" className="btn btn-error btn-xs">
+                <button
+                  disabled={isPenginsCreateTodo}
+                  onClick={closeAdd}
+                  type="button"
+                  className="btn btn-error btn-xs"
+                >
                   لغو
                 </button>
               </div>

@@ -38,6 +38,7 @@ export const fireConfirmSwal = ({
     title: confirmText,
     text: subText,
     icon: 'question',
+    position: 'center',
     showCancelButton: true,
     cancelButtonText: 'منصرف شدم',
     confirmButtonText: 'بله',

@@ -4,7 +4,7 @@ import endpoints from '@/utils/endpoints'
 import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
-interface IProps {
+export interface IUpdateTodo {
   id: string
   title?: string
   time?: string
@@ -17,7 +17,7 @@ export default function useUpdateTodo() {
   const refreshTodos = useRefresh(['user-todos'])
   return useMutation({
     mutationKey: ['update-todo'],
-    mutationFn: async (values: IProps) => {
+    mutationFn: async (values: IUpdateTodo) => {
       const { id, ...data } = values
       await client.patch(`${endpoints.todos}/${id}`, { ...data })
     },
