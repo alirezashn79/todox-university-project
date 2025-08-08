@@ -5,7 +5,7 @@ import endpoints from '@/utils/endpoints'
 import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
-interface IUpdateGoalInput {
+export interface IUpdateGoalInput {
   id: string
   title?: string
   isAchieved?: boolean

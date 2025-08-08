@@ -1,21 +1,24 @@
+import useDateStore from '@/stores/DateStore'
 import { IGoal } from '@/types/goal'
 import client from '@/utils/client'
+import { convertPersianDateToEnglishNumbers } from '@/utils/clientHelpers'
 import endpoints from '@/utils/endpoints'
 import { useQuery } from '@tanstack/react-query'
 
 interface IGetGoalsFilters {
-  date?: string
   dueDate?: string
 }
-export function useGetUserGoals(filters: IGetGoalsFilters = {}) {
-  const { date, dueDate } = filters
+export function useGetUserGoals({ dueDate }: IGetGoalsFilters = {}) {
+  const date = useDateStore((state) => state.date)
+  const dateString = convertPersianDateToEnglishNumbers(date)
   return useQuery<IGoal[], Error>({
     queryKey: ['user-goals', date, dueDate],
     queryFn: async () => {
-      const params: Record<string, string> = {}
-      if (date) params.date = date
-      if (dueDate) params.dueDate = dueDate
-      const res = await client.get<IGoal[]>(endpoints.goals, { params })
+      const searchParams = new URLSearchParams()
+      searchParams.append('date', dateString)
+      if (dueDate) searchParams.append('dueDate', dueDate)
+      const url = `${endpoints.goals}?${searchParams.toString()}`
+      const res = await client.get<IGoal[]>(url)
       return res.data
     },
   })

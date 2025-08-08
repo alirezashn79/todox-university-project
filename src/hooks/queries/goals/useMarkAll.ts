@@ -7,22 +7,22 @@ import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
 interface IProps {
-  isDone: boolean
+  isAchieved: boolean
 }
 
-export default function useMarkAll() {
+export default function useMarkAllGoals() {
   const date = useDateStore((state) => state.date)
-  const refreshTodos = useRefresh(['user-todos'])
+  const refreshGoals = useRefresh(['user-goals'])
   return useMutation({
-    mutationKey: ['mark-all-todos', date],
+    mutationKey: ['mark-all-goals', date],
     mutationFn: async (values: IProps) => {
-      await client.patch(endpoints.markAllTodos, {
+      await client.patch(endpoints.markAllGoals, {
         ...values,
         date: convertPersianDateToEnglishNumbers(date),
       })
     },
     onSuccess: () => {
-      refreshTodos()
+      refreshGoals()
       FireToast({
         type: 'success',
         message: 'ثبت شد',

@@ -114,7 +114,7 @@ export default function NavigationDate() {
           >
             {d.toLocaleDateString('fa-ir', { weekday: 'long' })}
             <br />
-            {d.toLocaleDateString('fa-ir')}
+            {d.toLocaleDateString('fa-ir', { year: 'numeric', month: 'long', day: 'numeric' })}
           </div>
         ))}
       </div>

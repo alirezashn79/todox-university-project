@@ -2,6 +2,8 @@ import 'flatpickr/dist/themes/material_green.css'
 import dynamic from 'next/dynamic'
 import MoodReactions from './MoodReactions'
 const TodoSection = dynamic(() => import('./todo/TodoSection'))
+const GoalSection = dynamic(() => import('./goal/GoalSection'))
+
 export default function MainSection() {
   return (
     <div className="hide-scrollbar overflow-y-auto md:h-[calc(100vh-200px)]">
@@ -9,7 +11,7 @@ export default function MainSection() {
         <TodoSection />
 
         <div className="flex h-full flex-col gap-2">
-          <div className="!hide-scrollbar card h-full min-h-52 overflow-y-auto bg-base-300 sm:min-h-64 xl:h-auto xl:min-h-max xl:basis-2/3">
+          {/* <div className="!hide-scrollbar card h-full min-h-52 overflow-y-auto bg-base-300 sm:min-h-64 xl:h-auto xl:min-h-max xl:basis-2/3">
             <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
               <h2 className="mb-4 pt-2 text-center text-lg text-warning">اهداف روز</h2>
             </div>
@@ -34,7 +36,8 @@ export default function MainSection() {
                 </label>
               </li>
             </ul>
-          </div>
+          </div> */}
+          <GoalSection />
           <div className="!hide-scrollbar card h-full min-h-52 overflow-y-auto bg-base-300 sm:min-h-64 xl:h-auto xl:min-h-max xl:basis-1/3">
             <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
               <h2 className="mb-4 pt-2 text-center text-lg text-primary">

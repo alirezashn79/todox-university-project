@@ -127,7 +127,7 @@ export default function TodoItem({ id, title, isDone, time }: IProps) {
               defaultValue={title}
               rules={{
                 required: false,
-                minLength: 4,
+                minLength: 1,
               }}
               render={({ field, fieldState }) => (
                 <>
@@ -175,6 +175,7 @@ export default function TodoItem({ id, title, isDone, time }: IProps) {
                       noCalendar: true,
                       dateFormat: 'H:i',
                       time_24hr: true,
+                      enableSeconds: false,
                     }}
                     placeholder="زمان"
                     className={cn('input input-sm input-success w-20 text-center')}
