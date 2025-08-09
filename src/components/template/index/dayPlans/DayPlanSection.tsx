@@ -1,10 +1,10 @@
 'use client'
 import { useGetUserDayPlans } from '@/hooks/queries/dayPlans/useGetUserDayPlans'
 import dynamic from 'next/dynamic'
-import ImportantSection from './ImportantSection'
-import NoteSection from './NoteSection'
-import MoodSection from './MoodSection'
 const ShoppingListSection = dynamic(() => import('../shoppingList/ShoppingListsSection'))
+const ImportantSection = dynamic(() => import('./ImportantSection'))
+const NoteSection = dynamic(() => import('./NoteSection'))
+const MoodSection = dynamic(() => import('./MoodSection'))
 
 export default function DayPlanSection() {
   const {
@@ -15,27 +15,23 @@ export default function DayPlanSection() {
 
   return (
     <>
-      <div className="flex h-full flex-col gap-2">
-        <ShoppingListSection />
-        <ImportantSection
-          dayPlans={dayPlans}
-          isPending={isPendingDayPlans}
-          isRefetching={isRefetchingDayPlans}
-        />
-      </div>
+      <ShoppingListSection />
+      <ImportantSection
+        dayPlans={dayPlans}
+        isPending={isPendingDayPlans}
+        isRefetching={isRefetchingDayPlans}
+      />
 
-      <div className="flex h-full flex-col gap-2">
-        <NoteSection
-          dayPlans={dayPlans}
-          isPending={isPendingDayPlans}
-          isRefetching={isRefetchingDayPlans}
-        />
-        <MoodSection
-          dayPlans={dayPlans}
-          isPending={isPendingDayPlans}
-          isRefetching={isRefetchingDayPlans}
-        />
-      </div>
+      <NoteSection
+        dayPlans={dayPlans}
+        isPending={isPendingDayPlans}
+        isRefetching={isRefetchingDayPlans}
+      />
+      <MoodSection
+        dayPlans={dayPlans}
+        isPending={isPendingDayPlans}
+        isRefetching={isRefetchingDayPlans}
+      />
     </>
   )
 }

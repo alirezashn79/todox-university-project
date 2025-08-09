@@ -1,4 +1,5 @@
 'use client'
+import Card from '@/components/modules/Card'
 import {
   ICreateShoppingItemInput,
   useCreateShoppingItem,
@@ -40,133 +41,75 @@ export default function ShoppingListSection() {
   let donedCount = shoppingList?.filter((item) => item.isPurchased).length
 
   return (
-    <div className="!hide-scrollbar card h-full min-h-80 overflow-hidden bg-base-300 md:h-40 xl:h-full xl:min-h-max">
-      <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
-        <h2 className="mb-4 pt-2 text-center text-lg text-info">لیست خرید</h2>
-        {!isEmpty && (
-          <div className="absolute end-4 top-3">
-            <button onClick={openAdd} className="btn btn-info btn-xs">
-              افزودن
-            </button>
-          </div>
-        )}
-      </div>
-      <div className="h-full space-y-2 overflow-y-auto text-pretty p-2 text-sm">
-        {isPending && (
-          <div className="animate-pulse space-y-2">
-            <div className="h-10 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
-            <div className="h-10 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
-          </div>
-        )}
+    <Card
+      theme="info"
+      title="لیست خرید"
+      className="lg:col-span-2 xl:col-span-1"
+      onAddClick={openAdd}
+      isShowAddButton={!isEmpty}
+      isLoading={isRefetching || isPendingMarkAll}
+    >
+      {isPending && (
+        <div className="animate-pulse space-y-2">
+          <div className="h-10 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
+          <div className="h-10 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
+        </div>
+      )}
 
-        {isEmpty && !isAdd && !isPending && (
-          <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
-            <h4>خریدی اضافه نکردی</h4>
-            <button onClick={openAdd} className="btn btn-info btn-xs">
-              افزودن
-            </button>
-          </div>
-        )}
+      {isEmpty && !isAdd && !isPending && (
+        <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
+          <h4>خریدی اضافه نکردی</h4>
+          <button onClick={openAdd} className="btn btn-info btn-xs">
+            افزودن
+          </button>
+        </div>
+      )}
 
-        {isAdd && (
-          <div className="bg-base-100 p-2">
-            <form onSubmit={handleSubmit(onSubmit)}>
+      {isAdd && (
+        <div className="bg-base-100 p-2">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label className="label">عنوان</label>
+              <Controller
+                control={control}
+                name="name"
+                defaultValue=""
+                rules={{
+                  required: { value: true, message: 'عنوان الزامی است' },
+                }}
+                render={({ field, fieldState }) => (
+                  <>
+                    <input
+                      {...field}
+                      autoFocus
+                      className="input input-sm input-info w-full"
+                      placeholder="عنوان را وارد کنید"
+                    />
+                    {fieldState.error?.message && (
+                      <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
               <div>
-                <label className="label">عنوان</label>
+                <label className="label">تعداد (اختیاری)</label>
                 <Controller
                   control={control}
-                  name="name"
-                  defaultValue=""
-                  rules={{
-                    required: { value: true, message: 'عنوان الزامی است' },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <input
-                        {...field}
-                        autoFocus
-                        className="input input-sm input-info w-full"
-                        placeholder="عنوان را وارد کنید"
-                      />
-                      {fieldState.error?.message && (
-                        <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
-                      )}
-                    </>
-                  )}
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div>
-                  <label className="label">تعداد (اختیاری)</label>
-                  <Controller
-                    control={control}
-                    name="quantity"
-                    defaultValue={0}
-                    rules={{
-                      required: false,
-                    }}
-                    render={({ field, fieldState }) => (
-                      <>
-                        <input
-                          {...field}
-                          type="number"
-                          className="input input-sm input-info w-full"
-                          placeholder="تعداد را وارد کنید"
-                        />
-                        {fieldState.error?.message && (
-                          <span className="mt-2 text-xs text-error">
-                            {fieldState.error?.message}
-                          </span>
-                        )}
-                      </>
-                    )}
-                  />
-                </div>
-
-                <div>
-                  <label className="label">قیمت (اختیاری)</label>
-                  <Controller
-                    control={control}
-                    name="price"
-                    defaultValue={0}
-                    rules={{
-                      required: false,
-                    }}
-                    render={({ field, fieldState }) => (
-                      <>
-                        <input
-                          {...field}
-                          type="number"
-                          className="input input-sm input-info w-full"
-                          placeholder="قیمت را وارد کنید"
-                        />
-                        {fieldState.error?.message && (
-                          <span className="mt-2 text-xs text-error">
-                            {fieldState.error?.message}
-                          </span>
-                        )}
-                      </>
-                    )}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="label">توضیحات</label>
-                <Controller
-                  control={control}
-                  name="reason"
-                  defaultValue=""
+                  name="quantity"
+                  defaultValue={0}
                   rules={{
                     required: false,
                   }}
                   render={({ field, fieldState }) => (
                     <>
-                      <textarea
+                      <input
                         {...field}
-                        className="textarea textarea-info textarea-sm w-full"
-                        placeholder="عنوان را وارد کنید"
+                        type="number"
+                        className="input input-sm input-info w-full"
+                        placeholder="تعداد را وارد کنید"
                       />
                       {fieldState.error?.message && (
                         <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
@@ -176,61 +119,112 @@ export default function ShoppingListSection() {
                 />
               </div>
 
-              <div className="mt-2 flex items-center justify-end gap-2">
-                <button
-                  disabled={isPenginsCreateShopping}
-                  type="submit"
-                  className="btn btn-info btn-xs"
-                >
-                  {!isPenginsCreateShopping ? (
-                    'ثبت'
-                  ) : (
-                    <div className="size-3 animate-spin rounded-full border-t-2" />
+              <div>
+                <label className="label">قیمت (اختیاری)</label>
+                <Controller
+                  control={control}
+                  name="price"
+                  defaultValue={0}
+                  rules={{
+                    required: false,
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <input
+                        {...field}
+                        type="number"
+                        className="input input-sm input-info w-full"
+                        placeholder="قیمت را وارد کنید"
+                      />
+                      {fieldState.error?.message && (
+                        <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
+                      )}
+                    </>
                   )}
-                </button>
-                <button
-                  disabled={isPenginsCreateShopping}
-                  onClick={closeAdd}
-                  type="button"
-                  className="btn btn-error btn-xs"
-                >
-                  لغو
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {!isAdd && !isEmpty && !isPending && (
-          <div className="flex items-center gap-2 px-2">
-            {isPendingMarkAll ? (
-              <div className="checkbox-xs size-4 animate-spin rounded-full border-t-[9px] border-t-secondary" />
-            ) : (
-              <label className="w-fit translate-y-0.5">
-                <input
-                  type="checkbox"
-                  checked={shoppingList?.every((item) => item.isPurchased)}
-                  onChange={(e) => handleMarkAll(e)}
-                  className="checkbox-secondary checkbox checkbox-xs"
                 />
-              </label>
-            )}
-            <div className="flex items-center gap-2">
-              <p className="font-morabba">وضعیت</p>
-              {isRefetching ? (
-                <div className="h-4 w-10 animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
-              ) : (
-                <p className="space-x-1">
-                  <span>{donedCount}</span>
-                  <span>/</span>
-                  <span>{total}</span>
-                </p>
-              )}
+              </div>
             </div>
-          </div>
-        )}
 
-        {shoppingList?.map((shopping) => (
+            <div>
+              <label className="label">توضیحات</label>
+              <Controller
+                control={control}
+                name="reason"
+                defaultValue=""
+                rules={{
+                  required: false,
+                }}
+                render={({ field, fieldState }) => (
+                  <>
+                    <textarea
+                      {...field}
+                      className="textarea textarea-info textarea-sm w-full"
+                      placeholder="عنوان را وارد کنید"
+                    />
+                    {fieldState.error?.message && (
+                      <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
+
+            <div className="mt-2 flex items-center justify-end gap-2">
+              <button
+                disabled={isPenginsCreateShopping}
+                type="submit"
+                className="btn btn-info btn-xs"
+              >
+                {!isPenginsCreateShopping ? (
+                  'ثبت'
+                ) : (
+                  <div className="size-3 animate-spin rounded-full border-t-2" />
+                )}
+              </button>
+              <button
+                disabled={isPenginsCreateShopping}
+                onClick={closeAdd}
+                type="button"
+                className="btn btn-error btn-xs"
+              >
+                لغو
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {!isAdd && !isEmpty && !isPending && (
+        <div className="flex items-center gap-2 px-2">
+          {isPendingMarkAll ? (
+            <div className="checkbox-xs size-4 animate-spin rounded-full border-t-[9px] border-t-secondary" />
+          ) : (
+            <label className="w-fit translate-y-0.5">
+              <input
+                type="checkbox"
+                checked={shoppingList?.every((item) => item.isPurchased)}
+                onChange={(e) => handleMarkAll(e)}
+                className="checkbox-secondary checkbox checkbox-xs"
+              />
+            </label>
+          )}
+          <div className="flex items-center gap-2">
+            <p className="font-morabba">وضعیت</p>
+            {isRefetching ? (
+              <div className="h-4 w-10 animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
+            ) : (
+              <p className="space-x-1">
+                <span>{donedCount}</span>
+                <span>/</span>
+                <span>{total}</span>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {!isAdd &&
+        shoppingList?.map((shopping) => (
           <ShoppingItem
             key={shopping._id.toString()}
             id={shopping._id.toString()}
@@ -241,7 +235,6 @@ export default function ShoppingListSection() {
             price={shopping.price}
           />
         ))}
-      </div>
-    </div>
+    </Card>
   )
 }

@@ -5,6 +5,7 @@ import { IDayPlan } from '@/types/dayPlans'
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import ImportantItem from './ImportantItem'
+import Card from '@/components/modules/Card'
 
 interface IProps {
   dayPlans: IDayPlan[] | undefined
@@ -31,89 +32,91 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
 
   const isEmpty = !dayPlans || !dayPlans?.[0]?.important
   return (
-    <div className="!hide-scrollbar card h-full min-h-80 overflow-hidden bg-base-300 md:h-40 xl:h-full xl:min-h-max">
-      <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
-        <h2 className="mb-4 pt-2 text-center text-lg text-error">مهم روز</h2>
-      </div>
-      <div className="h-full space-y-2 overflow-y-auto text-pretty p-2 text-sm">
-        {isPending && (
-          <div className="animate-pulse space-y-2">
-            <div className="h-20 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
-          </div>
-        )}
+    <Card
+      theme="error"
+      title="مهم روز"
+      isShowAddButton={!isEmpty}
+      onAddClick={openAdd}
+      isLoading={isPenginsCreateDayPlan}
+    >
+      {isPending && (
+        <div className="animate-pulse space-y-2">
+          <div className="h-20 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
+        </div>
+      )}
 
-        {isEmpty && !isAdd && !isPending && (
-          <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
-            <h4>نکته مهمی رو اضافه نکردی</h4>
-            <button onClick={openAdd} className="btn btn-error btn-xs">
-              افزودن
-            </button>
-          </div>
-        )}
+      {isEmpty && !isAdd && !isPending && (
+        <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
+          <h4>نکته مهمی رو اضافه نکردی</h4>
+          <button onClick={openAdd} className="btn btn-error btn-xs">
+            افزودن
+          </button>
+        </div>
+      )}
 
-        {isAdd && (
-          <div className="bg-base-100 p-2">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label className="label">عنوان</label>
-                <Controller
-                  control={control}
-                  name="important"
-                  defaultValue=""
-                  rules={{
-                    required: { value: true, message: 'عنوان الزامی است' },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <textarea
-                        {...field}
-                        autoFocus
-                        className="textarea textarea-error textarea-sm w-full"
-                        placeholder="عنوان مهم را وارد کنید"
-                      />
-                      {fieldState.error?.message && (
-                        <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
-                      )}
-                    </>
-                  )}
-                />
-              </div>
+      {isAdd && (
+        <div className="bg-base-100 p-2">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label className="label">عنوان</label>
+              <Controller
+                control={control}
+                name="important"
+                defaultValue=""
+                rules={{
+                  required: { value: true, message: 'عنوان الزامی است' },
+                }}
+                render={({ field, fieldState }) => (
+                  <>
+                    <textarea
+                      {...field}
+                      autoFocus
+                      className="textarea textarea-error textarea-sm w-full"
+                      placeholder="عنوان مهم را وارد کنید"
+                    />
+                    {fieldState.error?.message && (
+                      <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
 
-              <div className="mt-2 flex items-center justify-end gap-2">
-                <button
-                  disabled={isPenginsCreateDayPlan}
-                  type="submit"
-                  className="btn btn-error btn-xs"
-                >
-                  {!isPenginsCreateDayPlan ? (
-                    'ثبت'
-                  ) : (
-                    <div className="size-3 animate-spin rounded-full border-t-2" />
-                  )}
-                </button>
-                <button
-                  disabled={isPenginsCreateDayPlan}
-                  onClick={closeAdd}
-                  type="button"
-                  className="btn btn-error btn-xs"
-                >
-                  لغو
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
+            <div className="mt-2 flex items-center justify-end gap-2">
+              <button
+                disabled={isPenginsCreateDayPlan}
+                type="submit"
+                className="btn btn-error btn-xs"
+              >
+                {!isPenginsCreateDayPlan ? (
+                  'ثبت'
+                ) : (
+                  <div className="size-3 animate-spin rounded-full border-t-2" />
+                )}
+              </button>
+              <button
+                disabled={isPenginsCreateDayPlan}
+                onClick={closeAdd}
+                type="button"
+                className="btn btn-error btn-xs"
+              >
+                لغو
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
-        {!isEmpty &&
-          dayPlans?.map((dayPlan) => (
-            <ImportantItem
-              key={dayPlan._id.toString()}
-              id={dayPlan._id.toString()}
-              important={dayPlan.important}
-              isDoneImportant={dayPlan.isDoneImportant}
-            />
-          ))}
-      </div>
-    </div>
+      {!isEmpty &&
+        !isAdd &&
+        dayPlans?.map((dayPlan) => (
+          <ImportantItem
+            key={dayPlan._id.toString()}
+            id={dayPlan._id.toString()}
+            important={dayPlan.important}
+            isDoneImportant={dayPlan.isDoneImportant}
+          />
+        ))}
+    </Card>
   )
 }

@@ -39,7 +39,7 @@ export default function NavigationDate() {
     <section {...handlers} className="pb-2">
       <div className="mb-2">
         <button
-          className="btn btn-outline btn-primary ms-auto"
+          className="btn btn-outline btn-primary btn-sm ms-auto md:btn-md"
           onClick={() => changeDate(new Date())}
           disabled={date.toDateString() === new Date().toDateString()}
         >
@@ -67,7 +67,7 @@ export default function NavigationDate() {
           className={theme === 'dark' ? 'bg-dark' : ''}
           onChange={(e) => changeDate(e?.toDate() as Date)}
           render={
-            <button className="btn btn-outline btn-primary ms-4">
+            <button className="btn btn-outline btn-primary btn-sm ms-4 md:btn-md">
               برو به تاریخ
               <div>
                 <svg

@@ -8,14 +8,11 @@ const AppointmentSection = dynamic(() => import('./Appointment/AppointmentSectio
 
 export default function MainSection() {
   return (
-    <div className="hide-scrollbar overflow-y-auto xl:h-[calc(100vh-200px)]">
-      <div className="grid h-full grid-cols-1 gap-4 pt-2 md:grid-cols-2 xl:grid-cols-4">
+    <div className="h-full grow overflow-y-auto overflow-x-hidden py-1 transition-all">
+      <div className="grid h-full grid-cols-1 items-stretch gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <TodoSection />
-
-        <div className="grid h-full grid-cols-1 gap-2 overflow-hidden xl:grid-rows-2">
-          <GoalSection />
-          <AppointmentSection />
-        </div>
+        <GoalSection />
+        <AppointmentSection />
         <DayPlanSection />
       </div>
     </div>

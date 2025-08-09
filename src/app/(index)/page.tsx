@@ -4,7 +4,7 @@ import Table from '@/components/template/index/Table'
 
 export default async function HomePage() {
   return (
-    <main>
+    <main className="flex w-full flex-col overflow-hidden md:h-[calc(100vh-80px)]">
       <NavigationDate />
       <MainSection />
     </main>
