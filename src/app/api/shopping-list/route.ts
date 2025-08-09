@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
+import { Types } from 'mongoose'
 import ShoppingListModel from '@/models/ShoppingList'
 import GroupModel from '@/models/Group'
-import { Types } from 'mongoose'
 import { isAuth } from '@/utils/serverHelpers'
 
 export async function GET(req: Request) {
@@ -10,29 +10,29 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: 'please login' }, { status: 401 })
   }
 
-  // ۱) پیدا کردن گروه‌هایی که کاربر عضو آنهاست
+  // 1) بیابیم گروه‌هایی که کاربر عضو آن‌هاست
   const userGroups = await GroupModel.find({ members: user._id }).select('_id').lean()
   const groupIds = userGroups.map((g) => g._id)
 
-  // ۲) ساخت فیلتر: لیست‌های شخصی یا گروهی
+  // 2) فیلتر روی آیتم‌های شخصی یا گروهی
   const filter: any = {
     $or: [{ user: user._id }, { group: { $in: groupIds } }],
   }
 
-  // ۳) فیلتر بر اساس date
+  // 3) فیلتر اختیاری بر اساس تاریخ
   const url = new URL(req.url)
   const date = url.searchParams.get('date')
   if (date) {
     filter.date = date
   }
 
-  // ۴) کوئری و populate گروه
-  const lists = await ShoppingListModel.find(filter)
+  // 4) خروجی
+  const items = await ShoppingListModel.find(filter)
     .select('-__v')
     .populate({ path: 'group', select: 'name' })
-    .sort({ date: 1, createdAt: -1 })
+    .sort({ createdAt: -1 })
 
-  return NextResponse.json(lists)
+  return NextResponse.json(items)
 }
 
 export async function POST(req: Request) {
@@ -41,16 +41,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'please login' }, { status: 401 })
   }
 
-  const body = await req.json()
-  const { date, items, group } = body
+  const { date, name, quantity, isPurchased, price, reason, group } = await req.json()
 
-  // date اجباری
-  if (!date) {
-    return NextResponse.json({ message: 'date is required' }, { status: 400 })
+  // فیلدهای الزامی
+  if (!date || !name) {
+    return NextResponse.json({ message: 'date and name are required' }, { status: 400 })
   }
 
-  // اعتبارسنجی و بررسی گروه
-  let groupId: Types.ObjectId | undefined
+  // بارگذاری اولیه‌ی payload
+  const payload: any = {
+    user: user._id,
+    date,
+    name,
+    quantity,
+    isPurchased,
+    price,
+    reason,
+  }
+
+  // اگر گروه ارسال شده باشد، اعتبارسنجی کنیم
   if (group) {
     if (!Types.ObjectId.isValid(group)) {
       return NextResponse.json({ message: 'invalid group id' }, { status: 400 })
@@ -59,32 +68,16 @@ export async function POST(req: Request) {
     if (!grp) {
       return NextResponse.json({ message: 'group not found' }, { status: 404 })
     }
+    // در اینجا فرض کردیم تنها مالک گروه می‌تواند آیتم را به گروه اضافه کند
     if (grp.owner.toString() !== user._id) {
       return NextResponse.json(
-        { message: 'only group owner can assign list to group' },
+        { message: 'only group owner can add item to this group' },
         { status: 403 }
       )
     }
-    groupId = grp._id
+    payload.group = group
   }
 
-  // اگر آیتم اولیه ارسال شده، حداقل name هر کدام چک شود
-  if (Array.isArray(items)) {
-    for (const it of items) {
-      if (!it.name) {
-        return NextResponse.json({ message: 'each item must have a name' }, { status: 400 })
-      }
-    }
-  }
-
-  const newList = await ShoppingListModel.create({
-    user: user._id,
-    date,
-    items: Array.isArray(items) ? items : [],
-    group: groupId,
-  })
-
-  await newList.populate({ path: 'group', select: 'name' })
-
-  return NextResponse.json(newList, { status: 201 })
+  const newItem = await ShoppingListModel.create(payload)
+  return NextResponse.json(newItem, { status: 201 })
 }
