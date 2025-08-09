@@ -3,10 +3,11 @@ const endpoints = {
   markAllTodos: 'api/todos/mark-all',
   markAllGoals: 'api/goals/mark-all',
   markAllAppointment: 'api/appointments/mark-all',
+  markAllShoppingList: 'api/shopping-list/mark-all',
   groups: 'api/groups',
   goals: 'api/goals',
   appointments: 'api/appointments',
-  shoppingLists: 'api/shoppingLists',
+  shoppingList: 'api/shopping-list',
   dayPlans: 'api/day-plans',
 }
 export default endpoints

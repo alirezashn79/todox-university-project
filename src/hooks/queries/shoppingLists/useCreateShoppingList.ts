@@ -1,29 +1,38 @@
 import { useRefresh } from '@/hooks/useRefresh'
-import { IShoppingItem, IShoppingList } from '@/types/shoppingList'
+import useDateStore from '@/stores/DateStore'
+import { IShoppingItem } from '@/types/shoppingList'
 import client from '@/utils/client'
+import { convertPersianDateToEnglishNumbers } from '@/utils/clientHelpers'
 import endpoints from '@/utils/endpoints'
 import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
-interface ICreateShoppingListInput {
-  date: string
-  items?: IShoppingItem[]
+export interface ICreateShoppingItemInput {
+  name: string
+  quantity?: number
+  price?: number
+  reason?: string
   group?: string
+  date?: string
 }
-export function useCreateShoppingList() {
-  const refresh = useRefresh(['shopping-lists'])
-  return useMutation<IShoppingList, Error, ICreateShoppingListInput>({
-    mutationKey: ['create-shopping-list'],
+
+export function useCreateShoppingItem() {
+  const date = useDateStore((state) => state.date)
+  const refresh = useRefresh(['user-shopping-list'])
+
+  return useMutation<IShoppingItem, Error, ICreateShoppingItemInput>({
+    mutationKey: ['create-shopping-item'],
     mutationFn: async (payload) => {
-      const res = await client.post<IShoppingList>(endpoints.shoppingLists, payload)
+      const body = {
+        ...payload,
+        date: convertPersianDateToEnglishNumbers(date),
+      }
+      const res = await client.post<IShoppingItem>(endpoints.shoppingList, body)
       return res.data
     },
     onSuccess: () => {
       refresh()
-      FireToast({
-        type: 'success',
-        message: 'لیست خرید با موفقیت ایجاد شد',
-      })
+      FireToast({ type: 'success', message: 'آیتم با موفقیت اضافه شد' })
     },
   })
 }

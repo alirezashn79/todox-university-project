@@ -4,22 +4,21 @@ import endpoints from '@/utils/endpoints'
 import { FireToast } from '@/utils/toast'
 import { useMutation } from '@tanstack/react-query'
 
-interface IDeleteShoppingListInput {
+export interface IDeleteShoppingItemInput {
   id: string
 }
-export function useDeleteShoppingList() {
-  const refresh = useRefresh(['shopping-lists'])
-  return useMutation<void, Error, IDeleteShoppingListInput>({
-    mutationKey: ['delete-shopping-list'],
+
+export function useDeleteShoppingItem() {
+  const refresh = useRefresh(['user-shopping-list'])
+
+  return useMutation<void, Error, IDeleteShoppingItemInput>({
+    mutationKey: ['delete-shopping-item'],
     mutationFn: async ({ id }) => {
-      await client.delete(`${endpoints.shoppingLists}/${id}`)
+      await client.delete(`${endpoints.shoppingList}/${id}`)
     },
     onSuccess: () => {
       refresh()
-      FireToast({
-        type: 'success',
-        message: 'لیست خرید حذف شد',
-      })
+      FireToast({ type: 'success', message: 'آیتم حذف شد' })
     },
   })
 }
