@@ -50,7 +50,7 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   const body = await req.json()
-  const { date, important, notes, mood } = body
+  const { date, important, isDoneImportant, notes, mood } = body
 
   // در صورت تغییر date باید یکتا بودن را چک کنیم
   if (date && date !== plan.date) {
@@ -65,6 +65,7 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 
   if (important !== undefined) plan.important = important
+  if (isDoneImportant !== undefined) plan.isDoneImportant = isDoneImportant
   if (notes !== undefined) plan.notes = notes
 
   if (mood !== undefined) {

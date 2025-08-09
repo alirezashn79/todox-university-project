@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
   // date و mood اجباری‌اند
   if (!date) {
-    return NextResponse.json({ message: 'date and mood are required' }, { status: 400 })
+    return NextResponse.json({ message: 'date is required' }, { status: 400 })
   }
 
   // اعتبارسنجی مقدار mood

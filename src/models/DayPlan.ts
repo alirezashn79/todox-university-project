@@ -6,6 +6,7 @@ export interface IDayPlanModel {
   user: Types.ObjectId
   date: string
   important?: string
+  isDoneImportant?: boolean
   notes?: string
   mood?: MoodType
 }
@@ -15,6 +16,7 @@ const DayPlanSchema = new Schema<IDayPlanModel>(
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     date: { type: String, required: true },
     important: { type: String },
+    isDoneImportant: { type: Boolean, default: false },
     notes: { type: String },
     mood: {
       type: String,

@@ -5,6 +5,7 @@ export interface IDayPlan {
   user: string
   date: string
   important?: string | null
+  isDoneImportant?: boolean | null
   notes?: string | null
   mood?: MoodType | null
   createdAt: string

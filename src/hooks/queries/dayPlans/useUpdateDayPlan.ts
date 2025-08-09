@@ -8,8 +8,8 @@ import { AxiosError } from 'axios'
 
 export interface IUpdateDayPlanInput {
   id: string
-  date?: string
   important?: string | null
+  isDoneImportant?: boolean | null
   notes?: string | null
   mood?: MoodType | null
 }
