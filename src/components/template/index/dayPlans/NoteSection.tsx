@@ -4,7 +4,7 @@ import { ICreateDayPlanInput, useCreateDayPlan } from '@/hooks/queries/dayPlans/
 import { IDayPlan } from '@/types/dayPlans'
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import ImportantItem from './ImportantItem'
+import NoteItem from './NoteItem'
 
 interface IProps {
   dayPlans: IDayPlan[] | undefined
@@ -12,7 +12,7 @@ interface IProps {
   isRefetching: boolean
 }
 
-export default function ImportantSection({ dayPlans, isPending, isRefetching }: IProps) {
+export default function NoteSection({ dayPlans, isPending }: IProps) {
   const { control, handleSubmit, reset } = useForm<ICreateDayPlanInput>()
   const { mutateAsync: createDayPlan, isPending: isPenginsCreateDayPlan } = useCreateDayPlan()
   const [isAdd, setIsAdd] = useState(false)
@@ -29,23 +29,24 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
     })
   }
 
-  const isEmpty = !dayPlans || !dayPlans?.[0]?.important
+  const isEmpty = !dayPlans || !dayPlans?.[0]?.notes
+
   return (
     <div className="!hide-scrollbar card h-full min-h-80 overflow-hidden bg-base-300 md:h-40 xl:h-full xl:min-h-max">
       <div className="sticky left-0 right-0 top-0 z-10 bg-base-300">
-        <h2 className="mb-4 pt-2 text-center text-lg text-error">مهم روز</h2>
+        <h2 className="mb-4 pt-2 text-center text-lg text-accent">یادداشت</h2>
       </div>
       <div className="h-full space-y-2 overflow-y-auto text-pretty p-2 text-sm">
         {isPending && (
           <div className="animate-pulse space-y-2">
-            <div className="h-20 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
+            <div className="h-40 w-full animate-pulse rounded-lg bg-base-100/55 backdrop-blur" />
           </div>
         )}
 
         {isEmpty && !isAdd && !isPending && (
           <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
-            <h4>نکته مهمی رو اضافه نکردی</h4>
-            <button onClick={openAdd} className="btn btn-error btn-xs">
+            <h4>یادداشتی اضافه نکردی</h4>
+            <button onClick={openAdd} className="btn btn-accent btn-xs">
               افزودن
             </button>
           </div>
@@ -55,24 +56,26 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
           <div className="bg-base-100 p-2">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
-                <label className="label">عنوان</label>
+                <label className="label">متن</label>
                 <Controller
                   control={control}
-                  name="important"
+                  name="notes"
                   defaultValue=""
                   rules={{
-                    required: { value: true, message: 'عنوان الزامی است' },
+                    required: { value: true, message: 'متن الزامی است' },
                   }}
                   render={({ field, fieldState }) => (
                     <>
                       <textarea
                         {...field}
                         autoFocus
-                        className="textarea textarea-error textarea-sm w-full"
-                        placeholder="عنوان مهم را وارد کنید"
+                        className="textarea textarea-accent textarea-sm w-full"
+                        placeholder="متن یادداشت را وارد کنید"
                       />
                       {fieldState.error?.message && (
-                        <span className="mt-2 text-xs text-error">{fieldState.error?.message}</span>
+                        <span className="mt-2 text-xs text-accent">
+                          {fieldState.error?.message}
+                        </span>
                       )}
                     </>
                   )}
@@ -83,7 +86,7 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
                 <button
                   disabled={isPenginsCreateDayPlan}
                   type="submit"
-                  className="btn btn-error btn-xs"
+                  className="btn btn-accent btn-xs"
                 >
                   {!isPenginsCreateDayPlan ? (
                     'ثبت'
@@ -95,7 +98,7 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
                   disabled={isPenginsCreateDayPlan}
                   onClick={closeAdd}
                   type="button"
-                  className="btn btn-error btn-xs"
+                  className="btn btn-accent btn-xs"
                 >
                   لغو
                 </button>
@@ -106,11 +109,10 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
 
         {!isEmpty &&
           dayPlans?.map((dayPlan) => (
-            <ImportantItem
+            <NoteItem
               key={dayPlan._id.toString()}
               id={dayPlan._id.toString()}
-              important={dayPlan.important}
-              isDoneImportant={dayPlan.isDoneImportant}
+              note={dayPlan.notes}
             />
           ))}
       </div>

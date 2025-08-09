@@ -61,7 +61,7 @@ export default function ShoppingListSection() {
 
         {isEmpty && !isAdd && !isPending && (
           <div className="flex min-h-full flex-col items-center justify-center gap-2 md:min-h-40">
-            <h4>هدفی اضافه نکردی</h4>
+            <h4>خریدی اضافه نکردی</h4>
             <button onClick={openAdd} className="btn btn-info btn-xs">
               افزودن
             </button>
