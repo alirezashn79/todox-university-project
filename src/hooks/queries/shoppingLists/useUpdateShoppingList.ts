@@ -7,7 +7,6 @@ import { useMutation } from '@tanstack/react-query'
 
 export interface IUpdateShoppingItemInput {
   id: string
-  date?: string | null
   name?: string
   quantity?: number | null
   isPurchased?: boolean

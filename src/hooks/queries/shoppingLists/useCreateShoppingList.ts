@@ -13,7 +13,6 @@ export interface ICreateShoppingItemInput {
   price?: number
   reason?: string
   group?: string
-  date?: string
 }
 
 export function useCreateShoppingItem() {
