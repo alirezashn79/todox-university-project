@@ -12,6 +12,7 @@ interface IProps {
   isShowAddButton?: boolean
   onAddClick?: () => void
   isLoading: boolean
+  addButtonText?: string
 }
 
 export default function Card({
@@ -24,13 +25,14 @@ export default function Card({
   isShowAddButton,
   isLoading,
   onAddClick,
+  addButtonText = 'افزودن',
 }: IProps) {
   const [isOpen, setIsOpen] = useState(true)
   return (
     <div
       className={cn(
         `card box-border h-9 shrink-0 overflow-hidden border border-transparent md:!h-full ${className}`,
-        isOpen && `h-72 max-h-min md:!h-full ${openClassName}`,
+        isOpen && `h-72 max-h-fit md:!h-full md:max-h-full ${openClassName}`,
         isLoading && `border-${theme}`
       )}
     >
@@ -40,7 +42,7 @@ export default function Card({
         {isShowAddButton && (
           <div className="absolute end-2 top-1">
             <button onClick={onAddClick} className={`btn btn-${theme} btn-xs`}>
-              افزودن
+              {addButtonText}
             </button>
           </div>
         )}

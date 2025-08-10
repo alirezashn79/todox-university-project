@@ -36,7 +36,7 @@ export default function NoteSection({ dayPlans, isPending }: IProps) {
     <Card
       theme="accent"
       title="بادداشت روز"
-      isShowAddButton={!isEmpty}
+      isShowAddButton={false}
       onAddClick={openAdd}
       isLoading={isPenginsCreateDayPlan}
     >

@@ -1,9 +1,7 @@
 'use client'
 
-import { useDeleteDayPlan } from '@/hooks/queries/dayPlans/useDeleteDayPlan'
 import { IUpdateDayPlanInput, useUpdateDayPlan } from '@/hooks/queries/dayPlans/useUpdateDayPlan'
 import { cn } from '@/utils/cn'
-import { compact } from '@/utils/compact'
 import { fireConfirmSwal } from '@/utils/swal'
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -24,7 +22,7 @@ export default function NoteItem({ id, note }: IProps) {
     await UpdateDayPlan(
       {
         id,
-        ...compact(values),
+        ...values,
       },
       {
         onSuccess: () => {
@@ -35,7 +33,6 @@ export default function NoteItem({ id, note }: IProps) {
   }
 
   const { mutateAsync: UpdateDayPlan, isPending: isPendingUpdateDayPlan } = useUpdateDayPlan()
-  const { mutateAsync: deleteDayPlan, isPending: isPendingDeleteDayPlan } = useDeleteDayPlan()
 
   const handleEdit = async () => {
     if (!isEdit) {
@@ -49,7 +46,7 @@ export default function NoteItem({ id, note }: IProps) {
     fireConfirmSwal({
       confirmText: 'آیا حذف شود؟',
       subText: 'این عمل برگشت پذیر نیست!',
-      successFunctionVoid: () => deleteDayPlan({ id }),
+      successFunctionVoid: async () => await handleUpdateDayPlan({ notes: null }),
       successText: 'حذف شد',
     })
   }
@@ -58,8 +55,7 @@ export default function NoteItem({ id, note }: IProps) {
     <li
       className={cn(
         'flex cursor-pointer items-start gap-2 rounded-lg bg-base-100 p-2 transition-all hover:border hover:border-slate-400 hover:bg-base-200',
-        isShow && 'border border-slate-400 bg-base-200',
-        isPendingDeleteDayPlan && 'animate-pulse border border-accent bg-accent/20'
+        isShow && 'border border-slate-400 bg-base-200'
       )}
     >
       <div

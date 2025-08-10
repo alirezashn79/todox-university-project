@@ -1,9 +1,7 @@
 'use client'
 
-import { useDeleteDayPlan } from '@/hooks/queries/dayPlans/useDeleteDayPlan'
 import { IUpdateDayPlanInput, useUpdateDayPlan } from '@/hooks/queries/dayPlans/useUpdateDayPlan'
 import { cn } from '@/utils/cn'
-import { compact } from '@/utils/compact'
 import { fireConfirmSwal } from '@/utils/swal'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -26,7 +24,7 @@ export default function ImportantItem({ id, important, isDoneImportant }: IProps
     await UpdateDayPlan(
       {
         id,
-        ...compact(values),
+        ...values,
       },
       {
         onSuccess: () => {
@@ -37,7 +35,6 @@ export default function ImportantItem({ id, important, isDoneImportant }: IProps
   }
 
   const { mutateAsync: UpdateDayPlan, isPending: isPendingUpdateDayPlan } = useUpdateDayPlan()
-  const { mutateAsync: deleteDayPlan, isPending: isPendingDeleteDayPlan } = useDeleteDayPlan()
 
   const handleEdit = async () => {
     if (!isEdit) {
@@ -77,7 +74,7 @@ export default function ImportantItem({ id, important, isDoneImportant }: IProps
     fireConfirmSwal({
       confirmText: 'آیا حذف شود؟',
       subText: 'این عمل برگشت پذیر نیست!',
-      successFunctionVoid: () => deleteDayPlan({ id }),
+      successFunctionVoid: async () => await handleUpdateDayPlan({ important: null }),
       successText: 'حذف شد',
     })
   }
@@ -87,15 +84,13 @@ export default function ImportantItem({ id, important, isDoneImportant }: IProps
       className={cn(
         'flex cursor-pointer items-start gap-2 rounded-lg bg-base-100 p-2 transition-all hover:border hover:border-slate-400 hover:bg-base-200',
         isShow && 'border border-slate-400 bg-base-200',
-        isChecked && 'border border-error !bg-error/5',
-        isPendingDeleteDayPlan && 'animate-pulse border border-error bg-error/20'
+        isChecked && 'border border-error !bg-error/5'
       )}
     >
-      {isPendingUpdateDayPlan || isPendingDeleteDayPlan ? (
+      {isPendingUpdateDayPlan ? (
         <div
           className={cn(
-            'checkbox-xs size-4 animate-spin rounded-full border-t-[9px] border-t-error',
-            isPendingDeleteDayPlan && '!checkbox-error'
+            'checkbox-xs size-4 animate-spin rounded-full border-t-[9px] border-t-error'
           )}
         />
       ) : (

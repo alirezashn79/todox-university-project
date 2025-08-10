@@ -19,7 +19,7 @@ interface IProps {
   isRefetching: boolean
 }
 
-export default function MoodSection({ dayPlans, isRefetching }: IProps) {
+export default function MoodSection({ dayPlans }: IProps) {
   const { mutateAsync, isPending } = useCreateDayPlan()
   const [moodState, setMoodState] = useState<MoodType | null>(null)
   const [clickedMood, setClickedMood] = useState<MoodType | null>(null)
@@ -59,10 +59,10 @@ export default function MoodSection({ dayPlans, isRefetching }: IProps) {
             onClick={() => onClick(item.name as MoodType)}
             className={cn(
               'group btn btn-circle btn-ghost hover:bg-purple-900/20',
-              moodState === item.name && 'btn-lg bg-secondary/20'
+              moodState === item.name && 'btn-lg bg-secondary/25'
             )}
           >
-            <span className={cn('text-2xl', moodState === item.name && 'animate_emoji text-3xl')}>
+            <span className={cn('text-2xl', moodState === item.name && 'animate-bounce text-3xl')}>
               {isPending && clickedMood === item.name ? (
                 <div className="size-6 animate-spin rounded-full border-t-[10px] border-t-secondary" />
               ) : (

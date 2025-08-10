@@ -35,7 +35,7 @@ export default function ImportantSection({ dayPlans, isPending, isRefetching }: 
     <Card
       theme="error"
       title="مهم روز"
-      isShowAddButton={!isEmpty}
+      isShowAddButton={false}
       onAddClick={openAdd}
       isLoading={isPenginsCreateDayPlan}
     >
