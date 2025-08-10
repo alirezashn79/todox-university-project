@@ -8,10 +8,10 @@ interface IProfileProps {
 export default function Profile({ user }: IProfileProps) {
   return (
     <div className="dropdown dropdown-end ms-4">
-      <div tabIndex={0} role="button" className="avatar btn btn-circle btn-ghost">
+      <div tabIndex={1} role="button" className="avatar btn btn-circle btn-ghost">
         <div className="avatar online">
           <div className="w-10 rounded-full">
-            {user.avatar ? (
+            {user?.avatar ? (
               <img alt="avatar" src={user.avatar} />
             ) : (
               <img alt="avatar" src="/img/user-no-avatar.png" />
@@ -20,8 +20,8 @@ export default function Profile({ user }: IProfileProps) {
         </div>
       </div>
       <ul
-        tabIndex={0}
-        className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+        tabIndex={1}
+        className="menu dropdown-content menu-sm mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
       >
         <li className="font-semibold">
           <div className="flex flex-col items-start px-2 py-3">

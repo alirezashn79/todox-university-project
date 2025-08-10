@@ -10,5 +10,6 @@ const endpoints = {
   appointments: 'api/appointments',
   shoppingList: 'api/shopping-list',
   dayPlans: 'api/day-plans',
+  chatSession: 'api/chat/sessions',
 }
 export default endpoints
