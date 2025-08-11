@@ -49,6 +49,7 @@
     "rehype-highlight": "^7.0.2",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
+    "sharp": "^0.34.3",
     "sweetalert2": "^11.12.4",
     "sweetalert2-react-content": "^5.0.7",
     "tailwind-merge": "^3.3.1",

@@ -1,8 +1,0 @@
-{
-  "app": "todox-uni-project",
-  "port": 3000,
-  "build": {
-    "location": "iran"
-  },
-  "disks": []
-}

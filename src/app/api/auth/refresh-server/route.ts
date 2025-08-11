@@ -33,7 +33,7 @@ export async function GET() {
     }
 
     const newAccessToken = generateAccessToken({
-      identifier: result.phone || result.email,
+      identifier: (result.phone || result.email) as string,
     })
 
     cookieStore.set('token', newAccessToken, {

@@ -40,4 +40,4 @@ next-env.d.ts
 dist
 
 #fonts
-src/assets/fonts/*
+src/assets/fonts/

@@ -36,7 +36,7 @@ export async function GET(req: Request) {
     console.log('----------------user Db not found-----------------')
 
     const newAccessToken = generateAccessToken({
-      identifier: userDB.phone || userDB.email,
+      identifier: (userDB.phone || userDB.email) as string,
     })
 
     console.log('----------------new Access-----------------')

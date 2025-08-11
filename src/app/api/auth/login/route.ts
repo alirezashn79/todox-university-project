@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     const cookieStore = cookies()
 
-    const token = generateAccessToken({ identifier: user.phone || user.email })
+    const token = generateAccessToken({ identifier: (user.phone || user.email) as string })
     cookieStore.set('token', token, {
       httpOnly: true,
       path: '/',
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     })
 
     const refreshToken = generateRefreshToken({
-      identifier: user.email || user.phone,
+      identifier: (user.email || user.phone) as string,
     })
     cookieStore.set('refreshToken', refreshToken, {
       httpOnly: true,
