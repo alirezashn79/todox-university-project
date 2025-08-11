@@ -1,4 +1,3 @@
-// app/api/day-plans/[id]/route.ts
 import { NextResponse } from 'next/server'
 import DayPlanModel from '@/models/DayPlan'
 import { Types } from 'mongoose'
@@ -52,7 +51,6 @@ export async function PATCH(req: Request, { params }: Params) {
   const body = await req.json()
   const { date, important, isDoneImportant, notes, mood } = body
 
-  // در صورت تغییر date باید یکتا بودن را چک کنیم
   if (date && date !== plan.date) {
     const exists = await DayPlanModel.findOne({ user: user._id, date })
     if (exists) {

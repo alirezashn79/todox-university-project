@@ -40,7 +40,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'title and date are required' }, { status: 400 })
   }
 
-  // در صورت وجود گروه، بررسی صحت ObjectId
   let groupId: Types.ObjectId | undefined
   if (group) {
     if (!Types.ObjectId.isValid(group)) {

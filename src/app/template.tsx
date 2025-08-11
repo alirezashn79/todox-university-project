@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-// template
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <motion.div

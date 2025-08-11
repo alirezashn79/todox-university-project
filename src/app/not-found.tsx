@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-// notfound
+
 export default function notFound() {
   return (
     <main className="flex h-screen w-full flex-col items-center justify-center">

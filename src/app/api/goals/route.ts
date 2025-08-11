@@ -10,23 +10,19 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: 'please login' }, { status: 401 })
   }
 
-  // 1) یافتن گروه‌های کاربر
   const userGroups = await GroupModel.find({ members: user._id }).select('_id').lean()
   const groupIds = userGroups.map((g) => g._id)
 
-  // 2) ساخت فیلتر برای اهداف شخصی و اهداف گروهی
   const filter: any = {
     $or: [{ user: user._id }, { group: { $in: groupIds } }],
   }
 
-  // ۳) در صورت ارسال پارامترهای تاریخ، آن‌ها را هم اضافه می‌کنیم
   const url = new URL(req.url)
   const date = url.searchParams.get('date')
   const dueDate = url.searchParams.get('dueDate')
   if (date) filter.date = date
   if (dueDate) filter.dueDate = dueDate
 
-  // ۴) کوئری و بازگردانی با populate روی فیلد group برای دریافت name
   const goals = await GoalModel.find(filter)
     .select('-__v')
     .populate({ path: 'group', select: 'name' })

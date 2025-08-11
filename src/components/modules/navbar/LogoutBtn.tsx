@@ -20,7 +20,7 @@ export default function LogoutBtn() {
   }
   return (
     <button onClick={handleLogout} className="px-2 py-3 text-error">
-      خارج شدن
+      خروج
     </button>
   )
 }

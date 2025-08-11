@@ -65,9 +65,6 @@ export default function Form() {
         <Link className="btn w-fit" href="/auth/login-register">
           ثبت نام | ورود با کد یکبار مصرف
         </Link>
-        <Link className="btn w-fit" href="/guest">
-          ورود به عنوان مهمان
-        </Link>
       </div>
     </div>
   )

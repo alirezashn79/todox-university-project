@@ -3,7 +3,6 @@ import { IUser } from '@/types'
 import { isAuth } from '@/utils/serverHelpers'
 
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
-  // constants
   const user = await isAuth()
   return (
     <div className="container h-screen overflow-hidden">

@@ -22,7 +22,6 @@ export async function GET(_req: Request, { params }: Params) {
     return NextResponse.json({ message: 'item not found' }, { status: 404 })
   }
 
-  // دسترسی گروهی: اگر آیتم متعلق به گروه است، کاربر باید عضو گروه باشد
   if (item.group) {
     const grp = await GroupModel.findById(item.group)
     const members = grp?.members.map((m) => m.toString()) || []
@@ -30,7 +29,6 @@ export async function GET(_req: Request, { params }: Params) {
       return NextResponse.json({ message: 'access denied' }, { status: 403 })
     }
   } else {
-    // دسترسی شخصی
     if (item.user.toString() !== user._id) {
       return NextResponse.json({ message: 'access denied' }, { status: 403 })
     }
@@ -55,7 +53,6 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ message: 'item not found' }, { status: 404 })
   }
 
-  // تنها سازنده‌ی آیتم می‌تواند ویرایش کند
   if (item.user.toString() !== user._id) {
     return NextResponse.json({ message: 'only owner can update this item' }, { status: 403 })
   }
@@ -69,7 +66,6 @@ export async function PATCH(req: Request, { params }: Params) {
   if (price !== undefined) item.price = price
   if (reason !== undefined) item.reason = reason
 
-  // تنظیم گروه
   if (group !== undefined) {
     if (group === null) {
       item.group = undefined
@@ -111,13 +107,11 @@ export async function DELETE(_req: Request, { params }: Params) {
     return NextResponse.json({ message: 'item not found' }, { status: 404 })
   }
 
-  // مالک آیتم می‌تواند حذف کند
   if (item.user.toString() === user._id) {
     await item.deleteOne()
     return NextResponse.json({ message: 'item deleted' })
   }
 
-  // مالک گروه می‌تواند آیتم‌های گروه را حذف کند
   if (item.group) {
     const grp = await GroupModel.findById(item.group)
     if (grp?.owner.toString() === user._id) {

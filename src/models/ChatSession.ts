@@ -1,4 +1,3 @@
-// models/Chat.ts
 import { Schema, model, models, Types, Model } from 'mongoose'
 
 interface IMessage {

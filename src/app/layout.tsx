@@ -48,7 +48,6 @@ const morabba = localFont({
   variable: '--ffont-morabba',
   display: 'swap',
 })
-// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'Todo X',

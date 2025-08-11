@@ -1,4 +1,3 @@
-// hooks/useGetUserShoppingItems.ts
 import useDateStore from '@/stores/DateStore'
 import { IShoppingItem } from '@/types/shoppingList'
 import client from '@/utils/client'

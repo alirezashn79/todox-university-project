@@ -26,7 +26,7 @@ export default function Navbar({ user }: INavbarProps) {
           href="/ai-assistant"
           className={cn('text-xs', pathname.includes('/ai-assistant') && 'font-bold text-primary')}
         >
-          دستیار هوش مصنوعی
+          هوش مصنوعی
         </Link>
       </div>
       <Theme />

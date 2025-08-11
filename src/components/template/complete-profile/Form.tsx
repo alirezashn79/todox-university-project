@@ -2,12 +2,11 @@
 
 import Input from '@/components/modules/input'
 import { zUserCreationClientSchema } from '@/schemas/schema'
-import useGuest from '@/stores/GuestStore'
 import client from '@/utils/client'
+import { cn } from '@/utils/cn'
 import { FireToast } from '@/utils/toast'
 import { ErrorMessage } from '@hookform/error-message'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { cn } from '@/utils/cn'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -20,7 +19,6 @@ export default function Form() {
   const [avatar, setAvatar] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
-  const todos = useGuest((state) => state.todos)
   const { replace } = useRouter()
 
   const {
@@ -59,11 +57,7 @@ export default function Form() {
         },
       })
       FireToast({ type: 'success', message: 'اطلاعات با موفقیت ثبت شد' })
-      if (!!todos && todos.length > 0) {
-        replace('/guest/transfer-data')
-      } else {
-        replace('/')
-      }
+      replace('/')
     } catch (error: any) {
       console.log(error)
     } finally {

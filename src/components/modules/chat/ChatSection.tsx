@@ -1,6 +1,6 @@
 'use client'
 import { useGetSessionMessages } from '@/hooks/queries/chat/useGetSessionMessages'
-import 'highlight.js/styles/github-dark.css' // یا هر استایل دلخواه برای هایلایت
+import 'highlight.js/styles/github-dark.css'
 import { useEffect, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'

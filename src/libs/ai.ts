@@ -1,4 +1,3 @@
-// lib/liara.ts
 import OpenAI from 'openai'
 
 export const liaraClient = new OpenAI({

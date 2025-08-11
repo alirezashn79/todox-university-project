@@ -1,4 +1,3 @@
-// app/api/day-plans/route.ts
 import DayPlanModel from '@/models/DayPlan'
 import { isAuth } from '@/utils/serverHelpers'
 import { NextResponse } from 'next/server'
@@ -9,7 +8,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: 'please login' }, { status: 401 })
   }
 
-  // می‌توانید با ?date=YYYY-MM-DD فیلتر کنید
   const url = new URL(req.url)
   const dateFilter = url.searchParams.get('date')
 
@@ -32,12 +30,10 @@ export async function POST(req: Request) {
   const body = await req.json()
   const { date, important, notes, mood } = body
 
-  // date و mood اجباری‌اند
   if (!date) {
     return NextResponse.json({ message: 'date is required' }, { status: 400 })
   }
 
-  // اعتبارسنجی مقدار mood
   const allowedMoods = ['AWESOME', 'GOOD', 'FAIR', 'BAD', 'TERRIBLE']
   if (mood && !allowedMoods.includes(mood)) {
     return NextResponse.json({ message: 'invalid mood value' }, { status: 400 })
@@ -66,7 +62,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newPlan, { status: 201 })
   } catch (err: any) {
-    // در صورت duplicate date برای همان کاربر
     if (err.code === 11000) {
       return NextResponse.json(
         { message: 'day plan for this date already exists' },

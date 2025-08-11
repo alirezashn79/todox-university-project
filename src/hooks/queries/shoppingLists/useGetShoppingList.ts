@@ -1,4 +1,3 @@
-// hooks/useGetShoppingItem.ts
 import { IShoppingItem } from '@/types/shoppingList'
 import client from '@/utils/client'
 import endpoints from '@/utils/endpoints'

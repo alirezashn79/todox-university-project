@@ -1,4 +1,3 @@
-// app/api/groups/route.ts
 import GroupModel from '@/models/Group'
 import { isAuth } from '@/utils/serverHelpers'
 import { nanoid } from 'nanoid'

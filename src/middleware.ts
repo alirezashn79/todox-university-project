@@ -45,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/edit-profile'],
+  matcher: ['/', '/edit-profile', '/ai-assistant'],
 }

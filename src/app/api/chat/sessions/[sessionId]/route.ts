@@ -1,4 +1,3 @@
-// app/api/chat/sessions/[sessionId]/route.ts
 import { NextResponse } from 'next/server'
 import { isAuth } from '@/utils/serverHelpers'
 import { ChatSession } from '@/models/ChatSession'
@@ -54,24 +53,20 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
     return NextResponse.json({ message: 'Session not found' }, { status: 404 })
   }
 
-  // ۱. ذخیره پیام کاربر
   session.messages.push({ role, content, createdAt: new Date() })
   await session.save()
 
-  // ۲. آماده‌سازی تاریخچه برای Liara AI
   const history = session.messages.map((m) => ({
     role: m.role,
     content: m.content,
   }))
 
-  // ۳. فراخوانی Liara AI
   const completion = await liaraClient.chat.completions.create({
     model: 'openai/gpt-4o-mini',
     messages: history,
   })
   const assistantMsg = completion.choices[0].message!
 
-  // ۴. ذخیره پاسخ دستیار
   session.messages.push({
     role: assistantMsg.role as Role,
     content: assistantMsg.content as ChatContent,
@@ -79,7 +74,6 @@ export async function POST(req: Request, { params }: { params: { sessionId: stri
   })
   await session.save()
 
-  // ۵. پاسخ کل تاریخچه
   const messages = session.messages.map((m) => ({
     role: m.role,
     content: m.content,

@@ -7,7 +7,6 @@ import { IUser } from '@/types'
 import { isAuth } from '@/utils/serverHelpers'
 
 export default async function EditProfilePage() {
-  // constants
   const user = await isAuth()
 
   return (

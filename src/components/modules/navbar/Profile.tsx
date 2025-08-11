@@ -1,7 +1,6 @@
 import { IUser } from '@/types'
 import DropDownItem from './DropDownItem'
 import LogoutBtn from './LogoutBtn'
-import DropDown from './DropDown'
 interface IProfileProps {
   user: IUser
 }
@@ -26,14 +25,13 @@ export default function Profile({ user }: IProfileProps) {
         <li className="font-semibold">
           <div className="flex flex-col items-start px-2 py-3">
             <p>
-              خوش اومدی <span className="mx-1 text-primary">{user?.fullName}</span>
+              خوش آمدی <span className="mx-1 text-primary">{user?.fullName}</span>
             </p>
             {user.phone && <span className="text-primary">{user.phone}</span>}
             {user.email && <span className="text-wrap text-xs text-primary">{user.email}</span>}
           </div>
         </li>
         <DropDownItem />
-        <DropDown />
         <li>
           <LogoutBtn />
         </li>

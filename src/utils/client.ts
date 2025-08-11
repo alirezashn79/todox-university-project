@@ -6,7 +6,7 @@ const client = axios.create({
 })
 
 client.interceptors.response.use(
-  (response) => response, // Directly return successful responses.
+  (response) => response,
   async (error) => {
     const originalRequest = error.config
 

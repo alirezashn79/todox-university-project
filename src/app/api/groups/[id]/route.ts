@@ -1,4 +1,3 @@
-// app/api/groups/[id]/route.ts
 import { NextResponse } from 'next/server'
 import GroupModel from '@/models/Group'
 import { Types } from 'mongoose'

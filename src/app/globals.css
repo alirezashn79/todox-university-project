@@ -4,7 +4,6 @@
 
 @layer base {
   body {
-    /* @apply overflow-x-hidden; */
   }
   h1,
   h2,
@@ -22,24 +21,20 @@
     margin: 0;
     -moz-appearance: textfield !important;
   }
-  /* width */
   ::-webkit-scrollbar {
     width: 8px;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
   }
 
-  /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #7480ffb7;
     border-radius: 10px;
   }
 
-  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #7480ff;
   }
@@ -48,15 +43,12 @@
     text-align: right;
   }
 
-  /* ۲. کد بلاک (pre) چپ‌چین */
   .chat-bubble.prose pre {
     text-align: left;
     direction: ltr;
-    /* ۳. اندازه فونت کد را هم کوچکتر کنیم */
-    font-size: 0.75rem; /* یا هر مقداری که دوست دارید */
+    font-size: 0.75rem;
   }
 
-  /* اگر می‌خواهید inline codeها هم کمی کوچک‌تر و استایل‌دار شوند */
   .chat-bubble.prose code {
     direction: ltr;
     font-size: 0.75rem;
@@ -64,7 +56,6 @@
 }
 
 @layer utilities {
-  /* برای مخفی کردن بار اسکرول افقی و عمودی */
   .hide-scrollbar {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */

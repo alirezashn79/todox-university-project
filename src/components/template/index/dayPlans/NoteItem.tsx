@@ -108,7 +108,7 @@ export default function NoteItem({ id, note }: IProps) {
             >
               {isEdit ? 'ثبت' : 'ویرایش'}
             </button>
-            <button onClick={handleDelete} type="button" className="btn btn-accent btn-xs">
+            <button onClick={handleDelete} type="button" className="btn btn-error btn-xs">
               حذف
             </button>
             <button

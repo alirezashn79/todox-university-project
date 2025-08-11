@@ -1,4 +1,3 @@
-// app/api/goals/[id]/route.ts
 import { NextResponse } from 'next/server'
 import GoalModel from '@/models/Goal'
 import GroupModel from '@/models/Group'

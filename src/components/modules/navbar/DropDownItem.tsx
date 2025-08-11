@@ -1,4 +1,5 @@
 'use client'
+import { cn } from '@/utils/cn'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -11,22 +12,38 @@ export default function DropDownItem() {
       elem?.blur()
     }
   }
-  if (path === '/edit-profile') {
-    return (
-      <li className="font-semibold" onClick={handleClick}>
-        <Link className="px-2 py-3" href="/">
-          خانه
-        </Link>
-      </li>
-    )
+
+  const items = [
+    {
+      title: 'خانه',
+      url: '/',
+    },
+    {
+      title: 'ویرایش پروفایل',
+      url: '/edit-profile',
+    },
+    {
+      title: 'چت با Ai',
+      url: '/ai-assistant',
+    },
+  ]
+
+  const isActive = (url: string) => {
+    return path === url
   }
-  if (path === '/') {
-    return (
-      <li className="font-semibold" onClick={handleClick}>
-        <Link className="px-2 py-3" href="/edit-profile">
-          ویرایش پروفایل
-        </Link>
-      </li>
-    )
-  }
+  return (
+    <>
+      {items.map((item, index) => (
+        <li
+          key={index}
+          className={cn('font-semibold', isActive(item.url) && 'font-bold text-primary')}
+          onClick={handleClick}
+        >
+          <Link className="px-2 py-3" href={item.url}>
+            {item.title}
+          </Link>
+        </li>
+      ))}
+    </>
+  )
 }

@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 
 export default function LoginRegisterPage() {
-  const [activeTab, setActiveTab] = useState<'phone' | 'email'>('email')
+  const [activeTab, setActiveTab] = useState<'phone' | 'email'>('phone')
   const handlers = useSwipeable({
     onSwipedLeft: () => setActiveTab('email'),
     onSwipedRight: () => setActiveTab('phone'),
@@ -40,9 +40,6 @@ export default function LoginRegisterPage() {
         <div className="mt-4 flex justify-around gap-1 text-right">
           <Link className="btn w-fit" href="/auth/login-with-password">
             ورود با رمزعبور
-          </Link>
-          <Link className="btn w-fit" href="/guest">
-            ورود به عنوان مهمان
           </Link>
         </div>
       </div>

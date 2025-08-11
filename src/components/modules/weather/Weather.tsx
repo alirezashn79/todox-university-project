@@ -83,19 +83,19 @@ export default function Weather() {
 
   return (
     <>
-      <div className="mx-auto flex w-fit items-center">
-        <button className="btn btn-square btn-sm me-2" onClick={findMyLocation}>
+      <div className="mx-auto flex w-fit items-center rounded-lg bg-base-200 px-2 py-1">
+        <button className="btn btn-square btn-ghost btn-sm me-2" onClick={findMyLocation}>
           <Locate className="size-4" />
         </button>
         <h1 className="text-sm">{name}</h1>
         {iconUrl && <img src={iconUrl} alt={desc} className="h-10" />}
-        <div className="flex flex-col text-xs md:text-sm">
+        <div className="flex flex-col text-xs">
           <p>{main.temp.toFixed(1)}°C</p>
           <p>{desc}</p>
         </div>
       </div>
       {permissionDenied && (
-        <p className="text-center text-xs text-warning">
+        <p className="mt-0.5 text-center text-xs text-warning">
           برای دقت بیشتر، اجازه دسترسی به موقعیت را فعال کنید.
         </p>
       )}
