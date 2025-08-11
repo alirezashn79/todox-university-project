@@ -38,3 +38,6 @@ next-env.d.ts
 
 #build
 dist
+
+#fonts
+./src/assets/fonts

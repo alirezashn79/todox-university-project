@@ -54,8 +54,9 @@ export default function MoodSection({ dayPlans }: IProps) {
   return (
     <Card theme="secondary" title="حال روز" isLoading={isPending}>
       <div className="flex size-full items-center justify-center">
-        {moodConfig.map((item) => (
+        {moodConfig.map((item, index) => (
           <button
+            key={index}
             onClick={() => onClick(item.name as MoodType)}
             className={cn(
               'group btn btn-circle btn-ghost hover:bg-purple-900/20',

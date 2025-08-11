@@ -32,7 +32,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ disabled }) => {
     if (paramId) {
       refetch()
     }
-  }, [paramId])
+  }, [paramId, refetch])
 
   const resizeTextarea = useCallback(() => {
     const ta = textareaRef.current
