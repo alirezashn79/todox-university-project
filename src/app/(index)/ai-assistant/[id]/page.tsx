@@ -1,6 +1,5 @@
+import ChatSection from '@/components/modules/chat/ChatSection'
 import { isAuth } from '@/utils/serverHelpers'
-import dynamic from 'next/dynamic'
-const ChatSection = dynamic(() => import('@/components/modules/chat/ChatSection'))
 
 export default async function page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

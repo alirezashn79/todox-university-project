@@ -3,9 +3,9 @@ import Sidebar from '@/components/modules/chat/Sidebar'
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex h-screen w-full overflow-hidden rounded-lg lg:h-[calc(100vh-85px)]">
-      <div className="relative h-full basis-full overflow-hidden bg-base-300 shadow lg:basis-3/4 xl:basis-5/6">
-        <div className="absolute bottom-4 end-12 start-12 z-[999] rounded-full">
+    <div className="relative flex h-full overflow-x-hidden">
+      <div className="relative h-full grow bg-base-300 shadow">
+        <div className="absolute bottom-4 end-4 start-4 z-10 overflow-hidden rounded-lg">
           <ChatInput />
         </div>
 
@@ -13,6 +13,6 @@ export default function layout({ children }: { children: React.ReactNode }) {
       </div>
 
       <Sidebar />
-    </main>
+    </div>
   )
 }

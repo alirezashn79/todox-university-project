@@ -65,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={`${dana.variable} ${morabba.variable}`}>
+    <html lang="fa" dir="rtl" className={`${dana.variable} ${morabba.variable} overflow-x-hidden`}>
       <body className={dana.className}>
         <ReactQueryProvider>
           {children}

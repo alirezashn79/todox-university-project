@@ -20,8 +20,10 @@ export default function Sidebar() {
     <>
       <aside
         className={cn(
-          'fixed bottom-0 end-0 top-0 z-[99999] h-full w-72 -translate-x-72 bg-base-200 p-2 shadow transition-transform duration-300 lg:static lg:z-auto lg:basis-1/4 lg:translate-x-0 xl:basis-1/6',
-          isOpen && 'translate-x-0'
+          'fixed bottom-0 right-0 top-0 z-20 w-64 shrink-0 bg-base-200 p-2 pt-20 lg:static lg:overflow-hidden',
+          'transition-transform duration-200 ease-in-out',
+          'lg:static lg:w-52 lg:translate-x-0 lg:pt-2 xl:w-60',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         <div className="flex w-full items-center justify-between">
@@ -42,7 +44,7 @@ export default function Sidebar() {
           </div>
         )}
 
-        <div className="mt-4 h-full space-y-2 overflow-y-auto">
+        <div className="hide-scrollbar mt-4 h-full space-y-2 overflow-y-auto">
           {sessions?.map((item) => (
             <div key={item.id} className="group relative">
               <div
@@ -57,7 +59,7 @@ export default function Sidebar() {
 
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="absolute start-0 top-28 flex h-8 w-12 translate-x-12 items-center justify-center rounded-r-lg bg-gray-700 lg:hidden"
+          className="absolute -end-10 top-20 flex h-8 w-10 items-center justify-center rounded-l-lg border border-r-0 border-base-content bg-base-100 text-base-content shadow-xl lg:hidden"
         >
           <ChevronLeft className={isOpen ? 'rotate-180' : ''} />
         </button>
@@ -66,7 +68,7 @@ export default function Sidebar() {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 z-[999] bg-base-300/50 lg:hidden"
+          className="fixed inset-0 z-10 bg-base-300/50 lg:hidden"
         />
       )}
     </>

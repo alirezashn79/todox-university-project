@@ -43,6 +43,24 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #7480ff;
   }
+
+  .chat-bubble.prose p {
+    text-align: right;
+  }
+
+  /* ۲. کد بلاک (pre) چپ‌چین */
+  .chat-bubble.prose pre {
+    text-align: left;
+    direction: ltr;
+    /* ۳. اندازه فونت کد را هم کوچکتر کنیم */
+    font-size: 0.75rem; /* یا هر مقداری که دوست دارید */
+  }
+
+  /* اگر می‌خواهید inline codeها هم کمی کوچک‌تر و استایل‌دار شوند */
+  .chat-bubble.prose code {
+    direction: ltr;
+    font-size: 0.75rem;
+  }
 }
 
 @layer utilities {
