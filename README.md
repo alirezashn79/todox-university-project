@@ -1,4 +1,4 @@
-# 🚀 TodoX - The Ultimate Task Manager For University Project
+# 🚀 Todo Planner - The Ultimate Task Manager For University Project
 
 Welcome to **TodoX** 🎯 Manage your tasks effortlessly with our advanced features and beautiful design. Now live at [todox.ir](http://todox.ir)! 🌟
 
